@@ -9,26 +9,26 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        ZStack {
-            LinearGradient(gradient: Gradient(colors: [.white, .blue]), startPoint: .top, endPoint: .bottom)
-            VStack {
-                Text("the incoin heist!")
-                    .bold()
-                    .font(.largeTitle)
-                    .foregroundColor(.black)
-                Button {
-                    print("Start")
+        NavigationStack {
+            ZStack {
+                LinearGradient(gradient: Gradient(colors: [.white, .blue]), startPoint: .top, endPoint: .bottom)
+                VStack {
+                    Text("the incoin heist!")
+                        .bold()
+                        .font(.largeTitle)
+                        .foregroundColor(.black)
+                    NavigationLink {
+                        FirstView()
+                    } label: {
+                        Text("Start")
+                    }
+                    .buttonStyle(.bordered)
+                    .fontWeight(.heavy)
+                    .foregroundColor(.white)
                 }
-                label: {
-                    Text("Start")
-                }
-                .buttonStyle(.bordered)
-                .fontWeight(.heavy)
-                .foregroundColor(.white)
             }
+            .edgesIgnoringSafeArea(.all)
         }
-        .edgesIgnoringSafeArea(.all)
-
     }
 }
 

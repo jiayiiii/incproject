@@ -9,7 +9,12 @@ import SwiftUI
 
 struct FirstView: View {
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        NavigationStack {
+            Text("Who was tall avyan's accomplice?")
+                .fontWeight(.bold)
+        }
+        .navigationTitle("First Minigame")
+        .navigationBarTitleDisplayMode(.large)
     }
 }
 
