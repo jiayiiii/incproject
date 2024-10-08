@@ -9,16 +9,26 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Im hungry")
-                .fontDesign(.monospaced)
-                .bold()
-                .font(.largeTitle)
+        ZStack {
+            LinearGradient(gradient: Gradient(colors: [.white, .blue]), startPoint: .top, endPoint: .bottom)
+            VStack {
+                Text("the incoin heist!")
+                    .bold()
+                    .font(.largeTitle)
+                    .foregroundColor(.black)
+                Button {
+                    print("Start")
+                }
+                label: {
+                    Text("Start")
+                }
+                .buttonStyle(.bordered)
+                .fontWeight(.heavy)
+                .foregroundColor(.white)
+            }
         }
-        .padding()
+        .edgesIgnoringSafeArea(.all)
+
     }
 }
 
