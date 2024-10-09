@@ -12,16 +12,19 @@ struct HintsView: View {
 
     var body: some View {
         VStack {
-                   Text("Quit")
-                       .font(.largeTitle)
-                       .padding()
+            Text("Hints")
+                .font(.largeTitle)
+                .padding()
 
-                   Text("Too bad you can't quit!")
-                       .font(.headline)
-                       .padding()
+            ForEach(hints, id: \.self) { hint in
+                Text("- \(hint)")
+                    .font(.headline)
+                    .padding()
+            }
 
-                   Spacer()
-               }
+            Spacer()
+        }
+        .padding()
     }
 }
 
@@ -33,9 +36,9 @@ struct HackerGameView: View {
     @State private var showHintAlert = false
     @State private var showingHints = false
 
-    //correct code = unlock the hint
+    // Correct code to unlock the hint
     let correctCode = "john pork"
-    
+
     let hints = [
         "The accomplice has a hybrid nature.",
         "Their favorite color is pink.",
@@ -68,6 +71,19 @@ struct HackerGameView: View {
                         .foregroundColor(.green)
                         .transition(.opacity)
                         .multilineTextAlignment(.center)
+                    Image("john_pork.png")
+                        .resizable()
+                        .frame(width:100,height:100)
+                        .cornerRadius(10)
+
+                    NavigationLink(destination: HackerGameView2()) {
+                        Text("Go to Hacker Game 2")
+                            .padding()
+                            .background(Color.mainGreen)
+                            .foregroundColor(.white)
+                            .cornerRadius(10)
+                            .padding(.top, 20)
+                    }
                 } else {
                     TextField("Enter code to unlock hint", text: $codeInput)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
@@ -97,7 +113,7 @@ struct HackerGameView: View {
                     }
 
                     if incorrectCode {
-                        //errorororororo
+                        //errorororo
                         Text("Incorrect code. Try again.")
                             .foregroundColor(.red)
                             .transition(.opacity)

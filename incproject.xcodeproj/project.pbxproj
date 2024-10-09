@@ -13,6 +13,7 @@
 		6755554F2C8EF608007352BF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6755554E2C8EF608007352BF /* Assets.xcassets */; };
 		675555522C8EF608007352BF /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 675555512C8EF608007352BF /* Preview Assets.xcassets */; };
 		A1DF27522CB64270006A570D /* HackerGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1DF27512CB64270006A570D /* HackerGameView.swift */; };
+		EDE53B682CB6AE4300DF8343 /* HackerGameView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE53B672CB6AE4300DF8343 /* HackerGameView2.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -23,6 +24,7 @@
 		6755554E2C8EF608007352BF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		675555512C8EF608007352BF /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		A1DF27512CB64270006A570D /* HackerGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HackerGameView.swift; sourceTree = "<group>"; };
+		EDE53B672CB6AE4300DF8343 /* HackerGameView2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HackerGameView2.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -40,6 +42,7 @@
 			isa = PBXGroup;
 			children = (
 				A1DF27512CB64270006A570D /* HackerGameView.swift */,
+				EDE53B672CB6AE4300DF8343 /* HackerGameView2.swift */,
 				675555492C8EF602007352BF /* incproject */,
 				675555482C8EF602007352BF /* Products */,
 			);
@@ -143,6 +146,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EDE53B682CB6AE4300DF8343 /* HackerGameView2.swift in Sources */,
 				6755554D2C8EF602007352BF /* ContentView.swift in Sources */,
 				A1DF27522CB64270006A570D /* HackerGameView.swift in Sources */,
 				670666AE2CB5169E004F4249 /* FirstView.swift in Sources */,
