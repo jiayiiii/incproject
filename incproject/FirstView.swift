@@ -4,34 +4,45 @@
 //
 //  Created by jia yi on 8/10/24.
 //
-
 import SwiftUI
 
 struct FirstView: View {
     var body: some View {
         NavigationStack {
-               Text("Your goal is to find out")
-                .fontWeight(.bold)
-                .fontDesign(.serif)
-            Text("Who was tall avyan's accomplice?")
-                .fontWeight(.bold)
-                  .foregroundColor(.red)
-                .font(.title2)
-                .fontDesign(.serif)
-            NavigationLink {
-                __1_view_()
-            } label: {
-                Text("Next")
+            VStack {
+                Text("Your goal is to find out")
+                    .fontWeight(.bold)
+                    .fontDesign(.serif)
+                
+                Text("Who was tall Avyan's accomplice?")
+                    .fontWeight(.bold)
+                    .foregroundColor(.red)
+                    .font(.title2)
+                    .fontDesign(.serif)
+                HStack {
+                    NavigationLink {
+                        __1_view_()
+                    } label: {
+                        Text("Next")
+                            .foregroundColor(.white)
+                            .padding()
+                            .background(Color.red)
+                            .cornerRadius(10)
+                            .fontWeight(.heavy)
+                    }
+                    Image("shadowimage")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 100, height: 100)
+                    .cornerRadius(15)
+                    .padding(.leading, 10)
+                }
             }
-            .buttonStyle(.bordered)
-            .fontWeight(.heavy)
-            .foregroundColor(.white)
+            .navigationTitle("Minigame 1.1")
+            .navigationBarTitleDisplayMode(.large)
         }
-        .navigationTitle("minigame 1.1")
-        .navigationBarTitleDisplayMode(.large)
-        }
-
     }
+}
 
 #Preview {
     FirstView()
