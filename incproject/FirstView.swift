@@ -23,6 +23,7 @@ struct FirstView: View {
                     .fontDesign(.serif)
                     .foregroundColor(.gray)
                     .italic()
+                    .multilineTextAlignment(.center)
                 
                 Text("You are **Inc's last hope.**")
                     .font(.title)
@@ -54,9 +55,10 @@ struct FirstView: View {
                         .font(.title)
                         .fontWeight(.bold)
                         .foregroundColor(.red)
-                        .fontDesign(.serif)
+                        .fontDesign(.monospaced)
                         .padding(.top, 10)
                         .transition(.scale)
+                        .multilineTextAlignment(.center)
                 }
                 
                 // Next button and image for visual impact
@@ -86,7 +88,7 @@ struct FirstView: View {
             .padding(.horizontal, 20)
             .transition(.opacity)
 
-            .navigationTitle("Minigame 1.1")
+            .navigationTitle("Minigame 1")
             .navigationBarTitleDisplayMode(.large)
         }
     }

@@ -14,7 +14,7 @@ struct HackerGameView: View {
     @State private var incorrectCode = false
     
     // The correct code to unlock the hint
-    let correctCode = "skibidi toilet"
+    let correctCode = "john pork"
 
     var body: some View {
         VStack(spacing: 20) {
@@ -23,19 +23,20 @@ struct HackerGameView: View {
                 .fontDesign(.monospaced)
                 .foregroundColor(.red)
                 .bold()
+                .multilineTextAlignment(.center)
             
-            Text("The hacker, code-named toilet was found inside the system numerous times. There was no suspicious activity before. The details of him is highly encrypted using his password. Good luck!")
+            Text("Tall Avyan's accomplice was a hybrid of human and something else, standing at around 8 feet (both vertically and horizontally). His favourite color is pink.")
                 .font(.title)
-                .fontDesign(.monospaced)
                 .padding(10)
+                .multilineTextAlignment(.center)
 
-            Text("- Agent Johnvross")
+            Text("- Agent Johnpross")
                 .font(.headline)
                 .padding(.bottom, 20)
             
             if hintUnlocked {
                 // Show the hint if the correct code was entered
-                Text("HINT: The hacker is approximately 6 feet tall.")
+                Text("HINT: The hacker is approximately 6 feet tall, and his accomplice is an 8 feet tall hybrid.")
                     .font(.headline)
                     .foregroundColor(.green)
                     .transition(.opacity)
