@@ -9,7 +9,17 @@ import SwiftUI
 
 struct __1_view_: View {
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        Text("The Mysterious Hacker")
+            .font(.largeTitle)
+            .fontDesign(.monospaced)
+            .foregroundColor(.red)
+            .bold()
+        Text("The hacker, code-named --- was found inside the system numerous time. There was no suspicious activity before... Here is the detais we know about ---. Good Luck!")
+            .font(.title)
+            .fontDesign(.monospaced)
+            .padding(10)
+        Text("- Agent Z")
+        
     }
 }
 

@@ -18,11 +18,20 @@ struct FirstView: View {
                   .foregroundColor(.red)
                 .font(.title2)
                 .fontDesign(.serif)
+            NavigationLink {
+                __1_view_()
+            } label: {
+                Text("Next")
+            }
+            .buttonStyle(.bordered)
+            .fontWeight(.heavy)
+            .foregroundColor(.white)
         }
-        .navigationTitle("First Minigame")
+        .navigationTitle("minigame 1.1")
         .navigationBarTitleDisplayMode(.large)
+        }
+
     }
-}
 
 #Preview {
     FirstView()
