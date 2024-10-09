@@ -24,7 +24,7 @@ struct FirstView: View {
                     .italic()
                     .multilineTextAlignment(.center)
                 
-                Text("You are **Inc's last hope.**")
+                Text("You are **INC's last hope.**")
                     .font(.title)
                     .fontWeight(.bold)
                     .foregroundColor(.mainGreen)
