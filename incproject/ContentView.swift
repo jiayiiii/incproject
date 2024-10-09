@@ -17,7 +17,7 @@ struct ContentView: View {
                     .edgesIgnoringSafeArea(.all)
                 
                 LinearGradient(gradient: Gradient(colors: [.white, .mainGreen]), startPoint: .top, endPoint: .bottom)
-                    .opacity(0.3)
+                    .opacity(0.2)
                 
                 VStack {
                     Rectangle()
