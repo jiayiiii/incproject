@@ -19,7 +19,7 @@ struct FirstView: View {
                 .font(.title2)
                 .fontDesign(.serif)
             NavigationLink {
-                __1_view_()
+                HackerGameView()
             } label: {
                 Text("Next")
             }
