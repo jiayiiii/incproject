@@ -13,7 +13,7 @@ struct ContentView: View {
             ZStack {
                 LinearGradient(gradient: Gradient(colors: [.white, .blue]), startPoint: .top, endPoint: .bottom)
                 VStack {
-                    Text("the incoin heist!")
+                    Text("The Incoin Heist!")
                         .bold()
                         .font(.largeTitle)
                         .foregroundColor(.black)
