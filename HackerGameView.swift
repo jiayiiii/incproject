@@ -29,7 +29,7 @@ struct HackerGameView: View {
                 .fontDesign(.monospaced)
                 .padding(10)
 
-            Text("- Agent Z")
+            Text("- Agent Johnvross")
                 .font(.headline)
                 .padding(.bottom, 20)
             

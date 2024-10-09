@@ -21,7 +21,7 @@ struct FirstView: View {
                     .fontDesign(.serif)
                 HStack {
                     NavigationLink {
-                        __1_view_()
+                        HackerGameView()
                     } label: {
                         Text("Next")
                             .foregroundColor(.white)
