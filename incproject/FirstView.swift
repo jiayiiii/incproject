@@ -20,7 +20,6 @@ struct FirstView: View {
                 
                 Text("A **robbery** has occurred at Inc HQ, and time is running out.")
                     .font(.headline)
-                    .fontDesign(.serif)
                     .foregroundColor(.gray)
                     .italic()
                     .multilineTextAlignment(.center)
@@ -28,13 +27,13 @@ struct FirstView: View {
                 Text("You are **Inc's last hope.**")
                     .font(.title)
                     .fontWeight(.bold)
-                    .foregroundColor(.red)
+                    .foregroundColor(.mainGreen)
                     .multilineTextAlignment(.center)
                     .transition(.opacity)
                 
                 Divider()
                     .frame(height: 2)
-                    .background(Color.red)
+                    .background(Color.black)
                     .padding(.vertical)
 
                 // Mission text with increased drama
@@ -54,7 +53,7 @@ struct FirstView: View {
                     Text("Who was tall Avyan's accomplice?")
                         .font(.title)
                         .fontWeight(.bold)
-                        .foregroundColor(.red)
+                        .foregroundColor(.mainGreen)
                         .fontDesign(.monospaced)
                         .padding(.top, 10)
                         .transition(.scale)
@@ -69,7 +68,7 @@ struct FirstView: View {
                         Text("Next")
                             .foregroundColor(.white)
                             .padding()
-                            .background(Color.red)
+                            .background(Color.mainGreen)
                             .cornerRadius(10)
                             .font(.title3)
                             .fontWeight(.heavy)

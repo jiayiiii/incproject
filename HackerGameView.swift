@@ -21,7 +21,7 @@ struct HackerGameView: View {
             Text("The Mysterious Hacker")
                 .font(.largeTitle)
                 .fontDesign(.monospaced)
-                .foregroundColor(.red)
+                .foregroundColor(.mainGreen)
                 .bold()
                 .multilineTextAlignment(.center)
             
@@ -36,10 +36,11 @@ struct HackerGameView: View {
             
             if hintUnlocked {
                 // Show the hint if the correct code was entered
-                Text("HINT: The hacker is approximately 6 feet tall, and his accomplice is an 8 feet tall hybrid.")
+                Text("Correct! His accomplice was John Pork. HINT: The heist took place in a city well known for its attraction Victoria Falls.") //zimbabwe
                     .font(.headline)
                     .foregroundColor(.green)
                     .transition(.opacity)
+                    .multilineTextAlignment(.center)
             } else {
                 // Input field and button to enter the code
                 TextField("Enter code to unlock hint", text: $codeInput)
@@ -48,7 +49,7 @@ struct HackerGameView: View {
                     .keyboardType(.numberPad)
                 
                 Button(action: {
-                    if codeInput == correctCode {
+                    if codeInput.lowercased() == correctCode {
                         withAnimation {
                             hintUnlocked = true
                             incorrectCode = false
@@ -59,7 +60,7 @@ struct HackerGameView: View {
                 }) {
                     Text("Submit Code")
                         .padding()
-                        .background(Color.blue)
+                        .background(Color.mainGreen)
                         .foregroundColor(.white)
                         .cornerRadius(10)
                 }
