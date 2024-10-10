@@ -15,7 +15,7 @@ struct HackerGameView2: View {
                 Text("Welcome to Hacker Game 2!")
                     .font(.largeTitle)
                     .padding()
-// you can do wtv hereeeeee
+            
                 Text("This is where the next part of the game will take place.")
                     .font(.headline)
                     .padding()
@@ -36,4 +36,9 @@ struct HackerGameView2: View {
             .padding()
         }
     }
+}
+
+// Preview for HackerGameView2
+#Preview {
+    HackerGameView2()
 }
