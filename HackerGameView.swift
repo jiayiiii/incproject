@@ -35,9 +35,8 @@ struct HackerGameView: View {
     @State private var attempts = 0
     @State private var showHintAlert = false
     @State private var showingHints = false
-
-    // Correct code to unlock the hint
-    let correctCode = "john pork"
+    @State private var quitMessageVisible = false // New state variable
+    let correctCodes = ["john pork", "johnpork"]
 
     let hints = [
         "The accomplice has a hybrid nature.",
@@ -65,7 +64,6 @@ struct HackerGameView: View {
                     .padding(.bottom, 20)
 
                 if hintUnlocked {
-                    // Show the hint if the correct code was entered
                     Text("Correct! His accomplice was John Pork. HINT: The heist took place in a city well known for its attraction Victoria Falls.")
                         .font(.headline)
                         .foregroundColor(.green)
@@ -73,7 +71,7 @@ struct HackerGameView: View {
                         .multilineTextAlignment(.center)
                     Image("john_pork.png")
                         .resizable()
-                        .frame(width:100,height:100)
+                        .frame(width:100, height:100)
                         .cornerRadius(10)
 
                     NavigationLink(destination: HackerGameView2()) {
@@ -91,7 +89,7 @@ struct HackerGameView: View {
                         .keyboardType(.default)
 
                     Button(action: {
-                        if codeInput.lowercased() == correctCode {
+                        if correctCodes.contains(codeInput.lowercased()) {
                             withAnimation {
                                 hintUnlocked = true
                                 incorrectCode = false
@@ -113,11 +111,19 @@ struct HackerGameView: View {
                     }
 
                     if incorrectCode {
-                        //errorororo
                         Text("Incorrect code. Try again.")
                             .foregroundColor(.red)
                             .transition(.opacity)
                     }
+                }
+                
+                // Display the quit message if quit button is pressed
+                if quitMessageVisible {
+                    Text("You can't quit!")
+                        .font(.headline)
+                        .foregroundColor(.red)
+                        .transition(.opacity)
+                        .padding(.top, 20)
                 }
             }
             .padding()
@@ -130,12 +136,11 @@ struct HackerGameView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: {
-                        showingHints.toggle()
+                        withAnimation {
+                            quitMessageVisible = true
+                        }
                     }) {
                         Text("Quit")
-                    }
-                    .sheet(isPresented: $showingHints) {
-                        HintsView(hints: hints)
                     }
                 }
             }
@@ -146,3 +151,4 @@ struct HackerGameView: View {
 #Preview {
     HackerGameView()
 }
+

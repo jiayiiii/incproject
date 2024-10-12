@@ -11,11 +11,11 @@ struct ContentView: View {
         NavigationStack {
             ZStack {
                 Image("wallpaper")
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: 500, height: 700)
-                    .edgesIgnoringSafeArea(.all)
-                
+                .resizable()
+                .scaledToFill()
+                .scaledToFit()
+                .frame(width: 1400)
+                .edgesIgnoringSafeArea(.all)
                 LinearGradient(gradient: Gradient(colors: [.white, .mainGreen]), startPoint: .top, endPoint: .bottom)
                     .opacity(0.2)
                 
