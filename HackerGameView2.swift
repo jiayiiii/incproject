@@ -4,7 +4,6 @@
 //
 //  Created by Tan Xin Tong Joy on 9/10/24.
 //
-
 import SwiftUI
 import AVFoundation
 
@@ -18,17 +17,8 @@ struct HackerGameView2: View {
         "Fine... I'll tell you. But it won’t save you..."
     ]
     @State private var johnPorkHint = "It happened near a famous waterfall."
-    @State private var revealHint = false
-    
-    // Sound effect player
-    var backgroundSound: AVAudioPlayer?
-    var responseSound: AVAudioPlayer?
-    
-    init() {
-        // Load background creepy sound
-        self.backgroundSound = createSoundPlayer(forResource: "creepyBackground", type: "mp3")
-        backgroundSound?.numberOfLoops = -1 // Loop indefinitely
-    }
+    @State private var revealedHints: Set<Int> = [] // Track revealed hints
+    @State private var audioPlayer: AVAudioPlayer?
     
     var body: some View {
         NavigationStack {
@@ -36,10 +26,10 @@ struct HackerGameView2: View {
                 // Dark, eerie background
                 LinearGradient(gradient: Gradient(colors: [.black, .gray.opacity(0.8)]),
                                startPoint: .top, endPoint: .bottom)
-                    .edgesIgnoringSafeArea(.all)
-                
+                .edgesIgnoringSafeArea(.all)
+
                 VStack {
-                    ScrollView {
+                    ScrollView { // Make the entire view scrollable
                         VStack(alignment: .leading, spacing: 15) {
                             // Display messages
                             ForEach(messages, id: \.self) { message in
@@ -55,19 +45,18 @@ struct HackerGameView2: View {
                         }
                         .padding()
                     }
-                    
-                    Spacer()
-                    
+                    .padding(.bottom, 30) // Add some padding to the bottom for aesthetics
+
                     // Player's input field and send button
                     HStack {
                         TextField("Ask John Pork...", text: $playerMessage)
                             .textFieldStyle(RoundedBorderTextFieldStyle())
-                            .foregroundColor(.white)
+                            .foregroundColor(.black)
                             .padding()
                             .background(Color.gray.opacity(0.3))
                             .cornerRadius(10)
                             .shadow(color: .black, radius: 5)
-                        
+
                         Button(action: {
                             sendMessage()
                         }) {
@@ -80,51 +69,81 @@ struct HackerGameView2: View {
                         }
                     }
                     .padding()
+
+                    // Button to go to the next view
+                    NavigationLink(destination: HackerGameView3()) { // Correct the destination syntax
+                        Text("Go to Next Game")
+                            .font(.headline)
+                            .foregroundColor(.black)
+                            .padding()
+                            .background(Color.green)
+                            .cornerRadius(10)
+                    }
+                    .padding(.top, 20) // Space between input and button
+                    .padding(.bottom) // Space below button
                 }
             }
             .onAppear {
-                // Play background sound on launch
-                backgroundSound?.play()
+                loadMessages() // Load messages when the view appears
+                playBackgroundSound()
             }
         }
     }
-    
+
     private func sendMessage() {
         if !playerMessage.isEmpty {
             // Add player's message
             messages.append("You: \(playerMessage)")
             playerMessage = ""
-            
+
+            // Save messages to UserDefaults
+            saveMessages()
+
             // Trigger John Pork's response
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-                let response = johnPorkResponses.randomElement() ?? "..."
-                messages.append("John Pork: \(response)")
-                
-                if response == johnPorkResponses.last {
-                    revealHint = true
+                let responseIndex = revealedHints.count
+                if responseIndex < johnPorkResponses.count {
+                    let response = johnPorkResponses[responseIndex]
+                    messages.append("John Pork: \(response)")
+
+                    // Add the response index to revealed hints
+                    revealedHints.insert(responseIndex)
+
+                    // Check if all clues have been revealed
+                    if revealedHints.count == johnPorkResponses.count {
+                        messages.append("John Pork Hint: \(johnPorkHint)") // Add hint after all responses
+                    }
                 }
-                
-                playResponseSound() // Play response sound
+
+                // Save messages again after response
+                saveMessages()
             }
         }
     }
-    
-    private func playResponseSound() {
-        responseSound = createSoundPlayer(forResource: "creepyResponse", type: "mp3")
-        responseSound?.play()
-    }
-}
 
-// Utility function to create a sound player
-func createSoundPlayer(forResource: String, type: String) -> AVAudioPlayer? {
-    guard let path = Bundle.main.path(forResource: forResource, ofType: type) else { return nil }
-    let url = URL(fileURLWithPath: path)
-    do {
-        let audioPlayer = try AVAudioPlayer(contentsOf: url)
-        return audioPlayer
-    } catch {
-        print("Error loading sound: \(error)")
-        return nil
+    private func saveMessages() {
+        UserDefaults.standard.set(messages, forKey: "savedMessages")
+    }
+
+    private func loadMessages() {
+        if let savedMessages = UserDefaults.standard.stringArray(forKey: "savedMessages") {
+            messages = savedMessages
+        }
+    }
+
+    private func playBackgroundSound() {
+        let soundName = "sound1" // Replace with your sound file name
+        guard let soundFile = NSDataAsset(name: soundName) else {
+            print("Oops! The sound isn't working")
+            return
+        }
+        do {
+            audioPlayer = try AVAudioPlayer(data: soundFile.data)
+            audioPlayer?.numberOfLoops = -1 // Loop indefinitely
+            audioPlayer?.play()
+        } catch {
+            print("ERROR: \(error.localizedDescription)")
+        }
     }
 }
 
@@ -134,6 +153,13 @@ struct HackerGameView2_Previews: PreviewProvider {
         HackerGameView2()
     }
 }
-#Preview {
-    HackerGameView2()
+
+// New Game View, mb i cant liek IDK I CNAT SUCCESSFULLY RENAME A NEW FILE
+struct HackerGameView3: View {
+    var body: some View {
+        Text("Welcome to HackerGameView3, make sure that you have gathered all 5 clues from minigame 2 before you proceed... All the best...")
+            .font(.largeTitle)
+            .foregroundColor(.black)
+            .padding()
+    }
 }
