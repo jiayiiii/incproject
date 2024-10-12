@@ -32,7 +32,6 @@ struct HackerGameView2: View {
                         .padding(.top, 20)
                 }
             }
-            .navigationTitle("Hacker Game 2")
             .padding()
         }
     }

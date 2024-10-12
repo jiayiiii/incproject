@@ -6,36 +6,13 @@
 //
 
 import SwiftUI
-
-struct HintsView: View {
-    let hints: [String]
-
-    var body: some View {
-        VStack {
-            Text("Hints")
-                .font(.largeTitle)
-                .padding()
-
-            ForEach(hints, id: \.self) { hint in
-                Text("- \(hint)")
-                    .font(.headline)
-                    .padding()
-            }
-
-            Spacer()
-        }
-        .padding()
-    }
-}
-
 struct HackerGameView: View {
     @State private var codeInput = ""
-    @State private var hintUnlocked = false
+    @State private var hintUnlocked = UserDefaults.standard.bool(forKey: "hintUnlocked")
     @State private var incorrectCode = false
     @State private var attempts = 0
     @State private var showHintAlert = false
-    @State private var showingHints = false
-    @State private var quitMessageVisible = false // New state variable
+    @State private var quitMessageVisible = false
     let correctCodes = ["john pork", "johnpork"]
 
     let hints = [
@@ -46,93 +23,116 @@ struct HackerGameView: View {
 
     var body: some View {
         NavigationStack {
-            VStack(spacing: 20) {
-                Text("The Mysterious Hacker")
-                    .font(.largeTitle)
-                    .fontDesign(.monospaced)
-                    .foregroundColor(.mainGreen)
-                    .bold()
-                    .multilineTextAlignment(.center)
+            ZStack {
+                LinearGradient(
+                    gradient: Gradient(colors: [Color.black, Color.gray.opacity(0.8)]),
+                    startPoint: .top, endPoint: .bottom
+                )
+                .edgesIgnoringSafeArea(.all)
 
-                Text("Tall Avyan's accomplice was a hybrid of human and something else, standing at around 8 feet (both vertically and horizontally). His favourite color is pink.")
-                    .font(.title)
-                    .padding(10)
-                    .multilineTextAlignment(.center)
-
-                Text("- Agent Johnpross")
-                    .font(.headline)
-                    .padding(.bottom, 20)
-
-                if hintUnlocked {
-                    Text("Correct! His accomplice was John Pork. HINT: The heist took place in a city well known for its attraction Victoria Falls.")
-                        .font(.headline)
-                        .foregroundColor(.green)
-                        .transition(.opacity)
+                VStack(spacing: 20) {
+                    Text("THE MYSTERIOUS HACKER")
+                        .font(.custom("Menlo", size: 34))
+                        .bold()
+                        .foregroundColor(.red)
+                        .shadow(color: .black, radius: 2, x: 2, y: 2)
                         .multilineTextAlignment(.center)
-                    Image("john_pork.png")
-                        .resizable()
-                        .frame(width:100, height:100)
-                        .cornerRadius(10)
+                        .padding(.top, 30)
 
-                    NavigationLink(destination: HackerGameView2()) {
-                        Text("Go to Hacker Game 2")
-                            .padding()
-                            .background(Color.mainGreen)
-                            .foregroundColor(.white)
-                            .cornerRadius(10)
-                            .padding(.top, 20)
-                    }
-                } else {
-                    TextField("Enter code to unlock hint", text: $codeInput)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                    Text("Tall Avyan's accomplice was a hybrid of human and something else, standing at 8 feet tall. His favorite color is... pink.")
+                        .font(.custom("Courier", size: 22))
+                        .italic()
+                        .foregroundColor(.white)
+                        .multilineTextAlignment(.center)
+                        .lineSpacing(5)
                         .padding()
-                        .keyboardType(.default)
 
-                    Button(action: {
-                        if correctCodes.contains(codeInput.lowercased()) {
-                            withAnimation {
-                                hintUnlocked = true
-                                incorrectCode = false
-                            }
-                        } else {
-                            incorrectCode = true
-                            attempts += 1
-                            if attempts >= 5 {
-                                showHintAlert = true
-                                attempts = 0
-                            }
-                        }
-                    }) {
-                        Text("Submit Code")
-                            .padding()
-                            .background(Color.mainGreen)
-                            .foregroundColor(.white)
+                    if hintUnlocked {
+                        Text("CORRECT. The accomplice was John Pork.\nHINT: The heist took place near Victoria Falls.")
+                            .font(.custom("Courier", size: 20))
+                            .foregroundColor(.green)
+                            .transition(.opacity)
+                            .multilineTextAlignment(.center)
+                            .padding(.vertical, 10)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 10)
+                                    .stroke(Color.green, lineWidth: 1)
+                                    .shadow(color: .green, radius: 2)
+                            )
+                            .padding(.bottom, 20)
+
+                        Image("john_pork.png")
+                            .resizable()
+                            .frame(width: 120, height: 120)
                             .cornerRadius(10)
+                            .shadow(color: .black, radius: 5, x: 0, y: 5)
+
+                        NavigationLink(destination: HackerGameView2()) {
+                            Text("Go to the Next Level")
+                                .padding()
+                                .background(Color.red.opacity(0.9))
+                                .foregroundColor(.white)
+                                .cornerRadius(10)
+                                .shadow(radius: 5)
+                                .padding(.top, 20)
+                        }
+                    } else {
+                        TextField("Enter the code", text: $codeInput)
+                            .textFieldStyle(PlainTextFieldStyle())
+                            .foregroundColor(.white)
+                            .padding()
+                            .background(Color.black.opacity(0.8))
+                            .cornerRadius(10)
+                            .padding(.horizontal, 40)
+                            .shadow(color: .gray, radius: 4)
+
+                        Button(action: {
+                            if correctCodes.contains(codeInput.lowercased()) {
+                                withAnimation {
+                                    hintUnlocked = true
+                                    UserDefaults.standard.set(true, forKey: "hintUnlocked")
+                                    incorrectCode = false
+                                }
+                            } else {
+                                incorrectCode = true
+                                attempts += 1
+                                if attempts >= 5 {
+                                    showHintAlert = true
+                                    attempts = 0
+                                }
+                            }
+                        }) {
+                            Text("Submit Code")
+                                .font(.headline)
+                                .foregroundColor(.black)
+                                .padding()
+                                .background(Color.red.opacity(0.9))
+                                .cornerRadius(10)
+                                .shadow(color: .black, radius: 4)
+                        }
+
+                        if incorrectCode {
+                            Text("Incorrect code. Try again.")
+                                .foregroundColor(.red)
+                                .transition(.opacity)
+                        }
                     }
 
-                    if incorrectCode {
-                        Text("Incorrect code. Try again.")
+                    if quitMessageVisible {
+                        Text("You can't quit!")
+                            .font(.headline)
                             .foregroundColor(.red)
                             .transition(.opacity)
+                            .padding(.top, 20)
                     }
                 }
-                
-                // Display the quit message if quit button is pressed
-                if quitMessageVisible {
-                    Text("You can't quit!")
-                        .font(.headline)
-                        .foregroundColor(.red)
-                        .transition(.opacity)
-                        .padding(.top, 20)
-                }
+                .padding()
             }
-            .padding()
             .alert("Hint", isPresented: $showHintAlert) {
                 Button("OK", role: .cancel) { }
             } message: {
                 Text("brainrot, oink oink!!!")
             }
-            .navigationTitle("Hacker Game")
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: {
@@ -141,6 +141,8 @@ struct HackerGameView: View {
                         }
                     }) {
                         Text("Quit")
+                            .foregroundColor(.white)
+                            .shadow(radius: 5)
                     }
                 }
             }
@@ -151,4 +153,3 @@ struct HackerGameView: View {
 #Preview {
     HackerGameView()
 }
-
