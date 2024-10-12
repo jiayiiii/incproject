@@ -4,15 +4,19 @@
 //
 //  Created by Sharlene Tan Qin Ying on 9/10/24.
 //
-
 import SwiftUI
+import AVFAudio
+
 struct HackerGameView: View {
     @State private var codeInput = ""
-    @State private var hintUnlocked = UserDefaults.standard.bool(forKey: "hintUnlocked")
+    @State private var hintUnlocked = false
     @State private var incorrectCode = false
     @State private var attempts = 0
     @State private var showHintAlert = false
     @State private var quitMessageVisible = false
+    @State private var audioPlayer: AVAudioPlayer!
+    @State private var timer: Timer? // Timer to stop audio
+
     let correctCodes = ["john pork", "johnpork"]
 
     let hints = [
@@ -90,8 +94,23 @@ struct HackerGameView: View {
                             if correctCodes.contains(codeInput.lowercased()) {
                                 withAnimation {
                                     hintUnlocked = true
-                                    UserDefaults.standard.set(true, forKey: "hintUnlocked")
                                     incorrectCode = false
+
+                                    let soundName = "sound0"
+                                    if let soundFile = NSDataAsset(name: soundName) {
+                                        do {
+                                            audioPlayer = try AVAudioPlayer(data: soundFile.data)
+                                            audioPlayer.play()
+
+                                            timer = Timer.scheduledTimer(withTimeInterval: 8.0, repeats: false) { _ in
+                                                audioPlayer.stop()
+                                            }
+                                        } catch {
+                                            print("ERROR: \(error.localizedDescription) creating audioPlayer.")
+                                        }
+                                    } else {
+                                        print("Could not find sound file named \(soundName).")
+                                    }
                                 }
                             } else {
                                 incorrectCode = true
@@ -146,6 +165,10 @@ struct HackerGameView: View {
                     }
                 }
             }
+        }
+        .onDisappear {
+            timer?.invalidate()
+            audioPlayer?.stop()
         }
     }
 }
