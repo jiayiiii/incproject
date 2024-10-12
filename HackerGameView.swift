@@ -6,20 +6,15 @@
 //
 
 import SwiftUI
+
 struct HackerGameView: View {
     @State private var codeInput = ""
-    @State private var hintUnlocked = UserDefaults.standard.bool(forKey: "hintUnlocked")
+    @State private var hintUnlocked = false // Initially, hint is not unlocked
     @State private var incorrectCode = false
     @State private var attempts = 0
     @State private var showHintAlert = false
     @State private var quitMessageVisible = false
-    let correctCodes = ["john pork", "johnpork"]
-
-    let hints = [
-        "The accomplice has a hybrid nature.",
-        "Their favorite color is pink.",
-        "The heist was near Victoria Falls."
-    ]
+    let correctCodes = ["john pork", "johnpork","John Pork", "JohnPork"]
 
     var body: some View {
         NavigationStack {
@@ -78,19 +73,14 @@ struct HackerGameView: View {
                         }
                     } else {
                         TextField("Enter the code", text: $codeInput)
-                            .textFieldStyle(PlainTextFieldStyle())
-                            .foregroundColor(.white)
-                            .padding()
-                            .background(Color.black.opacity(0.8))
-                            .cornerRadius(10)
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
                             .padding(.horizontal, 40)
-                            .shadow(color: .gray, radius: 4)
 
                         Button(action: {
                             if correctCodes.contains(codeInput.lowercased()) {
                                 withAnimation {
                                     hintUnlocked = true
-                                    UserDefaults.standard.set(true, forKey: "hintUnlocked")
+                                    UserDefaults.standard.set(true, forKey: "hintUnlocked") // Save hint unlocked status
                                     incorrectCode = false
                                 }
                             } else {
@@ -146,6 +136,12 @@ struct HackerGameView: View {
                     }
                 }
             }
+        }
+        .onAppear {
+            // Clear the UserDefaults during testing to reset the hint state
+            UserDefaults.standard.removeObject(forKey: "hintUnlocked")
+            // Load the saved hint status when the view appears (but reset for testing)
+            hintUnlocked = UserDefaults.standard.bool(forKey: "hintUnlocked")
         }
     }
 }
