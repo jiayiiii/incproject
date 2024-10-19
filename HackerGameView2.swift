@@ -17,7 +17,7 @@ struct HackerGameView2: View {
         "Fine... I'll tell you. But it won’t save you..."
     ]
     @State private var johnPorkHint = "It happened near a famous waterfall."
-    @State private var revealedHints: Set<Int> = [] // Track revealed hints
+    @State private var revealedHints: Set<Int> = []
     @State private var audioPlayer: AVAudioPlayer?
     
     var body: some View {
@@ -29,7 +29,7 @@ struct HackerGameView2: View {
                 .edgesIgnoringSafeArea(.all)
 
                 VStack {
-                    ScrollView { // Make the entire view scrollable
+                    ScrollView {
                         VStack(alignment: .leading, spacing: 15) {
                             // Display messages
                             ForEach(messages, id: \.self) { message in
@@ -45,9 +45,8 @@ struct HackerGameView2: View {
                         }
                         .padding()
                     }
-                    .padding(.bottom, 30) // Add some padding to the bottom for aesthetics
+                    .padding(.bottom, 30)
 
-                    // Player's input field and send button
                     HStack {
                         TextField("Ask John Pork...", text: $playerMessage)
                             .textFieldStyle(RoundedBorderTextFieldStyle())
@@ -71,7 +70,7 @@ struct HackerGameView2: View {
                     .padding()
 
                     // Button to go to the next view
-                    NavigationLink(destination: HackerGameView3()) { // Correct the destination syntax
+                    NavigationLink(destination: HackerGameView3()) {
                         Text("Go to Next Game")
                             .font(.headline)
                             .foregroundColor(.black)
@@ -79,43 +78,41 @@ struct HackerGameView2: View {
                             .background(Color.green)
                             .cornerRadius(10)
                     }
-                    .padding(.top, 20) // Space between input and button
-                    .padding(.bottom) // Space below button
+                    .padding(.top, 20)
+                    .padding(.bottom)
                 }
             }
             .onAppear {
-                loadMessages() // Load messages when the view appears
+                loadMessages()
                 playBackgroundSound()
+            }
+            .onDisappear {
+                stopBackgroundSound()
             }
         }
     }
 
     private func sendMessage() {
         if !playerMessage.isEmpty {
-            // Add player's message
             messages.append("You: \(playerMessage)")
             playerMessage = ""
+saveMessages()
 
-            // Save messages to UserDefaults
-            saveMessages()
-
-            // Trigger John Pork's response
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
                 let responseIndex = revealedHints.count
                 if responseIndex < johnPorkResponses.count {
                     let response = johnPorkResponses[responseIndex]
                     messages.append("John Pork: \(response)")
 
-                    // Add the response index to revealed hints
+                    
                     revealedHints.insert(responseIndex)
 
-                    // Check if all clues have been revealed
+                  
                     if revealedHints.count == johnPorkResponses.count {
-                        messages.append("John Pork Hint: \(johnPorkHint)") // Add hint after all responses
-                    }
+                        messages.append("John Pork Hint: \(johnPorkHint)")                     }
                 }
 
-                // Save messages again after response
+             
                 saveMessages()
             }
         }
@@ -139,11 +136,16 @@ struct HackerGameView2: View {
         }
         do {
             audioPlayer = try AVAudioPlayer(data: soundFile.data)
-            audioPlayer?.numberOfLoops = -1 // Loop indefinitely
+            audioPlayer?.numberOfLoops = -1
             audioPlayer?.play()
         } catch {
             print("ERROR: \(error.localizedDescription)")
         }
+    }
+
+    private func stopBackgroundSound() {
+        audioPlayer?.stop()
+        audioPlayer = nil
     }
 }
 
