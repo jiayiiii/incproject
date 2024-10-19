@@ -58,8 +58,8 @@ struct FirstView: View {
                             .italic()
 
                         Text("Who was Tall Avyan's accomplice?")
-                            .font(.system(size: 26, weight: .bold, design: .monospaced))
-                            .foregroundColor(.mainGreen)
+                            .font(.system(size: 18, weight: .bold, design: .monospaced))
+                            .foregroundColor(.black)
                             .padding(.top, 10)
                             .scaledToFit()
                     }
