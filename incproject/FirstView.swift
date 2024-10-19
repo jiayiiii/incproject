@@ -67,7 +67,7 @@ struct FirstView: View {
                     // Navigation and image for visual impact
                     HStack(spacing: 15) {
                         NavigationLink {
-                            HackerGameView()
+                            HomeView()
                         } label: {
                             Text("Next")
                                 .font(.system(size: 22, weight: .bold))
