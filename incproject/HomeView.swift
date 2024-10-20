@@ -44,9 +44,9 @@ struct HomeView: View {
 
                     Text("1. Explore all clues carefully.")
                         .font(.subheadline)
-                    Text("2. Pay attention to John Pork's hints.")
+                    Text("2. Remember to note down all possible clues")
                         .font(.subheadline)
-                    Text("3. Use the environment to your advantage.")
+                    Text("3. This game uses gen Z knowledge.")
                         .font(.subheadline)
                     Text("4. Don't rush! Take your time.")
                         .font(.subheadline)
