@@ -18,7 +18,7 @@ struct HackerGameView5: View {
                         Text("Image")
                     }
                 
-                picker()
+                wheelPicker()
                     .tabItem {
                         Image(systemName: "pencil.and.list.clipboard")
                         Text("Picker")
