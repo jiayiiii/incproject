@@ -17,6 +17,7 @@
 		ED2B942F2CC4C0E400CCB57F /* anagram 4.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED2B942E2CC4C0E400CCB57F /* anagram 4.swift */; };
 		ED2B94332CC4C6E900CCB57F /* HackerGameView3.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED2B94322CC4C6E900CCB57F /* HackerGameView3.swift */; };
 		ED5E05212CC50D3E00F74DA3 /* HackerGameView5.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED5E05202CC50D3E00F74DA3 /* HackerGameView5.swift */; };
+		EDC8CECA2CC545AF0076C720 /* wheelPicker 2.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC8CEC92CC545AF0076C720 /* wheelPicker 2.swift */; };
 		EDE53B682CB6AE4300DF8343 /* HackerGameView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE53B672CB6AE4300DF8343 /* HackerGameView2.swift */; };
 /* End PBXBuildFile section */
 
@@ -32,6 +33,7 @@
 		ED2B942E2CC4C0E400CCB57F /* anagram 4.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "anagram 4.swift"; sourceTree = "<group>"; };
 		ED2B94322CC4C6E900CCB57F /* HackerGameView3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HackerGameView3.swift; sourceTree = "<group>"; };
 		ED5E05202CC50D3E00F74DA3 /* HackerGameView5.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HackerGameView5.swift; sourceTree = "<group>"; };
+		EDC8CEC92CC545AF0076C720 /* wheelPicker 2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "wheelPicker 2.swift"; sourceTree = "<group>"; };
 		EDE53B672CB6AE4300DF8343 /* HackerGameView2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HackerGameView2.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -54,6 +56,7 @@
 				ED2B94322CC4C6E900CCB57F /* HackerGameView3.swift */,
 				ED2B942E2CC4C0E400CCB57F /* anagram 4.swift */,
 				ED5E05202CC50D3E00F74DA3 /* HackerGameView5.swift */,
+				EDC8CEC92CC545AF0076C720 /* wheelPicker 2.swift */,
 				675555492C8EF602007352BF /* incproject */,
 				675555482C8EF602007352BF /* Products */,
 			);
@@ -163,6 +166,7 @@
 				ED5E05212CC50D3E00F74DA3 /* HackerGameView5.swift in Sources */,
 				A1DF27522CB64270006A570D /* HackerGameView.swift in Sources */,
 				ED2B942F2CC4C0E400CCB57F /* anagram 4.swift in Sources */,
+				EDC8CECA2CC545AF0076C720 /* wheelPicker 2.swift in Sources */,
 				A1C416FB2CBA82B700D4BA64 /* HomeView.swift in Sources */,
 				670666AE2CB5169E004F4249 /* FirstView.swift in Sources */,
 				ED2B94332CC4C6E900CCB57F /* HackerGameView3.swift in Sources */,
