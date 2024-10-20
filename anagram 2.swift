@@ -136,6 +136,13 @@ struct anaInfo : View {
                 .font(.largeTitle)
                 .foregroundColor(.black)
                 .padding()
+            NavigationLink(destination: HackerGameView5()) {
+                Text("Next")
+                    .foregroundColor(.white)
+                    .padding()
+                    .background(Color.green)
+                    .cornerRadius(10)
+            }
         }
     }
 }
