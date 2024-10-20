@@ -7,15 +7,30 @@
 
 
 import SwiftUI
+
 struct HackerGameView5: View {
     var body: some View {
-        Text("Welcome to Hacker Game View 5!")
-            .font(.largeTitle)
-            .padding()
+        NavigationStack {
+            TabView {
+                carPlate()
+                    .tabItem {
+                        Image(systemName: "archivebox.fill")
+                        Text("Image")
+                    }
+                
+                picker()
+                    .tabItem {
+                        Image(systemName: "pencil.and.list.clipboard")
+                        Text("Picker")
+                    }
+            }
+        }
     }
 }
+
 
 #Preview {
     HackerGameView5()
 }
+
 
