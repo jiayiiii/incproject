@@ -8,17 +8,15 @@
 import SwiftUI
 
 struct Anagram: View {
-    @State private var anagramOne: String = "noe liomlin" // The scrambled anagram
-    @State private var userAnswer: String = ""  // The user's input for the first anagram
-    @State private var message: String = ""     // Message to display result for the first anagram
-    let correctAnswer: String = "one million"   // The correct answer for the first anagram
-    
-    @State private var anagramTwo: String = "rifst emspterbe" // The scrambled anagram
-    @State private var userAnswerTwo: String = ""  // The user's input for the second anagram
-    @State private var messageTwo: String = ""     // Message to display result for the second anagram
-    let correctAnswerTwo: String = "first september" // The correct answer for the second anagram
-
-    @State private var bothCorrect: Bool = false // To track if both answers are correct
+    @State private var anagramOne: String = "noe liomlin"
+    @State private var userAnswer: String = ""
+    @State private var message: String = ""
+    let correctAnswer: String = "one million"
+    @State private var anagramTwo: String = "rifst emspterbe"
+    @State private var userAnswerTwo: String = ""
+    @State private var messageTwo: String = ""
+    let correctAnswerTwo: String = "first september"
+    @State private var bothCorrect: Bool = false
 
     var body: some View {
         VStack(spacing: 20) {
@@ -48,7 +46,7 @@ struct Anagram: View {
                     .padding()
                 
                 Button(action: {
-                    checkAnswer()  // Check first answer
+                    checkAnswer()
                 }) {
                     Text("Submit")
                         .foregroundColor(.white)
@@ -57,7 +55,7 @@ struct Anagram: View {
                         .cornerRadius(10)
                 }
                 
-                Text(message) // Display feedback message for first answer
+                Text(message)
                     .font(.subheadline)
                     .foregroundColor(.blue)
                 
@@ -69,7 +67,7 @@ struct Anagram: View {
                     .padding()
                 
                 Button(action: {
-                    checkAnswerTwo()  // Check second answer
+                    checkAnswerTwo()
                 }) {
                     Text("Submit")
                         .foregroundColor(.white)
@@ -78,11 +76,9 @@ struct Anagram: View {
                         .cornerRadius(10)
                 }
                 
-                Text(messageTwo) // Display feedback message for second answer
+                Text(messageTwo)
                     .font(.subheadline)
                     .foregroundColor(.blue)
-
-                // Only show the Next button if both answers are correct
                 if bothCorrect {
                     NavigationLink(destination: anaInfo()) {
                         Text("Next")
@@ -95,7 +91,7 @@ struct Anagram: View {
             }
             .padding()
         }
-        .navigationTitle("Anagram Game") // Set the title for the navigation
+        .navigationTitle("Anagram Game")
     }
     
     func checkAnswer() {
@@ -121,13 +117,13 @@ struct Anagram: View {
     }
 }
 
-// Preview for Anagram
+
 struct Anagram_Previews: PreviewProvider {
     static var previews: some View {
         Anagram()
     }
 }
-//just like a view for like info
+
 struct anaInfo : View {
     var body: some View {
         VStack {

@@ -38,7 +38,7 @@ struct HackerGameView4: View {
                     }
 
                     Button(action: {
-                        showAnagram = true // Navigate to HackerGameView5
+                        showAnagram = true 
                     }) {
                         HStack {
                             Image(systemName: "phone.fill")

@@ -36,15 +36,12 @@ struct FirstView: View {
                         .foregroundColor(.mainGreen)
                         .multilineTextAlignment(.center)
                         .transition(.opacity)
-
-                    // Divider with an eerie look
                     Divider()
                         .frame(height: 1.5)
                         .background(Color.red.opacity(0.8))
                         .shadow(color: .black, radius: 2, x: 1, y: 1)
                         .padding(.vertical, 10)
 
-                    // Mission text with increased drama
                     VStack(spacing: 10) {
                         Text("Mission 1:")
                             .font(.system(size: 28, weight: .bold, design: .serif))
@@ -64,7 +61,7 @@ struct FirstView: View {
                             .scaledToFit()
                     }
                     
-                    // Navigation and image for visual impact
+                    
                     HStack(spacing: 15) {
                         NavigationLink {
                             HackerGameView()

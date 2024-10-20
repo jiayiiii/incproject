@@ -15,7 +15,7 @@ struct HackerGameView: View {
     @State private var showHintAlert = false
     @State private var quitMessageVisible = false
     @State private var audioPlayer: AVAudioPlayer!
-    @State private var timer: Timer? // Timer to stop audio
+    @State private var timer: Timer? 
 
     let correctCodes = ["john pork", "johnpork"]
 

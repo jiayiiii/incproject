@@ -19,12 +19,11 @@ struct HackerGameView2: View {
     @State private var johnPorkHint = "It happened near a famous waterfall."
     @State private var revealedHints: Set<Int> = []
     @State private var audioPlayer: AVAudioPlayer?
-    @State private var isUserInputDisabled = false // Track if user input should be disabled
-
+    @State private var isUserInputDisabled = false
     var body: some View {
         NavigationStack {
             ZStack {
-                // Dark, eerie background
+                
                 LinearGradient(gradient: Gradient(colors: [.black, .gray.opacity(0.8)]),
                                startPoint: .top, endPoint: .bottom)
                 .edgesIgnoringSafeArea(.all)
@@ -32,7 +31,6 @@ struct HackerGameView2: View {
                 VStack {
                     ScrollView {
                         VStack(alignment: .leading, spacing: 15) {
-                            // Display messages
                             ForEach(messages, id: \.self) { message in
                                 Text(message)
                                     .font(.system(size: 18, weight: .medium, design: .monospaced))
@@ -56,7 +54,7 @@ struct HackerGameView2: View {
                             .background(Color.gray.opacity(0.3))
                             .cornerRadius(10)
                             .shadow(color: .black, radius: 5)
-                            .disabled(isUserInputDisabled) // Disable text input if needed
+                            .disabled(isUserInputDisabled)
 
                         Button(action: {
                             sendMessage()
@@ -68,20 +66,20 @@ struct HackerGameView2: View {
                                 .background(Color.red)
                                 .cornerRadius(10)
                         }
-                        .disabled(isUserInputDisabled) // Disable button if needed
+                        .disabled(isUserInputDisabled)
                     }
                     .padding()
 
-                    // Button to go to the next view
+                    
                     NavigationLink(destination: HackerGameView4()) {
                         Text("Go to Next Game")
                             .font(.headline)
-                            .foregroundColor(.white) // Change to white for better contrast
+                            .foregroundColor(.white)
                             .padding()
                             .background(Color.green)
                             .cornerRadius(10)
                     }
-                    .disabled(isUserInputDisabled) // Disable the link if user input is disabled
+                    .disabled(isUserInputDisabled)
                     .padding(.top, 20)
                     .padding(.bottom)
                 }
@@ -111,7 +109,7 @@ struct HackerGameView2: View {
 
                     if revealedHints.count == johnPorkResponses.count {
                         messages.append("John Pork Hint: \(johnPorkHint)")
-                        isUserInputDisabled = true // Disable input after last response
+                        isUserInputDisabled = true
                     }
                 }
 
@@ -131,7 +129,7 @@ struct HackerGameView2: View {
     }
 
     private func playBackgroundSound() {
-        let soundName = "sound1" // Replace with your sound file name
+        let soundName = "sound1" 
         guard let soundFile = NSDataAsset(name: soundName) else {
             print("Oops! The sound isn't working")
             return
@@ -151,7 +149,7 @@ struct HackerGameView2: View {
     }
 }
 
-// Preview for HackerGameView2
+
 struct HackerGameView2_Previews: PreviewProvider {
     static var previews: some View {
         HackerGameView2()
