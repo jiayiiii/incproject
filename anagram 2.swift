@@ -4,6 +4,7 @@
 //
 //  Created by Tan Xin Tong Joy on 20/10/24.
 //
+//can someone make it so that 'threatbob' in assets is playing in the background🙏
 import SwiftUI
 
 struct Anagram: View {
@@ -83,7 +84,7 @@ struct Anagram: View {
 
                 // Only show the Next button if both answers are correct
                 if bothCorrect {
-                    NavigationLink(destination: HackerGameView4()) {
+                    NavigationLink(destination: anaInfo()) {
                         Text("Next")
                             .foregroundColor(.white)
                             .padding()
@@ -120,6 +121,21 @@ struct Anagram: View {
     }
 }
 
-#Preview {
-    Anagram()
+// Preview for Anagram
+struct Anagram_Previews: PreviewProvider {
+    static var previews: some View {
+        Anagram()
+    }
+}
+//just like a view for like info
+struct anaInfo : View {
+    var body: some View {
+        VStack {
+            Image("fork")
+            Text("Awesome Sauce! You deciphered Freakbob's code. Hmm...This tells us that John Pork isn't the only one working with Tall Avyan. They stole one million Incoins on First September!")
+                .font(.largeTitle)
+                .foregroundColor(.black)
+                .padding()
+        }
+    }
 }

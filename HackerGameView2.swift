@@ -161,5 +161,15 @@ struct HackerGameView3: View {
             .font(.largeTitle)
             .foregroundColor(.black)
             .padding()
+        NavigationLink(destination: HackerGameView4()){
+            Text("continue")
+                .font(.headline)
+                .foregroundColor(.black)
+                .padding()
+                .background(Color.green)
+                .cornerRadius(10)
+        }
+        
     }
+    
 }
