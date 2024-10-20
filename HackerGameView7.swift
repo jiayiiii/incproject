@@ -17,9 +17,9 @@ struct HackerGameView7: View {
                 .font(.title)
                 .padding()
 
-            // Add more game content and logic here
+            
             Button(action: {
-                // Add action for the button here
+                
             }) {
                 Text("Continue")
                     .font(.title)
@@ -30,7 +30,7 @@ struct HackerGameView7: View {
             }
             .padding()
         }
-        .navigationTitle("Hacker Game 7") // Title for the navigation bar
+        .navigationTitle("Hacker Game 7") 
     }
 }
 

@@ -19,24 +19,24 @@ struct HomeView: View {
                     .bold()
                     .padding()
 
-                // Level 1 Button
+                
                 levelButton(level: 1, destination: HackerGameView())
                 
-                // Level 2 Button
+                
                 levelButton(level: 2, destination: HackerGameView2())
                 
-                // Level 3 Button
+                
                 levelButton(level: 3, destination: HackerGameView4())
                 
-                // Level 4 Button
+                
                 levelButton(level: 4, destination: HackerGameView4())
                 
-                // Level 5 Button
+                
                 levelButton(level: 5, destination: HackerGameView5())
 
                 Spacer()
 
-                // Game Info and Tips Section
+                
                 VStack(spacing: 10) {
                     Text("Game Info & Tips")
                         .font(.headline)
