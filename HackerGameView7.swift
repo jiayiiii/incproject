@@ -9,17 +9,18 @@ import SwiftUI
 struct HackerGameView7: View {
     var body: some View {
         VStack {
-            Text("Welcome to Hacker Game View 7")
+            Text("You have arrived in Tennessee")
                 .font(.largeTitle)
                 .padding()
-
-            Text("This is where the next part of the game takes place.")
-                .font(.title)
+            
+            Image("Ten")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 800, height: 400)
+                .clipped()
                 .padding()
 
-            
             Button(action: {
-                
             }) {
                 Text("Continue")
                     .font(.title)
@@ -30,11 +31,10 @@ struct HackerGameView7: View {
             }
             .padding()
         }
-        .navigationTitle("Hacker Game 7") 
+        .navigationTitle("Hacker Game 7")
     }
 }
 
 #Preview {
     HackerGameView7()
 }
-
