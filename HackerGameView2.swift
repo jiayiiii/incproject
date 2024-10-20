@@ -155,8 +155,6 @@ struct HackerGameView2_Previews: PreviewProvider {
         HackerGameView2()
     }
 }
-
-// New Game View, mb i cant liek IDK I CNAT SUCCESSFULLY RENAME A NEW FILE
 struct HackerGameView3: View {
     var body: some View {
         Text("Welcome to HackerGameView3, make sure that you have gathered all 5 clues from minigame 2 before you proceed... All the best...")
