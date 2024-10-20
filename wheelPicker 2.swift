@@ -99,3 +99,15 @@ struct WheelPicker_Previews: PreviewProvider {
         WheelPicker()
     }
 }
+struct carPlate : View {
+    var body: some View {
+        VStack{
+            Text("Witnesses on 1st Sept have reported seeing this sussy car near Victoria Falls:")
+                .font(.headline)
+                .padding()
+            Image("car")
+                .resizable()
+                .frame(width: 450,height: 450)
+            }
+    }
+}

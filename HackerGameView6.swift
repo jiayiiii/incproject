@@ -10,9 +10,16 @@ import SwiftUI
 
 struct HackerGameView6: View {
     var body: some View {
-        Text("This is the next view!")
-            .font(.largeTitle)
-            .padding()
+        ZStack {
+            Image("airport image")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 100, height: 100)
+                .clipped()
+            Text("Buy an aeroplane ticket?")
+                .font(.largeTitle)
+                .padding()
+        }
     }
 }
 
