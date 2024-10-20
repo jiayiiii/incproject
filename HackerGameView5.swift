@@ -12,25 +12,23 @@ struct HackerGameView5: View {
     var body: some View {
         NavigationStack {
             TabView {
-                carPlate()
+                CarPlate()
                     .tabItem {
                         Image(systemName: "archivebox.fill")
                         Text("Image")
                     }
                 
-                wheelPicker()
+                WheelPicker()
                     .tabItem {
                         Image(systemName: "pencil.and.list.clipboard")
                         Text("Picker")
                     }
             }
+            .navigationTitle("Hacker Game")
         }
     }
 }
 
-
 #Preview {
     HackerGameView5()
 }
-
-

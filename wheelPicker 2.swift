@@ -4,10 +4,9 @@
 //
 //  Created by Tan Xin Tong Joy on 20/10/24.
 //
-
-
 import SwiftUI
-struct wheelPicker: View {
+
+struct WheelPicker: View {
     
     let locations = ["New York", "California", "Texas", "Florida", "Tennessee"]
     
@@ -15,12 +14,12 @@ struct wheelPicker: View {
     let correctLocation = "Tennessee"
     
     // User's current selection
-    @State private var selectedLocation: String = ""
+    @State private var selectedLocation: String = "New York" // Default selection
     
     // Result message to show whether the user is correct or not
     @State private var resultMessage: String = ""
     
-    // information to show when the user gets it correct
+    // Information to show when the user gets it correct
     @State private var locationClue: String = ""
     
     var body: some View {
@@ -33,18 +32,20 @@ struct wheelPicker: View {
                 .multilineTextAlignment(.center)
                 .padding(.top, 30)
             
+            Text("Hint: its state bird is a mockingbird.") // Fixed the missing quote
+            
             // Picker for selecting the location
             Picker("Select Location", selection: $selectedLocation) {
                 ForEach(locations, id: \.self) {
                     Text($0)
                 }
             }
-            .pickerStyle(WheelPickerStyle()) // Wheel style picker, you can change this to a menu if preferred
+            .pickerStyle(WheelPickerStyle()) // Wheel style picker
             .padding()
             
             // Button to submit the selected location
             Button(action: {
-                checkAnswer()  // Check the answer when button is clicked
+                checkAnswer()  // Check the answer when the button is clicked
             }) {
                 Text("Submit")
                     .foregroundColor(.white)
@@ -71,38 +72,39 @@ struct wheelPicker: View {
     
     // Function to check if the selected location is correct
     func checkAnswer() {
-        if selectedLocation == correctLocation {
+        if selectedLocation.isEmpty {
+            resultMessage = "Please select a location."
+            locationClue = "" // Clear the clue if no selection is made
+        } else if selectedLocation == correctLocation {
             resultMessage = "Correct!"
             // Provide extra information when the answer is correct
-            locationClue = "Seems like Tall Avyan and his lackeys escaped to Tennesse after their heist"
+            locationClue = "Seems like Tall Avyan and his lackeys escaped to Tennessee after their heist."
         } else {
             resultMessage = "Incorrect. Try again!"
             locationClue = "" // Clear the info if the answer is wrong
         }
     }
 }
-struct picker_Previews: PreviewProvider {
+
+struct WheelPicker_Previews: PreviewProvider {
     static var previews: some View {
-        wheelPicker()
+        WheelPicker()
     }
 }
-struct pickerView_Previews: PreviewProvider {
-    static var previews: some View {
-        wheelPicker()
-    }
-}
-struct carPlate : View {
+
+struct CarPlate: View {
     var body: some View {
-        VStack{
+        VStack {
             Text("Witnesses on 1st Sept have reported seeing this sussy car near Victoria Falls:")
                 .font(.headline)
                 .padding()
             Image("car")
                 .resizable()
-                .frame(width: 450,height: 450)
-            }
+                .frame(width: 450, height: 450)
+        }
     }
 }
+
 #Preview {
-    wheelPicker()
+    WheelPicker()
 }
