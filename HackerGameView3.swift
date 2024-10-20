@@ -7,7 +7,7 @@
 import SwiftUI
 
 struct HackerGameView4: View {
-    @State private var showHackerGameView5 = false
+    @State private var showAnagram = false
 
     var body: some View {
         NavigationStack {
@@ -39,7 +39,7 @@ struct HackerGameView4: View {
                     }
 
                     Button(action: {
-                        showHackerGameView5 = true // Navigate to HackerGameView5
+                        showAnagram = true // Navigate to HackerGameView5
                     }) {
                         HStack {
                             Image(systemName: "phone.fill")
@@ -59,8 +59,8 @@ struct HackerGameView4: View {
                 }
                 .position(x: 250, y: 850)
             }
-            .navigationDestination(isPresented: $showHackerGameView5) {
-                HackerGameView5()
+            .navigationDestination(isPresented: $showAnagram) {
+                Anagram()
             }
         }
     }
