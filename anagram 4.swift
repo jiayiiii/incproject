@@ -8,12 +8,12 @@
 import SwiftUI
 
 struct Anagram: View {
-    @State private var anagramOne: String = "imino noell" // The scrambled anagram
+    @State private var anagramOne: String = "noe liomlin" // The scrambled anagram
     @State private var userAnswer: String = ""  // The user's input for the first anagram
     @State private var message: String = ""     // Message to display result for the first anagram
     let correctAnswer: String = "one million"   // The correct answer for the first anagram
     
-    @State private var anagramTwo: String = "bereft spermist" // The scrambled anagram
+    @State private var anagramTwo: String = "rifst emspterbe" // The scrambled anagram
     @State private var userAnswerTwo: String = ""  // The user's input for the second anagram
     @State private var messageTwo: String = ""     // Message to display result for the second anagram
     let correctAnswerTwo: String = "first september" // The correct answer for the second anagram
@@ -30,7 +30,7 @@ struct Anagram: View {
                 .multilineTextAlignment(.center)
                 .padding(.top, 30)
             
-            Text("'Stop trying to solve this case..or I will touch u..The imino noell incoins are ours! bereft spermist is a secret! Haha!'")
+            Text("'Stop trying to solve this case..or I will touch u..The noe liomlin incoins are ours! rifst emspterbe is a secret! Haha!'")
                 .font(.custom("Courier", size: 22))
                 .italic()
                 .foregroundColor(.black)
@@ -41,7 +41,7 @@ struct Anagram: View {
             VStack(alignment: .leading, spacing: 10) {
                 Text("Decode what he is trying to say:")
                 
-                Text("imino noell")
+                Text("noe liomlin")
                     .font(.headline)
                 TextField("Enter your first answer", text: $userAnswer)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
@@ -61,7 +61,7 @@ struct Anagram: View {
                     .font(.subheadline)
                     .foregroundColor(.blue)
                 
-                Text("bereft spermist")
+                Text("rifst emspterbe")
                     .font(.headline)
                 
                 TextField("Enter your second answer", text: $userAnswerTwo)
