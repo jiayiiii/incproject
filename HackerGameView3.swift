@@ -15,8 +15,7 @@ struct HackerGameView4: View {
                 Image("freakbob")
                     .resizable()
                     .scaledToFill()
-                    .frame(width: 500, height: 900)
-                    .clipped()
+                    .frame(width: 440, height: 700)
 
                 HStack {
                     Button(action: {
@@ -31,11 +30,11 @@ struct HackerGameView4: View {
                                 .foregroundColor(.black)
                         }
                         .padding()
-                        .padding(.horizontal, 30)
+                        .padding(.horizontal, 20)
                         .background(Color.red)
                         .cornerRadius(10)
                         .padding(.bottom, 30)
-                        .position(x: 130, y: 450)
+                        .position(x: 90, y: 280)
                     }
 
                     Button(action: {
@@ -50,10 +49,11 @@ struct HackerGameView4: View {
                                 .foregroundColor(.black)
                         }
                         .padding()
-                        .padding(.horizontal, 30)
+                        .padding(.horizontal, 20)
                         .background(Color.green)
                         .cornerRadius(10)
                         .padding(.bottom, 30)
+                        .position(x:70, y: 280)
                     }
                     .frame(maxWidth: .infinity, alignment: .trailing)
                 }
