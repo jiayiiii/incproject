@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct HomeView: View {
-    @State private var unlockedLevels: [Bool] = [true, false, false] // Tracks unlocked levels
+    @State private var unlockedLevels: [Bool] = [true, false, false, false, false] // Tracks unlocked levels
     @State private var showLockedAlert = false // To show locked message
     
     var body: some View {
@@ -20,48 +20,42 @@ struct HomeView: View {
                     .padding()
 
                 // Level 1 Button
-                if unlockedLevels[0] {
-                    NavigationLink(destination: HackerGameView()) {
-                        Text("Level 1")
-                            .padding()
-                            .background(Color.green)
-                            .foregroundColor(.white)
-                            .cornerRadius(10)
-                    }
-                } else {
-                    Button(action: {
-                        showLockedAlert = true
-                    }) {
-                        Text("Level 1")
-                            .padding()
-                            .background(Color.gray)
-                            .foregroundColor(.white)
-                            .cornerRadius(10)
-                    }
-                }
-
+                levelButton(level: 1, destination: HackerGameView())
+                
                 // Level 2 Button
-                if unlockedLevels[1] {
-                    NavigationLink(destination: HackerGameView2()) {
-                        Text("Level 2")
-                            .padding()
-                            .background(Color.green)
-                            .foregroundColor(.white)
-                            .cornerRadius(10)
-                    }
-                } else {
-                    Button(action: {
-                        showLockedAlert = true
-                    }) {
-                        Text("Level 2")
-                            .padding()
-                            .background(Color.gray)
-                            .foregroundColor(.white)
-                            .cornerRadius(10)
-                    }
-                }
+                levelButton(level: 2, destination: HackerGameView2())
+                
+                // Level 3 Button
+                levelButton(level: 3, destination: HackerGameView4())
+                
+                // Level 4 Button
+                levelButton(level: 4, destination: HackerGameView4())
+                
+                // Level 5 Button
+                levelButton(level: 5, destination: HackerGameView5())
 
                 Spacer()
+
+                // Game Info and Tips Section
+                VStack(spacing: 10) {
+                    Text("Game Info & Tips")
+                        .font(.headline)
+                        .padding(.top)
+
+                    Text("1. Explore all clues carefully.")
+                        .font(.subheadline)
+                    Text("2. Pay attention to John Pork's hints.")
+                        .font(.subheadline)
+                    Text("3. Use the environment to your advantage.")
+                        .font(.subheadline)
+                    Text("4. Don't rush! Take your time.")
+                        .font(.subheadline)
+                    Text("5. Good luck on your heist!")
+                        .font(.subheadline)
+                }
+                .padding()
+                .background(Color.gray.opacity(0.2))
+                .cornerRadius(10)
             }
             .padding()
             .alert(isPresented: $showLockedAlert) {
@@ -73,9 +67,33 @@ struct HomeView: View {
             }
         }
     }
+    private func levelButton(level: Int, destination: some View) -> some View {
+        if unlockedLevels[level - 1] {
+            return AnyView(
+                NavigationLink(destination: destination) {
+                    Text("Level \(level)")
+                        .padding()
+                        .background(Color.green)
+                        .foregroundColor(.white)
+                        .cornerRadius(10)
+                }
+            )
+        } else {
+            return AnyView(
+                Button(action: {
+                    showLockedAlert = true
+                }) {
+                    Text("Level \(level)")
+                        .padding()
+                        .background(Color.gray)
+                        .foregroundColor(.white)
+                        .cornerRadius(10)
+                }
+            )
+        }
+    }
 }
 
 #Preview {
     HomeView()
 }
-
