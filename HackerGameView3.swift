@@ -1,13 +1,15 @@
+//
+//  HackerGameView3.swift
+//  incproject
+//
+//  Created by Tan Xin Tong Joy on 20/10/24.
+//
 import SwiftUI
 
-struct HackerGameView3: View {
-    @State private var userAnswer: String = ""  // The user's input for the first anagram
-    @State private var userAnswerTwo: String = ""  // The user's input for the second anagram
-    @State private var message: String = ""     // Message to display result for the first anagram
-    @State private var messageTwo: String = ""  // Message to display result for the second anagram
-    
-    let correctAnswer: String = "one million"   // The correct answer for the first anagram
-    let correctAnswerTwo: String = "first september" // The correct answer for the second anagram
+struct HackerGameView4: View {
+    @State private var userAnswer: String = "" // User input for the answer
+    @State private var message: String = ""    
+    let correctAnswer: String = "Stop trying to solve this case..or I will touch u..The one million incoins are ours! first september is a secret! Haha!" // Correct answer for the anagram
 
     var body: some View {
         VStack(spacing: 20) {
@@ -28,16 +30,20 @@ struct HackerGameView3: View {
                 .padding()
             
             VStack(alignment: .leading, spacing: 10) {
-                Text("Decode what he is trying to say:")
+                Text("Decode everything he tried to say:")
                 
-                Text("imino noell")
-                    .font(.headline)
-                TextField("Enter your first answer", text: $userAnswer)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .padding()
+                ScrollView {
+                    TextField("Enter your answer", text: $userAnswer, axis: .vertical)
+                        .lineLimit(nil) // Allow for multiple lines
+                        .padding()
+                        .frame(minHeight: 100) // Set a minimum height for the TextField
+                        .background(Color(UIColor.systemGray6))
+                        .cornerRadius(10)
+                        .padding()
+                }
                 
                 Button(action: {
-                    checkAnswer()  // Calling the function
+                    checkAnswer()  // Call the function
                 }) {
                     Text("Submit")
                         .foregroundColor(.white)
@@ -49,50 +55,25 @@ struct HackerGameView3: View {
                 Text(message) // Display feedback message
                     .font(.subheadline)
                     .foregroundColor(.blue)
-                    .padding(.bottom, 20)
-                
-                Text("bereft spermist")
-                    .font(.headline)
-                
-                TextField("Enter your second answer", text: $userAnswerTwo)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .padding()
-                
-                Button(action: {
-                    checkAnswerTwo()  // Calling the function
-                }) {
-                    Text("Submit")
-                        .foregroundColor(.white)
-                        .padding()
-                        .background(Color.red)
-                        .cornerRadius(10)
-                }
-                
-                Text(messageTwo) // Display feedback message
-                    .font(.subheadline)
-                    .foregroundColor(.blue)
+                    .padding(.top, 10)
             }
             .padding()
         }
     }
-    
+
     func checkAnswer() {
-        if userAnswer.lowercased() == correctAnswer.lowercased() {
+        // Normalize the user input and the correct answer by trimming spaces and lowercasing them
+        let normalizedUserAnswer = userAnswer.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+        let normalizedCorrectAnswer = correctAnswer.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+
+        if normalizedUserAnswer == normalizedCorrectAnswer {
             message = "Correct!"
         } else {
             message = "Incorrect. Try again!"
         }
     }
-    
-    func checkAnswerTwo() {
-        if userAnswerTwo.lowercased() == correctAnswerTwo.lowercased() {
-            messageTwo = "Correct!"
-        } else {
-            messageTwo = "Incorrect. Try again!"
-        }
-    }
 }
 
 #Preview {
-    HackerGameView3()
+    HackerGameView4()
 }

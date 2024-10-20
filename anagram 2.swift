@@ -1,17 +1,25 @@
+//
+//  anagram 2.swift
+//  incproject
+//
+//  Created by Tan Xin Tong Joy on 20/10/24.
+//
 import SwiftUI
 
-struct anagram: View {
+struct Anagram: View {
     @State private var anagramOne: String = "imino noell" // The scrambled anagram
-    @State private var userAnswer: String = ""  // The user's input
-    @State private var message: String = ""     // Message to display result
-    let correctAnswer: String = "one million"         // The correct answer for the anagram
-    @State private var anagramTwo: String = "bereft spermist" // The scrambled anagram
-    @State private var userAnswerTwo: String = ""  // The user's input
-    @State private var messageTwo: String = ""     // Message to display result
-    let correctAnswerTwo: String = "first september"         // The correct answer for the anagram
+    @State private var userAnswer: String = ""  // The user's input for the first anagram
+    @State private var message: String = ""     // Message to display result for the first anagram
+    let correctAnswer: String = "one million"   // The correct answer for the first anagram
     
+    @State private var anagramTwo: String = "bereft spermist" // The scrambled anagram
+    @State private var userAnswerTwo: String = ""  // The user's input for the second anagram
+    @State private var messageTwo: String = ""     // Message to display result for the second anagram
+    let correctAnswerTwo: String = "first september" // The correct answer for the second anagram
+
+    @State private var bothCorrect: Bool = false // To track if both answers are correct
+
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
         VStack(spacing: 20) {
             Text("What Did He Say?")
                 .font(.custom("Menlo", size: 34))
@@ -21,79 +29,97 @@ struct anagram: View {
                 .multilineTextAlignment(.center)
                 .padding(.top, 30)
             
-            Text("'Stop trying to solve this case..or I will touch u..The imino noell incoins are ours!bereft spermist is a secret! Haha!'")
+            Text("'Stop trying to solve this case..or I will touch u..The imino noell incoins are ours! bereft spermist is a secret! Haha!'")
                 .font(.custom("Courier", size: 22))
                 .italic()
-                .foregroundColor(.black
-                )
+                .foregroundColor(.black)
                 .multilineTextAlignment(.center)
                 .lineSpacing(5)
                 .padding()
             
-            VStack {
+            VStack(alignment: .leading, spacing: 10) {
                 Text("Decode what he is trying to say:")
+                
+                Text("imino noell")
                     .font(.headline)
-                    TextField("Enter your first answer", text: $userAnswer)
+                TextField("Enter your first answer", text: $userAnswer)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .padding()
-                Button(action: {
-                                checkAnswer()  // Calling the function
-                            }) {
-                                Text("Submit")
-                                    .foregroundColor(.white)
-                                    .padding()
-                                    .background(Color.red)
-                                    .cornerRadius(10)
-                            }
-                            
-                            Text(message) // Display feedback message
-                                .font(.subheadline)
-                                .foregroundColor(.blue)
-                        }
                 
+                Button(action: {
+                    checkAnswer()  // Check first answer
+                }) {
+                    Text("Submit")
+                        .foregroundColor(.white)
+                        .padding()
+                        .background(Color.red)
+                        .cornerRadius(10)
+                }
+                
+                Text(message) // Display feedback message for first answer
+                    .font(.subheadline)
+                    .foregroundColor(.blue)
+                
+                Text("bereft spermist")
+                    .font(.headline)
                 
                 TextField("Enter your second answer", text: $userAnswerTwo)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .padding()
-            Button(action: {
-                            checkAnswerTwo()  // Calling the function
-                        }) {
-                            Text("Submit")
-                                .foregroundColor(.white)
-                                .padding()
-                                .background(Color.red)
-                                .cornerRadius(10)
-                        }
-                        
-                        Text(messageTwo) // Display feedback message
-                            .font(.subheadline)
-                            .foregroundColor(.blue)
                 
+                Button(action: {
+                    checkAnswerTwo()  // Check second answer
+                }) {
+                    Text("Submit")
+                        .foregroundColor(.white)
+                        .padding()
+                        .background(Color.red)
+                        .cornerRadius(10)
+                }
                 
+                Text(messageTwo) // Display feedback message for second answer
+                    .font(.subheadline)
+                    .foregroundColor(.blue)
+
+                // Only show the Next button if both answers are correct
+                if bothCorrect {
+                    NavigationLink(destination: HackerGameView4()) {
+                        Text("Next")
+                            .foregroundColor(.white)
+                            .padding()
+                            .background(Color.green)
+                            .cornerRadius(10)
+                    }
+                }
             }
-        
-        
-        
-        
+            .padding()
+        }
+        .navigationTitle("Anagram Game") // Set the title for the navigation
     }
-    // Function to check the user's answer - must be declared outside the body
+    
     func checkAnswer() {
         if userAnswer.lowercased() == correctAnswer.lowercased() {
             message = "Correct!"
         } else {
             message = "Incorrect. Try again!"
         }
+        updateBothCorrectStatus()
     }
+    
     func checkAnswerTwo() {
         if userAnswerTwo.lowercased() == correctAnswerTwo.lowercased() {
             messageTwo = "Correct!"
         } else {
             messageTwo = "Incorrect. Try again!"
         }
+        updateBothCorrectStatus()
+    }
+    
+    private func updateBothCorrectStatus() {
+        bothCorrect = (userAnswer.lowercased() == correctAnswer.lowercased()) && (userAnswerTwo.lowercased() == correctAnswerTwo.lowercased())
     }
 }
 
 #Preview {
-    anagram()
-  anagram()
+    Anagram()
 }
