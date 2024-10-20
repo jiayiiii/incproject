@@ -19,7 +19,8 @@ struct HackerGameView2: View {
     @State private var johnPorkHint = "It happened near a famous waterfall."
     @State private var revealedHints: Set<Int> = []
     @State private var audioPlayer: AVAudioPlayer?
-    
+    @State private var isUserInputDisabled = false // Track if user input should be disabled
+
     var body: some View {
         NavigationStack {
             ZStack {
@@ -55,6 +56,7 @@ struct HackerGameView2: View {
                             .background(Color.gray.opacity(0.3))
                             .cornerRadius(10)
                             .shadow(color: .black, radius: 5)
+                            .disabled(isUserInputDisabled) // Disable text input if needed
 
                         Button(action: {
                             sendMessage()
@@ -66,18 +68,20 @@ struct HackerGameView2: View {
                                 .background(Color.red)
                                 .cornerRadius(10)
                         }
+                        .disabled(isUserInputDisabled) // Disable button if needed
                     }
                     .padding()
 
                     // Button to go to the next view
-                    NavigationLink(destination: HackerGameView3()) {
+                    NavigationLink(destination: HackerGameView4()) {
                         Text("Go to Next Game")
                             .font(.headline)
-                            .foregroundColor(.black)
+                            .foregroundColor(.white) // Change to white for better contrast
                             .padding()
                             .background(Color.green)
                             .cornerRadius(10)
                     }
+                    .disabled(isUserInputDisabled) // Disable the link if user input is disabled
                     .padding(.top, 20)
                     .padding(.bottom)
                 }
@@ -96,23 +100,21 @@ struct HackerGameView2: View {
         if !playerMessage.isEmpty {
             messages.append("You: \(playerMessage)")
             playerMessage = ""
-saveMessages()
+            saveMessages()
 
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
                 let responseIndex = revealedHints.count
                 if responseIndex < johnPorkResponses.count {
                     let response = johnPorkResponses[responseIndex]
                     messages.append("John Pork: \(response)")
-
-                    
                     revealedHints.insert(responseIndex)
 
-                  
                     if revealedHints.count == johnPorkResponses.count {
-                        messages.append("John Pork Hint: \(johnPorkHint)")                     }
+                        messages.append("John Pork Hint: \(johnPorkHint)")
+                        isUserInputDisabled = true // Disable input after last response
+                    }
                 }
 
-             
                 saveMessages()
             }
         }
@@ -154,22 +156,4 @@ struct HackerGameView2_Previews: PreviewProvider {
     static var previews: some View {
         HackerGameView2()
     }
-}
-struct HackerGameView3: View {
-    var body: some View {
-        Text("Welcome to HackerGameView3, make sure that you have gathered all 5 clues from minigame 2 before you proceed... All the best...")
-            .font(.largeTitle)
-            .foregroundColor(.black)
-            .padding()
-        NavigationLink(destination: HackerGameView4()){
-            Text("continue")
-                .font(.headline)
-                .foregroundColor(.black)
-                .padding()
-                .background(Color.green)
-                .cornerRadius(10)
-        }
-        
-    }
-    
 }

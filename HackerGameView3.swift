@@ -68,7 +68,7 @@ struct HackerGameView4: View {
     func showAlert() {
         guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else { return }
         if let window = windowScene.windows.first {
-            let alert = UIAlertController(title: "Oops!", message: "You can't decline!", preferredStyle: .alert)
+            let alert = UIAlertController(title: "Decline failed", message: "Error 404", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .default))
             window.rootViewController?.present(alert, animated: true, completion: {
                 let animation = CAKeyframeAnimation(keyPath: "transform.translation.x")
