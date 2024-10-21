@@ -5,6 +5,7 @@
 //  Created by Tan Xin Tong Joy on 21/10/24.
 //
 import SwiftUI
+
 struct Character {
     var name: String
     var health: Int
@@ -17,77 +18,88 @@ struct Character {
 
 struct NextBattleView: View {
     @State private var player = Character(name: "Player", health: 100, attackPower: 20)
-    @State private var enemy = Character(name: "Tall Avyan", health: 150, attackPower: 25) // Changed to Tall Avyan
+    @State private var enemy = Character(name: "Tall Avyan", health: 150, attackPower: 25)
     @State private var gameMessage: String = "The battle continues!"
     @State private var gameOver: Bool = false
     @State private var playerTurn: Bool = true
     @State private var attackAnimation: Bool = false
 
     var body: some View {
-        VStack(spacing: 20) {
-            VStack {
-                Text("\(player.name)")
-                    .font(.largeTitle)
-                Text("Health: \(player.health)")
-                    .font(.title2)
-                    .foregroundColor(player.health <= 30 ? .red : .black)
-            }
-            .padding()
-            .background(Color.green.opacity(0.3))
-            .cornerRadius(10)
-
-            VStack {
-                Text("\(enemy.name)")
-                    .font(.largeTitle)
-                Text("Health: \(enemy.health)")
-                    .font(.title2)
-                    .foregroundColor(enemy.health <= 30 ? .red : .black)
-            }
-            .padding()
-            .background(Color.red.opacity(0.3))
-            .cornerRadius(10)
-
-            Text(gameMessage)
-                .font(.headline)
-                .padding()
-
-            if playerTurn && !gameOver {
-                HStack(spacing: 20) {
-                    Button("Normal Attack") {
-                        playerAttack()
-                        playerTurn.toggle()
-                        aiTurn()
-                    }
-                    .padding()
-                    .background(Color.blue)
-                    .foregroundColor(.white)
-                    .cornerRadius(10)
-                    .scaleEffect(attackAnimation ? 1.1 : 1.0)
-                    .animation(.easeInOut(duration: 0.2), value: attackAnimation)
-
-                    Button("Special Attack") {
-                        specialAttack()
-                        playerTurn.toggle()
-                        aiTurn()
-                    }
-                    .padding()
-                    .background(Color.orange)
-                    .foregroundColor(.white)
-                    .cornerRadius(10)
-                }
-            }
-
-            if gameOver {
-                Button("Restart") {
-                    restartGame()
+        ZStack {
+            Image("battle")
+                .resizable()
+                .scaledToFill()
+                .edgesIgnoringSafeArea(.all)
+                .opacity(0.8)
+            
+            VStack(spacing: 20) {
+                VStack {
+                    Text("\(player.name)")
+                        .font(.largeTitle)
+                    Text("Health: \(player.health)")
+                        .font(.title2)
+                        .foregroundColor(player.health <= 30 ? .red : .black)
                 }
                 .padding()
-                .background(Color.gray)
-                .foregroundColor(.white)
+                .background(Color.green.opacity(0.7))
                 .cornerRadius(10)
+                VStack {
+                    Text("\(enemy.name)")
+                        .font(.largeTitle)
+                    Text("Health: \(enemy.health)")
+                        .font(.title2)
+                        .foregroundColor(enemy.health <= 30 ? .red : .black)
+                }
+                .padding()
+                .background(Color.red.opacity(0.7))
+                .cornerRadius(10)
+
+                // Game Message
+                Text(gameMessage)
+                    .font(.headline)
+                    .padding()
+
+                // Action Buttons
+                if playerTurn && !gameOver {
+                    HStack(spacing: 20) {
+                        Button("Normal Attack") {
+                            playerAttack()
+                            playerTurn.toggle()
+                            aiTurn()
+                        }
+                        .padding()
+                        .background(Color.blue)
+                        .foregroundColor(.white)
+                        .cornerRadius(10)
+                        .scaleEffect(attackAnimation ? 1.1 : 1.0)
+                        .animation(.easeInOut(duration: 0.2), value: attackAnimation)
+
+                        Button("Special Attack") {
+                            specialAttack()
+                            playerTurn.toggle()
+                            aiTurn()
+                        }
+                        .padding()
+                        .background(Color.orange)
+                        .foregroundColor(.white)
+                        .cornerRadius(10)
+                    }
+                }
+
+                // Restart Button
+                if gameOver {
+                    Button("Restart") {
+                        restartGame()
+                    }
+                    .padding()
+                    .background(Color.gray)
+                    .foregroundColor(.white)
+                    .cornerRadius(10)
+                }
             }
+            .padding()
+            .foregroundColor(.white) // Change text color to white for better readability
         }
-        .padding()
     }
 
     func playerAttack() {
@@ -147,7 +159,7 @@ struct NextBattleView: View {
         }
     }
 
-  func restartGame() {
+    func restartGame() {
         player = Character(name: "Player", health: 100, attackPower: 20)
         enemy = Character(name: "Tall Avyan", health: 150, attackPower: 25)
         gameMessage = "The battle continues!"
