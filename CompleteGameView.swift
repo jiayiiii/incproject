@@ -16,7 +16,7 @@ struct CompleteGameView: View {
             VStack {
                 Text("Congratulations!")
                     .font(.largeTitle)
-                    .foregroundColor(.white)
+                    .foregroundColor(.red)
                     .frame(maxWidth: .infinity)
                     .background(Color.black.opacity(0.7))
                     .cornerRadius(10)
@@ -30,6 +30,9 @@ struct CompleteGameView: View {
                     .background(Color.black.opacity(0.7))
                     .cornerRadius(10)
                     .foregroundColor(.white)
+                    .multilineTextAlignment(.center)
+                Text("By: Sharlene Tan Qin Ying, Yip Jia Yi, Tan Xin Tong Joy and Nadra")
+                    .foregroundColor(.red)
                     .multilineTextAlignment(.center)
 
                 Button("Celebrate") {
