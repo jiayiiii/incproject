@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct HomeView: View {
-    @State private var unlockedLevels: [Bool] = [true, false, false, false, false] // Tracks unlocked levels
-    @State private var showLockedAlert = false // To show locked message
-    @State private var showInfo = false // To show game info pop-up
+    @State private var unlockedLevels: [Bool] = [true, false, false, false, false, false, false, false, false, false]
+    @State private var showLockedAlert = false
+    @State private var showInfo = false
     
     var body: some View {
         NavigationStack {
@@ -21,7 +21,7 @@ struct HomeView: View {
                     .foregroundColor(.red)
                     .padding()
 
-                ForEach(1...5, id: \.self) { level in
+                ForEach(1...10, id: \.self) { level in
                     levelButton(level: level, destination: gameView(for: level))
                 }
 
@@ -72,15 +72,25 @@ struct HomeView: View {
     private func gameView(for level: Int) -> some View {
         switch level {
         case 1:
-            return AnyView(HackerGameView())
+            return AnyView(HackerGameView(onComplete: { unlockNextLevel(level) }))
         case 2:
-            return AnyView(HackerGameView2())
+            return AnyView(HackerGameView2(onComplete: { unlockNextLevel(level) }))
         case 3:
-            return AnyView(HackerGameView4())
+            return AnyView(HackerGameView3(onComplete: { unlockNextLevel(level) }))
         case 4:
-            return AnyView(HackerGameView5())
+            return AnyView(AnagramGameView(onComplete: { unlockNextLevel(level) }))
         case 5:
-            return AnyView(HackerGameView5())
+            return AnyView(HackerGameView5(onComplete: { unlockNextLevel(level) }))
+        case 6:
+            return AnyView(WheelPickerView(onComplete: { unlockNextLevel(level) }))
+        case 7:
+            return AnyView(HackerGameView6(onComplete: { unlockNextLevel(level) }))
+        case 8:
+            return AnyView(HackerGameView7(onComplete: { unlockNextLevel(level) }))
+        case 9:
+            return AnyView(BattleGameView(onComplete: { unlockNextLevel(level) }))
+        case 10:
+            return AnyView(CompleteGameView())
         default:
             return AnyView(EmptyView())
         }
@@ -111,7 +121,7 @@ struct HomeView: View {
             }
 
             Button(action: {
-            
+                // Additional info or action for each level
             }) {
                 Image(systemName: "info.circle")
                     .foregroundColor(.white)
@@ -120,6 +130,12 @@ struct HomeView: View {
             .background(Color.red)
             .clipShape(Circle())
             .shadow(radius: 5)
+        }
+    }
+    
+    private func unlockNextLevel(_ currentLevel: Int) {
+        if currentLevel < unlockedLevels.count {
+            unlockedLevels[currentLevel] = true
         }
     }
 }
