@@ -107,13 +107,6 @@ struct HackerGameView7: View {
                     }
                 }
             }
-            .alert(isPresented: $showWinAlert) {
-                Alert(
-                    title: Text("Congratulations!"),
-                    message: Text("You've reached the goal!"),
-                    dismissButton: .default(Text("OK"))
-                )
-            }
         }
     }
     
