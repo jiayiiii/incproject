@@ -31,62 +31,41 @@ struct NextBattleView: View {
                 .scaledToFill()
                 .edgesIgnoringSafeArea(.all)
                 .opacity(0.8)
-            
-            VStack(spacing: 20) {
-                VStack {
-                    Text("\(player.name)")
-                        .font(.largeTitle)
-                    Text("Health: \(player.health)")
-                        .font(.title2)
-                        .foregroundColor(player.health <= 30 ? .red : .black)
-                }
-                .padding()
-                .background(Color.green.opacity(0.7))
-                .cornerRadius(10)
-                VStack {
-                    Text("\(enemy.name)")
-                        .font(.largeTitle)
-                    Text("Health: \(enemy.health)")
-                        .font(.title2)
-                        .foregroundColor(enemy.health <= 30 ? .red : .black)
-                }
-                .padding()
-                .background(Color.red.opacity(0.7))
-                .cornerRadius(10)
 
-                // Game Message
+            VStack(spacing: 20) {
+                Text("Tall Avyan: If you want to get the incoins back,")
+                    .font(.headline)
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .background(Color.black.opacity(0.7))
+                    .cornerRadius(10)
+                    .foregroundColor(.white)
+                    .multilineTextAlignment(.center)
+
+                Text(" you have to go through me first...")
+                    .font(.headline)
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .background(Color.black.opacity(0.7))
+                    .cornerRadius(10)
+                    .foregroundColor(.white)
+                    .multilineTextAlignment(.center)
+
+                CharacterView(character: player, isPlayer: true)
+
+                CharacterView(character: enemy, isPlayer: false)
+
                 Text(gameMessage)
                     .font(.headline)
                     .padding()
-
-                // Action Buttons
+                    .frame(maxWidth: .infinity)
+                    .background(Color.black.opacity(0.5))
+                    .cornerRadius(10)
+                    .foregroundColor(.white)
                 if playerTurn && !gameOver {
-                    HStack(spacing: 20) {
-                        Button("Normal Attack") {
-                            playerAttack()
-                            playerTurn.toggle()
-                            aiTurn()
-                        }
-                        .padding()
-                        .background(Color.blue)
-                        .foregroundColor(.white)
-                        .cornerRadius(10)
-                        .scaleEffect(attackAnimation ? 1.1 : 1.0)
-                        .animation(.easeInOut(duration: 0.2), value: attackAnimation)
-
-                        Button("Special Attack") {
-                            specialAttack()
-                            playerTurn.toggle()
-                            aiTurn()
-                        }
-                        .padding()
-                        .background(Color.orange)
-                        .foregroundColor(.white)
-                        .cornerRadius(10)
-                    }
+                    ActionButtons()
                 }
 
-                // Restart Button
                 if gameOver {
                     Button("Restart") {
                         restartGame()
@@ -98,7 +77,55 @@ struct NextBattleView: View {
                 }
             }
             .padding()
-            .foregroundColor(.white) // Change text color to white for better readability
+            .foregroundColor(.white)
+        }
+    }
+
+    @ViewBuilder
+    private func CharacterView(character: Character, isPlayer: Bool) -> some View {
+        VStack {
+            Text("\(character.name)")
+                .font(.largeTitle)
+            Text("Health: \(character.health)")
+                .font(.title2)
+                .foregroundColor(character.health <= 30 ? .red : .black)
+            Rectangle()
+                .fill(character.health > 0 ? Color.green : Color.red)
+                .frame(width: 200, height: 20)
+                .overlay(
+                    Text("\(character.health)")
+                        .foregroundColor(.white)
+                )
+        }
+        .padding()
+        .background(isPlayer ? Color.green.opacity(0.7) : Color.red.opacity(0.7))
+        .cornerRadius(10)
+    }
+
+    @ViewBuilder
+    private func ActionButtons() -> some View {
+        HStack(spacing: 20) {
+            Button("Normal Attack") {
+                playerAttack()
+                playerTurn.toggle()
+                aiTurn()
+            }
+            .padding()
+            .background(Color.blue)
+            .foregroundColor(.white)
+            .cornerRadius(10)
+            .scaleEffect(attackAnimation ? 1.1 : 1.0)
+            .animation(.easeInOut(duration: 0.2), value: attackAnimation)
+
+            Button("Special Attack") {
+                specialAttack()
+                playerTurn.toggle()
+                aiTurn()
+            }
+            .padding()
+            .background(Color.orange)
+            .foregroundColor(.white)
+            .cornerRadius(10)
         }
     }
 
