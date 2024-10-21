@@ -13,64 +13,70 @@ struct Position: Equatable {
 
 struct HackerGameView7: View {
     let maze = [
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-        [1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1],
-        [1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1],
-        [1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1],
-        [1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1],
-        [1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1],
-        [1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1],
-        [1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        [1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1],
+        [1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1],
+        [1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1],
+        [1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1],
+        [1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1],
+        [1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1],
+        [1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
     ]
     
     @State private var playerPosition = Position(x: 1, y: 1)
     @State private var gameStarted = false
     @State private var showWinAlert = false
-    let goalPosition = Position(x: 7, y: 9)
-    
+    let goalPosition = Position(x: 2, y: 0) // Green dot position
+
     var body: some View {
         NavigationView {
             VStack {
+                Text("Goal:")
+                    .bold()
+                    .foregroundColor(.red)
+                Text("Reach the green dot to go to the next room")
+                    .foregroundColor(.green)
+
                 if gameStarted {
-                    VStack {
-                        ForEach(0..<maze.count, id: \.self) { row in
-                            HStack {
-                                ForEach(0..<maze[row].count, id: \.self) { col in
-                                    if maze[row][col] == 1 {
-                                        Rectangle()
-                                            .fill(Color.black)
-                                            .frame(width: 40, height: 40)
-                                    } else {
-                                        Rectangle()
-                                            .fill(Color.white)
-                                            .frame(width: 40, height: 40)
-                                            .overlay(
-                                                playerPosition.x == row && playerPosition.y == col ?
-                                                Circle()
-                                                    .fill(Color.blue)
-                                                    .frame(width: 30, height: 30)
-                                                : nil
-                                            )
-                                            .overlay(
-                                                goalPosition.x == row && goalPosition.y == col ?
-                                                Circle()
-                                                    .fill(Color.green)
-                                                    .frame(width: 30, height: 30)
-                                                : nil
-                                            )
+                    ScrollView(.horizontal) {
+                        VStack {
+                            ForEach(0..<maze.count, id: \.self) { row in
+                                HStack {
+                                    ForEach(0..<maze[row].count, id: \.self) { col in
+                                        if maze[row][col] == 1 {
+                                            Rectangle()
+                                                .fill(Color.black)
+                                                .frame(width: 40, height: 40)
+                                        } else {
+                                            Rectangle()
+                                                .fill(Color.white)
+                                                .frame(width: 40, height: 40)
+                                                .overlay(
+                                                    playerPosition.x == row && playerPosition.y == col ?
+                                                    Circle()
+                                                        .fill(Color.blue)
+                                                        .frame(width: 30, height: 30)
+                                                    : nil
+                                                )
+                                                .overlay(
+                                                    goalPosition.x == row && goalPosition.y == col ?
+                                                    Circle()
+                                                        .fill(Color.green) // Green dot for finish
+                                                        .frame(width: 30, height: 30)
+                                                    : nil
+                                                )
+                                        }
                                     }
                                 }
                             }
                         }
+                        .modifier(KeyCommandModifier {
+                            handleKeyPress(event: $0)
+                        })
                     }
-                    .onChange(of: playerPosition) { oldValue, newValue in
-                        checkForWin()
-                    }
-                    .modifier(KeyCommandModifier {
-                        handleKeyPress(event: $0)
-                    })
-                    
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+
                     HStack {
                         Button("Up") {
                             movePlayer(direction: .up)
@@ -95,10 +101,10 @@ struct HackerGameView7: View {
                     .foregroundColor(.white)
                     .cornerRadius(10)
                 }
-                
+
                 if showWinAlert {
-                    NavigationLink(destination: BattleGameView()){
-                        Text("Proceed to Battle")
+                    NavigationLink(destination: PhoneHackedView()) {
+                        Text("Find Tall Avyan")
                             .padding()
                             .font(.title)
                             .background(Color.green)
@@ -109,11 +115,11 @@ struct HackerGameView7: View {
             }
         }
     }
-    
+
     enum Direction {
         case up, down, left, right
     }
-    
+
     func movePlayer(direction: Direction) {
         let newPosition: Position
         
@@ -132,6 +138,7 @@ struct HackerGameView7: View {
            maze[newPosition.x].indices.contains(newPosition.y),
            maze[newPosition.x][newPosition.y] == 0 {
             playerPosition = newPosition
+            checkForWin() // Check for win condition
         }
     }
 
@@ -140,7 +147,7 @@ struct HackerGameView7: View {
             showWinAlert = true
         }
     }
-    
+
     func handleKeyPress(event: UIKeyCommand) {
         switch event.input {
         case "w":
@@ -194,6 +201,8 @@ class KeyCommandViewController: UIViewController {
         onKeyPress?(sender)
     }
 }
+
 #Preview {
     HackerGameView7()
 }
+

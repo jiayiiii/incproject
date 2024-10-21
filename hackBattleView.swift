@@ -33,6 +33,7 @@ struct HackBattleView: View {
                     Text("HACK BATTLE: TALL AVYAN vs. YOU!")
                         .font(.largeTitle)
                         .bold()
+                        .multilineTextAlignment(.center)
                         .foregroundColor(.white)
                         .padding()
                         .shadow(color: .black, radius: 10, x: 0, y: 0)
@@ -153,10 +154,21 @@ struct HackBattleView: View {
                     }
 
                     Spacer()
+
+                    // Show button to go to CompleteGameView only if the player won
+                    if gameEnded && (playerScore >= 5) {
+                        NavigationLink(destination: CompleteGameView()) {
+                            Text("Go to Results")
+                                .font(.headline)
+                                .padding()
+                                .background(Color.red)
+                                .foregroundColor(.white)
+                                .cornerRadius(10)
+                        }
+                        .padding()
+                    }
                 }
                 .padding()
-                .navigationDestination(isPresented: $gameEnded) {
-                }
             }
         }
     }
@@ -177,6 +189,8 @@ struct HackBattleView: View {
         avyanScore = 0
     }
 }
+
+
 
 #Preview {
     HackBattleView()
