@@ -90,7 +90,6 @@ struct anagram_HGV3_: View {
         } else {
             feedbackMessage = "Incorrect code. Try again."
         }
-        // Clear the input field after submission
         userInput = ""
     }
 
@@ -100,4 +99,3 @@ struct anagram_HGV3_: View {
 #Preview {
     anagram_HGV3_()
 }
-//the NavigationLink shld be changed to the next HackerGameView
