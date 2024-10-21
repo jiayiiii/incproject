@@ -19,104 +19,124 @@ struct Anagram: View {
     @State private var bothCorrect: Bool = false
 
     var body: some View {
-        VStack(spacing: 20) {
-            Text("What Did He Say?")
-                .font(.custom("Menlo", size: 34))
-                .bold()
-                .foregroundColor(.red)
-                .shadow(color: .black, radius: 2, x: 2, y: 2)
-                .multilineTextAlignment(.center)
-                .padding(.top, 30)
-            
-            Text("'Stop trying to solve this case..or I will touch u..The noe liomlin incoins are ours! rifst emspterbe is a secret! Haha!'")
-                .font(.custom("Courier", size: 22))
-                .italic()
-                .foregroundColor(.black)
-                .multilineTextAlignment(.center)
-                .lineSpacing(5)
-                .padding()
-            
-            VStack(alignment: .leading, spacing: 10) {
-                Text("Decode what he is trying to say:")
-                
-                Text("noe liomlin")
-                    .font(.headline)
-                TextField("Enter your first answer", text: $userAnswer)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
+        ZStack {
+            Color.black.edgesIgnoringSafeArea(.all)
+
+            VStack(spacing: 20) {
+                Text("What Did He Say?")
+                    .font(.custom("Menlo", size: 34))
+                    .bold()
+                    .foregroundColor(.red)
+                    .shadow(color: .black, radius: 5, x: 3, y: 3)
+                    .multilineTextAlignment(.center)
+                    .padding(.top, 30)
+
+                Text("'Stop trying to solve this case... or I will touch you... The noe liomlin incoins are ours! rifst emspterbe is a secret! Haha!'")
+                    .font(.custom("Courier", size: 22))
+                    .italic()
+                    .foregroundColor(.white)
+                    .multilineTextAlignment(.center)
+                    .lineSpacing(5)
                     .padding()
-                
-                Button(action: {
-                    checkAnswer()
-                }) {
-                    Text("Submit")
+                    .background(Color.red.opacity(0.5))
+                    .cornerRadius(10)
+
+                VStack(alignment: .leading, spacing: 10) {
+                    Text("Decode what he is trying to say:")
                         .foregroundColor(.white)
+
+                    Text("noe liomlin")
+                        .font(.headline)
+                        .foregroundColor(.orange)
+
+                    TextField("Enter your first answer", text: $userAnswer)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
                         .padding()
-                        .background(Color.red)
-                        .cornerRadius(10)
-                }
-                
-                Text(message)
-                    .font(.subheadline)
-                    .foregroundColor(.blue)
-                
-                Text("rifst emspterbe")
-                    .font(.headline)
-                
-                TextField("Enter your second answer", text: $userAnswerTwo)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .padding()
-                
-                Button(action: {
-                    checkAnswerTwo()
-                }) {
-                    Text("Submit")
-                        .foregroundColor(.white)
-                        .padding()
-                        .background(Color.red)
-                        .cornerRadius(10)
-                }
-                
-                Text(messageTwo)
-                    .font(.subheadline)
-                    .foregroundColor(.blue)
-                if bothCorrect {
-                    NavigationLink(destination: anaInfo()) {
-                        Text("Next")
-                            .foregroundColor(.white)
+                        .background(Color.gray.opacity(0.8))
+                        .cornerRadius(5)
+
+                    Button(action: {
+                        checkAnswer()
+                    }) {
+                        Text("Submit")
+                            .foregroundColor(.black)
                             .padding()
-                            .background(Color.green)
+                            .background(Color.red)
                             .cornerRadius(10)
+                            .shadow(color: .black.opacity(0.5), radius: 5)
+                    }
+
+                    Text(message)
+                        .font(.subheadline)
+                        .foregroundColor(.yellow)
+
+                    Text("rifst emspterbe")
+                        .font(.headline)
+                        .foregroundColor(.orange)
+
+                    TextField("Enter your second answer", text: $userAnswerTwo)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .padding()
+                        .background(Color.gray.opacity(0.8))
+                        .cornerRadius(5)
+
+                    Button(action: {
+                        checkAnswerTwo()
+                    }) {
+                        Text("Submit")
+                            .foregroundColor(.black)
+                            .padding()
+                            .background(Color.red)
+                            .cornerRadius(10)
+                            .shadow(color: .black.opacity(0.5), radius: 5)
+                    }
+
+                    Text(messageTwo)
+                        .font(.subheadline)
+                        .foregroundColor(.yellow)
+
+                    if bothCorrect {
+                        NavigationLink(destination: anaInfo()) {
+                            Text("Next")
+                                .foregroundColor(.white)
+                                .padding()
+                                .background(Color.green)
+                                .cornerRadius(10)
+                        }
                     }
                 }
+                .padding()
+                .background(Color.black.opacity(0.8))
+                .cornerRadius(15)
+                .shadow(color: .black.opacity(0.5), radius: 10)
             }
-            .padding()
         }
         .navigationTitle("Anagram Game")
+        .navigationBarTitleDisplayMode(.inline)
     }
-    
+
     func checkAnswer() {
         if userAnswer.lowercased() == correctAnswer.lowercased() {
-            message = "Correct!"
+            message = "Correct! But watch your back..."
         } else {
-            message = "Incorrect. Try again!"
+            message = "Incorrect. The clock is ticking!"
         }
         updateBothCorrectStatus()
     }
-    
+
     func checkAnswerTwo() {
         if userAnswerTwo.lowercased() == correctAnswerTwo.lowercased() {
-            messageTwo = "Correct!"
+            messageTwo = "Correct! Keep it together!"
         } else {
-            messageTwo = "Incorrect. Try again!"
+            messageTwo = "Incorrect. Don't give up yet!"
         }
         updateBothCorrectStatus()
     }
-    
+
     private func updateBothCorrectStatus() {
         bothCorrect = (userAnswer.lowercased() == correctAnswer.lowercased()) && (userAnswerTwo.lowercased() == correctAnswerTwo.lowercased())
     }
 }
-
 
 struct Anagram_Previews: PreviewProvider {
     static var previews: some View {
@@ -124,14 +144,17 @@ struct Anagram_Previews: PreviewProvider {
     }
 }
 
-struct anaInfo : View {
+struct anaInfo: View {
     var body: some View {
         VStack {
             Image("fork")
-            Text("Awesome Sauce! You deciphered Freakbob's code. Hmm...This tells us that John Pork isn't the only one working with Tall Avyan. They stole one million Incoins on First September!")
+            Text("Awesome Sauce! You deciphered Freakbob's code. Hmm... This tells us that John Pork isn't the only one working with Tall Avyan. They stole one million Incoins on First September!")
                 .font(.largeTitle)
                 .foregroundColor(.black)
                 .padding()
+                .background(Color.white.opacity(0.8))
+                .cornerRadius(10)
+
             NavigationLink(destination: HackerGameView5()) {
                 Text("Next")
                     .foregroundColor(.white)

@@ -8,40 +8,59 @@ import SwiftUI
 
 struct CompleteGameView: View {
     @State private var isCelebrating = false
+    @State private var celebrationOffset: CGFloat = -200 // Start off-screen
 
     var body: some View {
         ZStack {
-            Color.black.edgesIgnoringSafeArea(.all)
-            
+            LinearGradient(gradient: Gradient(colors: [Color.red, Color.black]),
+                           startPoint: .top,
+                           endPoint: .bottom)
+                .edgesIgnoringSafeArea(.all)
+
             VStack {
                 Text("Congratulations!")
                     .font(.largeTitle)
-                    .foregroundColor(.red)
-                    .frame(maxWidth: .infinity)
-                    .background(Color.black.opacity(0.7))
-                    .cornerRadius(10)
                     .foregroundColor(.white)
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(Color.black.opacity(0.7))
+                    .cornerRadius(12)
+                    .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 5)
                     .multilineTextAlignment(.center)
 
                 Text("You have completed the game!")
                     .font(.headline)
                     .padding()
+                    .foregroundColor(.white)
                     .frame(maxWidth: .infinity)
                     .background(Color.black.opacity(0.7))
-                    .cornerRadius(10)
-                    .foregroundColor(.white)
-                    .multilineTextAlignment(.center)
-                Text("By: Sharlene Tan Qin Ying, Yip Jia Yi, Tan Xin Tong Joy and Nadra")
-                    .foregroundColor(.red)
+                    .cornerRadius(12)
+                    .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 5)
                     .multilineTextAlignment(.center)
 
-                Button("Celebrate") {
-                    isCelebrating.toggle()
+                Text("By: Sharlene Tan Qin Ying, Yip Jia Yi, Tan Xin Tong Joy and Nadra")
+                    .foregroundColor(.white)
+                    .multilineTextAlignment(.center)
+                    .padding(.top)
+
+                Button(action: {
+                    withAnimation {
+                        isCelebrating.toggle()
+                        if isCelebrating {
+                            celebrationOffset = 0
+                        } else {
+                            celebrationOffset = -200
+                        }
+                    }
+                }) {
+                    Text("Celebrate")
+                        .padding()
+                        .background(Color.green)
+                        .foregroundColor(.white)
+                        .cornerRadius(10)
+                        .shadow(color: .black.opacity(0.5), radius: 5, x: 0, y: 5)
                 }
-                .padding()
-                .background(Color.green)
-                .foregroundColor(.white)
-                .cornerRadius(10)
+                .padding(.top)
             }
             .padding()
 
@@ -49,8 +68,23 @@ struct CompleteGameView: View {
                 ConfettiView()
                     .transition(.opacity)
                     .zIndex(1)
+                    .onAppear {
+                        celebrationOffset = 0
+                    }
             }
         }
+        .overlay(
+            Text("🎉 Celebration! 🎉")
+                .font(.largeTitle)
+                .foregroundColor(.yellow)
+                .padding()
+                .background(Color.black.opacity(0.7))
+                .cornerRadius(12)
+                .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 5)
+                .offset(y: celebrationOffset)
+                .animation(.easeOut(duration: 0.5), value: celebrationOffset)
+                .opacity(isCelebrating ? 1 : 0)
+        )
     }
 }
 

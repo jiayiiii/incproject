@@ -28,31 +28,30 @@ struct BattleGameView: View {
     var body: some View {
         NavigationView {
             ZStack {
-                Image("battle")
-                    .resizable()
-                    .scaledToFill()
+                LinearGradient(gradient: Gradient(colors: [Color.red.opacity(0.7), Color.black]),
+                               startPoint: .top,
+                               endPoint: .bottom)
                     .edgesIgnoringSafeArea(.all)
-                    .opacity(0.8)
 
                 VStack(spacing: 20) {
                     Text("Tall Avyan: If you want to get the incoins back, you have to go through me first...")
                         .font(.headline)
                         .padding()
-                        .frame(maxWidth: .infinity)
                         .background(Color.black.opacity(0.7))
-                        .cornerRadius(10)
+                        .cornerRadius(12)
+                        .shadow(color: .black.opacity(0.5), radius: 5, x: 0, y: 5)
                         .foregroundColor(.white)
                         .multilineTextAlignment(.center)
-                    CharacterView(character: player, isPlayer: true)
 
+                    CharacterView(character: player, isPlayer: true)
                     CharacterView(character: enemy, isPlayer: false)
 
                     Text(gameMessage)
                         .font(.headline)
                         .padding()
-                        .frame(maxWidth: .infinity)
                         .background(Color.black.opacity(0.5))
-                        .cornerRadius(10)
+                        .cornerRadius(12)
+                        .shadow(color: .black.opacity(0.5), radius: 5, x: 0, y: 5)
                         .foregroundColor(.white)
 
                     if !victoryMessage.isEmpty {
@@ -69,21 +68,15 @@ struct BattleGameView: View {
 
                     if gameOver {
                         if victoryMessage.isEmpty {
-                            Button("Restart") {
-                                restartGame()
+                            Button(action: restartGame) {
+                                Text("Restart")
                             }
-                            .padding()
-                            .background(Color.gray)
-                            .foregroundColor(.white)
-                            .cornerRadius(10)
+                            .buttonStyle(GameButtonStyle(color: .gray))
                         } else {
                             NavigationLink(destination: CompleteGameView()) {
                                 Text("Next")
-                                    .padding()
-                                    .background(Color.green)
-                                    .foregroundColor(.white)
-                                    .cornerRadius(10)
                             }
+                            .buttonStyle(GameButtonStyle(color: .green))
                         }
                     }
                 }
@@ -93,26 +86,31 @@ struct BattleGameView: View {
         }
     }
 
-   
     @ViewBuilder
     private func CharacterView(character: Character, isPlayer: Bool) -> some View {
         VStack {
             Text("\(character.name)")
                 .font(.largeTitle)
+                .shadow(color: .black.opacity(0.5), radius: 5, x: 0, y: 5)
             Text("Health: \(character.health)")
                 .font(.title2)
-                .foregroundColor(character.health <= 30 ? .red : .black)
-            Rectangle()
-                .fill(character.health > 0 ? Color.green : Color.red)
-                .frame(width: 200, height: 20)
-                .overlay(
-                    Text("\(character.health)")
-                        .foregroundColor(.white)
-                )
+                .foregroundColor(character.health <= 30 ? .red : .white)
+            HealthBar(health: character.health, isAlive: character.health > 0)
         }
         .padding()
         .background(isPlayer ? Color.green.opacity(0.7) : Color.red.opacity(0.7))
-        .cornerRadius(10)
+        .cornerRadius(12)
+        .shadow(color: .black.opacity(0.5), radius: 5, x: 0, y: 5)
+    }
+
+    private func HealthBar(health: Int, isAlive: Bool) -> some View {
+        Rectangle()
+            .fill(isAlive ? Color.green : Color.red)
+            .frame(width: 200, height: 20)
+            .overlay(
+                Text("\(health)")
+                    .foregroundColor(.white)
+            )
     }
 
     @ViewBuilder
@@ -123,22 +121,28 @@ struct BattleGameView: View {
                 playerTurn.toggle()
                 aiTurn()
             }
-            .padding()
-            .background(Color.blue)
-            .foregroundColor(.white)
-            .cornerRadius(10)
-            .scaleEffect(attackAnimation ? 1.1 : 1.0)
-            .animation(.easeInOut(duration: 0.2), value: attackAnimation)
+            .buttonStyle(GameButtonStyle(color: .blue))
 
             Button("Attack 2") {
                 specialAttack()
                 playerTurn.toggle()
                 aiTurn()
             }
-            .padding()
-            .background(Color.orange)
-            .foregroundColor(.white)
-            .cornerRadius(10)
+            .buttonStyle(GameButtonStyle(color: .orange))
+        }
+    }
+
+    private struct GameButtonStyle: ButtonStyle {
+        var color: Color
+        
+        func makeBody(configuration: Configuration) -> some View {
+            configuration.label
+                .padding()
+                .background(color)
+                .foregroundColor(.white)
+                .cornerRadius(10)
+                .scaleEffect(configuration.isPressed ? 0.95 : 1.0)
+                .shadow(color: .black.opacity(0.5), radius: 5, x: 0, y: 5)
         }
     }
 
@@ -205,7 +209,7 @@ struct BattleGameView: View {
         gameMessage = "The battle continues!"
         gameOver = false
         playerTurn = true
-        victoryMessage = "" // Reset the victory message
+        victoryMessage = ""
     }
 }
 

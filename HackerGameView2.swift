@@ -21,6 +21,7 @@ struct HackerGameView2: View {
     @State private var audioPlayer: AVAudioPlayer?
     @State private var isUserInputDisabled = false
     @State private var isNextGame = false
+    @State private var hintRevealed = false // Track if the hint is revealed
 
     var body: some View {
         NavigationStack {
@@ -30,6 +31,15 @@ struct HackerGameView2: View {
                 .edgesIgnoringSafeArea(.all)
 
                 VStack {
+                    Text("John Pork")
+                        .font(.largeTitle)
+                        .monospaced()
+                        .foregroundColor(.red)
+                        .bold()
+                    Text("Find out where the heist occurred")
+                        .font(.footnote)
+                        .foregroundColor(.white)
+                    
                     ScrollView {
                         VStack(alignment: .leading, spacing: 15) {
                             ForEach(messages, id: \.self) { message in
@@ -70,31 +80,17 @@ struct HackerGameView2: View {
                         .disabled(isUserInputDisabled)
                     }
                     .padding()
-
-                    NavigationStack {
-                        ZStack {
-                            VStack {
-
-                                Button(action: {
-                                    resetMessages()
-                                    isNextGame = true
-                                }) {
-                                    Text("Go to Next Game")
-                                        .font(.headline)
-                                        .foregroundColor(.white)
-                                        .padding()
-                                        .background(Color.green)
-                                        .cornerRadius(10)
-                                }
-                                .padding(.top, 20)
-                                .padding(.bottom)
-                            }
+                    if hintRevealed {
+                        NavigationLink(destination: HackerGameView4()) {
+                            Text("Go to Next Game")
+                                .font(.headline)
+                                .foregroundColor(.white)
+                                .padding()
+                                .background(Color.green)
+                                .cornerRadius(10)
                         }
-                        .navigationDestination(isPresented: $isNextGame) {
-                            HackerGameView4() // Destination view when `isNextGame` is true
-                        }
+                        .padding(.top, 20)
                     }
-
                 }
             }
             .onAppear {
@@ -120,9 +116,11 @@ struct HackerGameView2: View {
                     messages.append("John Pork: \(response)")
                     revealedHints.insert(responseIndex)
 
+                    // Check if all hints have been revealed
                     if revealedHints.count == johnPorkResponses.count {
                         messages.append("John Pork Hint: \(johnPorkHint)")
                         isUserInputDisabled = true
+                        hintRevealed = true // Set hint revealed to true
                     }
                 }
 
@@ -167,6 +165,7 @@ struct HackerGameView2: View {
         UserDefaults.standard.removeObject(forKey: "savedMessages")
         revealedHints.removeAll()
         isUserInputDisabled = false
+        hintRevealed = false // Reset hint revealed state
     }
 }
 
