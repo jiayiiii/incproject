@@ -8,134 +8,105 @@
 import SwiftUI
 
 struct HomeView: View {
-    @State private var unlockedLevels: [Bool] = [true, false, false, false, false, false, false, false, false, false]
-    @State private var showLockedAlert = false
-    @State private var showInfo = false
-    
+    @State private var unlockedLevels: [Bool] = Array(repeating: true, count: 9)
+    @State private var selectedLevel: Int?
+    @State private var showDescription = false
+
+    private let levelDescriptions: [Int: String] = [
+        1: "Level 1: Who is Tall Avyan's accomplice?",
+        2: "Level 2: Where did the heist occur?",
+        3: "Level 3: BRINNGGG... someone's calling",
+        4: "Level 4: Anagram puzzles to reveal the hidden truth.",
+        5: "Level 5: Navigate through the dangerous alley.",
+        6: "Level 6: Wheel of fortune challenge awaits!",
+        7: "Level 7: Beat the clock in a high-stakes heist.",
+        8: "Level 8: Your phone got hacked",
+        9: "Level 9: The last battle..."
+    ]
+
     var body: some View {
         NavigationStack {
-            VStack(spacing: 20) {
-                Text("Game Levels")
-                    .font(.largeTitle)
-                    .bold()
-                    .foregroundColor(.red)
-                    .padding()
-
-                ForEach(1...10, id: \.self) { level in
-                    levelButton(level: level, destination: gameView(for: level))
-                }
-
-                Spacer()
-
-                Button(action: {
-                    showInfo.toggle()
-                }) {
-                    Text("Game Info & Tips")
-                        .font(.headline)
+            ZStack {
+                // Background Gradient
+                LinearGradient(gradient: Gradient(colors: [.black, .gray]), startPoint: .top, endPoint: .bottom)
+                    .edgesIgnoringSafeArea(.all)
+                
+                VStack(spacing: 20) {
+                    Text("Game Levels")
+                        .font(.largeTitle)
+                        .bold()
                         .foregroundColor(.red)
                         .padding()
-                        .background(Color.black.opacity(0.7))
-                        .cornerRadius(10)
-                }
-                .popover(isPresented: $showInfo) {
-                    VStack(alignment: .leading, spacing: 10) {
-                        Text("Game Info & Tips")
-                            .font(.headline)
-                            .foregroundColor(.red)
-                            .padding(.bottom)
 
-                        Text("1. Explore all clues carefully.")
-                        Text("2. Remember to note down all possible clues.")
-                        Text("3. This game uses Gen Z knowledge.")
-                        Text("4. Don't rush! Take your time.")
-                        Text("5. Good luck on your heist!")
+                    ForEach(1...9, id: \.self) { level in
+                        levelButton(level: level)
                     }
-                    .padding()
-                    .frame(width: 300)
-                    .background(Color.black.opacity(0.9))
-                    .foregroundColor(.white)
-                    .cornerRadius(10)
-                    .padding()
+
+                    Spacer()
                 }
-            }
-            .padding()
-            .alert(isPresented: $showLockedAlert) {
-                Alert(
-                    title: Text("Not Unlocked Yet!"),
-                    message: nil,
-                    dismissButton: .default(Text("OK"))
+                .padding()
+                .overlay(
+                    Group {
+                        if showDescription, let level = selectedLevel {
+                            VStack {
+                                Text(levelDescriptions[level, default: "No description available."])
+                                    .font(.headline)
+                                    .padding()
+                                    .background(Color.black.opacity(0.9))
+                                    .foregroundColor(.white)
+                                    .cornerRadius(10)
+                                    .padding()
+                                    .transition(.scale) // Add scaling transition
+                                    .animation(.easeInOut, value: showDescription) // Animate the change
+
+                                Button("Close") {
+                                    showDescription = false
+                                }
+                                .padding()
+                                .background(Color.red)
+                                .foregroundColor(.white)
+                                .cornerRadius(10)
+                                .shadow(radius: 5)
+                            }
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            .background(Color.black.opacity(0.7))
+                            .edgesIgnoringSafeArea(.all)
+                        }
+                    }
                 )
             }
         }
     }
 
-    private func gameView(for level: Int) -> some View {
-        switch level {
-        case 1:
-            return AnyView(HackerGameView(onComplete: { unlockNextLevel(level) }))
-        case 2:
-            return AnyView(HackerGameView2(onComplete: { unlockNextLevel(level) }))
-        case 3:
-            return AnyView(HackerGameView3(onComplete: { unlockNextLevel(level) }))
-        case 4:
-            return AnyView(AnagramGameView(onComplete: { unlockNextLevel(level) }))
-        case 5:
-            return AnyView(HackerGameView5(onComplete: { unlockNextLevel(level) }))
-        case 6:
-            return AnyView(WheelPickerView(onComplete: { unlockNextLevel(level) }))
-        case 7:
-            return AnyView(HackerGameView6(onComplete: { unlockNextLevel(level) }))
-        case 8:
-            return AnyView(HackerGameView7(onComplete: { unlockNextLevel(level) }))
-        case 9:
-            return AnyView(BattleGameView(onComplete: { unlockNextLevel(level) }))
-        case 10:
-            return AnyView(CompleteGameView())
-        default:
-            return AnyView(EmptyView())
-        }
-    }
-
-    private func levelButton(level: Int, destination: some View) -> some View {
+    private func levelButton(level: Int) -> some View {
         HStack {
-            if unlockedLevels[level - 1] {
-                NavigationLink(destination: destination) {
-                    Text("Level \(level)")
-                        .padding()
-                        .background(Color.red)
-                        .foregroundColor(.white)
-                        .cornerRadius(10)
-                        .shadow(radius: 5)
+            Button(action: {
+                if unlockedLevels[level - 1] {
+                    // Navigate to the level view (not implemented here)
                 }
-            } else {
-                Button(action: {
-                    showLockedAlert = true
-                }) {
-                    Text("Level \(level)")
-                        .padding()
-                        .background(Color.gray)
-                        .foregroundColor(.white)
-                        .cornerRadius(10)
-                        .shadow(radius: 5)
-                }
+            }) {
+                Text("Level \(level)")
+                    .padding()
+                    .background(Color.red)
+                    .foregroundColor(.white)
+                    .font(.headline)
+                    .cornerRadius(10)
+                    .shadow(radius: 5)
+                    .scaleEffect(1.05) // Slightly scale up on press
+                    .animation(.easeInOut, value: level) // Animate scale change
             }
 
             Button(action: {
-                // Additional info or action for each level
+                selectedLevel = level
+                showDescription.toggle() // Show the description when the info button is clicked
             }) {
                 Image(systemName: "info.circle")
                     .foregroundColor(.white)
                     .padding()
+                    .background(Color.black.opacity(0.7))
+                    .cornerRadius(5)
+                    .shadow(radius: 5)
             }
-            .background(Color.red)
-            .clipShape(Circle())
-            .shadow(radius: 5)
-        }
-    }
-    
-    private func unlockNextLevel(_ currentLevel: Int) {
-        if currentLevel < unlockedLevels.count {
-            unlockedLevels[currentLevel] = true
         }
     }
 }
