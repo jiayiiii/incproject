@@ -17,7 +17,7 @@ struct Character {
 }
 
 struct NextBattleView: View {
-    @State private var player = Character(name: "Player", health: 100, attackPower: 20)
+    @State private var player = Character(name: "You", health: 100, attackPower: 20)
     @State private var enemy = Character(name: "Tall Avyan", health: 150, attackPower: 25)
     @State private var gameMessage: String = "The battle continues!"
     @State private var gameOver: Bool = false
@@ -54,12 +54,10 @@ struct NextBattleView: View {
                 .background(Color.red.opacity(0.7))
                 .cornerRadius(10)
 
-                // Game Message
                 Text(gameMessage)
                     .font(.headline)
                     .padding()
 
-                // Action Buttons
                 if playerTurn && !gameOver {
                     HStack(spacing: 20) {
                         Button("Normal Attack") {
@@ -86,7 +84,7 @@ struct NextBattleView: View {
                     }
                 }
 
-                // Restart Button
+                // restart button
                 if gameOver {
                     Button("Restart") {
                         restartGame()
@@ -98,7 +96,7 @@ struct NextBattleView: View {
                 }
             }
             .padding()
-            .foregroundColor(.white) // Change text color to white for better readability
+            .foregroundColor(.white)
         }
     }
 
@@ -109,7 +107,7 @@ struct NextBattleView: View {
         }
 
         enemy.health -= player.attackPower
-        gameMessage = "Player attacked Tall Avyan!"
+        gameMessage = "You attacked Tall Avyan!"
 
         if enemy.health <= 0 {
             gameMessage = "Tall Avyan defeated! You win!"
@@ -125,10 +123,10 @@ struct NextBattleView: View {
 
         let specialDamage = player.attackPower * 2
         enemy.health -= specialDamage
-        gameMessage = "Player used a special attack on Tall Avyan!"
+        gameMessage = "You used a special attack on Tall Avyan!"
 
         if enemy.health <= 0 {
-            gameMessage = "Tall Avyan defeated! You win!"
+            gameMessage = "Tall Avyan has been defeated! You win!"
             gameOver = true
         }
     }
@@ -151,7 +149,7 @@ struct NextBattleView: View {
             }
 
             if player.health <= 0 {
-                gameMessage = "You are defeated! Game over!"
+                gameMessage = "You have been defeated! Game over!"
                 gameOver = true
             } else {
                 playerTurn = true
@@ -160,7 +158,7 @@ struct NextBattleView: View {
     }
 
     func restartGame() {
-        player = Character(name: "Player", health: 100, attackPower: 20)
+        player = Character(name: "You", health: 100, attackPower: 20)
         enemy = Character(name: "Tall Avyan", health: 150, attackPower: 25)
         gameMessage = "The battle continues!"
         gameOver = false
