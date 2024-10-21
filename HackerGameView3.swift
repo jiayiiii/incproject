@@ -34,7 +34,7 @@ struct HackerGameView4: View {
                         .background(Color.red)
                         .cornerRadius(10)
                         .padding(.bottom, 30)
-                        .position(x: 90, y: 250)
+                        .position(x: 90, y: 150)
                     }
 
                     Button(action: {
@@ -53,7 +53,7 @@ struct HackerGameView4: View {
                         .background(Color.green)
                         .cornerRadius(10)
                         .padding(.bottom, 30)
-                        .position(x:70, y: 250)
+                        .position(x:70, y: 150)
                     }
                     .frame(maxWidth: .infinity, alignment: .trailing)
                 }
