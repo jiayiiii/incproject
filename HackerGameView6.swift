@@ -5,7 +5,6 @@
 //  Created by Tan Xin Tong Joy on 20/10/24.
 //
 import SwiftUI
-
 struct HackerGameView6: View {
     @State private var playerMoney: Int = 500
     @State private var ticketPrice: Int = 200

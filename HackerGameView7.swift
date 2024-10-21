@@ -28,49 +28,43 @@ struct HackerGameView7: View {
     @State private var gameStarted = false
     @State private var showWinAlert = false
     let goalPosition = Position(x: 7, y: 9)
-    @State private var scrollOffset = CGSize.zero
     
     var body: some View {
         NavigationView {
             VStack {
                 if gameStarted {
-                    ScrollView([.horizontal, .vertical]) {
-                        VStack {
-                            ForEach(0..<maze.count, id: \.self) { row in
-                                HStack {
-                                    ForEach(0..<maze[row].count, id: \.self) { col in
-                                        if maze[row][col] == 1 {
-                                            Rectangle()
-                                                .fill(Color.black)
-                                                .frame(width: 40, height: 40)
-                                        } else {
-                                            Rectangle()
-                                                .fill(Color.white)
-                                                .frame(width: 40, height: 40)
-                                                .overlay(
-                                                    playerPosition.x == row && playerPosition.y == col ?
-                                                    Circle()
-                                                        .fill(Color.blue)
-                                                        .frame(width: 30, height: 30)
-                                                    : nil
-                                                )
-                                                .overlay(
-                                                    goalPosition.x == row && goalPosition.y == col ?
-                                                    Circle()
-                                                        .fill(Color.green)
-                                                        .frame(width: 30, height: 30)
-                                                    : nil
-                                                )
-                                        }
+                    VStack {
+                        ForEach(0..<maze.count, id: \.self) { row in
+                            HStack {
+                                ForEach(0..<maze[row].count, id: \.self) { col in
+                                    if maze[row][col] == 1 {
+                                        Rectangle()
+                                            .fill(Color.black)
+                                            .frame(width: 40, height: 40)
+                                    } else {
+                                        Rectangle()
+                                            .fill(Color.white)
+                                            .frame(width: 40, height: 40)
+                                            .overlay(
+                                                playerPosition.x == row && playerPosition.y == col ?
+                                                Circle()
+                                                    .fill(Color.blue)
+                                                    .frame(width: 30, height: 30)
+                                                : nil
+                                            )
+                                            .overlay(
+                                                goalPosition.x == row && goalPosition.y == col ?
+                                                Circle()
+                                                    .fill(Color.green)
+                                                    .frame(width: 30, height: 30)
+                                                : nil
+                                            )
                                     }
                                 }
                             }
                         }
-                        .offset(x: scrollOffset.width, y: scrollOffset.height)
-                        .animation(.easeInOut(duration: 0.3), value: scrollOffset)
                     }
                     .onChange(of: playerPosition) { oldValue, newValue in
-                        adjustScrollForPlayerPosition()
                         checkForWin()
                     }
                     .modifier(KeyCommandModifier {
@@ -145,22 +139,6 @@ struct HackerGameView7: View {
            maze[newPosition.x].indices.contains(newPosition.y),
            maze[newPosition.x][newPosition.y] == 0 {
             playerPosition = newPosition
-        }
-    }
-
-    func adjustScrollForPlayerPosition() {
-        let threshold: CGFloat = 160
-        
-        if playerPosition.x * 40 < Int(threshold) {
-            scrollOffset.height = max(scrollOffset.height + 40, 0)
-        } else if playerPosition.x * 40 > Int(UIScreen.main.bounds.height - threshold) {
-            scrollOffset.height = min(scrollOffset.height - 40, CGFloat(maze.count) * 40 - UIScreen.main.bounds.height)
-        }
-        
-        if playerPosition.y * 40 < Int(threshold) {
-            scrollOffset.width = max(scrollOffset.width + 40, 0)
-        } else if playerPosition.y * 40 > Int(UIScreen.main.bounds.width - threshold) {
-            scrollOffset.width = min(scrollOffset.width - 40, CGFloat(maze[0].count) * 40 - UIScreen.main.bounds.width)
         }
     }
 
