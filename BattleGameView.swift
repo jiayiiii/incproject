@@ -16,7 +16,7 @@ struct Character {
     }
 }
 
-struct NextBattleView: View {
+struct BattleGameView: View {
     @State private var player = Character(name: "Player", health: 100, attackPower: 20)
     @State private var enemy = Character(name: "Tall Avyan", health: 150, attackPower: 25)
     @State private var gameMessage: String = "The battle continues!"
@@ -209,8 +209,8 @@ struct NextBattleView: View {
     }
 }
 
-struct NextBattleView_Previews: PreviewProvider {
+struct BattleGameView_Previews: PreviewProvider {
     static var previews: some View {
-        NextBattleView()
+        BattleGameView()
     }
 }
