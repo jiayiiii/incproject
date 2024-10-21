@@ -20,10 +20,11 @@ struct HackerGameView2: View {
     @State private var revealedHints: Set<Int> = []
     @State private var audioPlayer: AVAudioPlayer?
     @State private var isUserInputDisabled = false
+    @State private var isNextGame = false
+
     var body: some View {
         NavigationStack {
             ZStack {
-                
                 LinearGradient(gradient: Gradient(colors: [.black, .gray.opacity(0.8)]),
                                startPoint: .top, endPoint: .bottom)
                 .edgesIgnoringSafeArea(.all)
@@ -70,18 +71,30 @@ struct HackerGameView2: View {
                     }
                     .padding()
 
-                    
-                    NavigationLink(destination: HackerGameView4()) {
-                        Text("Go to Next Game")
-                            .font(.headline)
-                            .foregroundColor(.white)
-                            .padding()
-                            .background(Color.green)
-                            .cornerRadius(10)
+                    NavigationStack {
+                        ZStack {
+                            VStack {
+
+                                Button(action: {
+                                    resetMessages()
+                                    isNextGame = true
+                                }) {
+                                    Text("Go to Next Game")
+                                        .font(.headline)
+                                        .foregroundColor(.white)
+                                        .padding()
+                                        .background(Color.green)
+                                        .cornerRadius(10)
+                                }
+                                .padding(.top, 20)
+                                .padding(.bottom)
+                            }
+                        }
+                        .navigationDestination(isPresented: $isNextGame) {
+                            HackerGameView4() // Destination view when `isNextGame` is true
+                        }
                     }
-                    .disabled(isUserInputDisabled)
-                    .padding(.top, 20)
-                    .padding(.bottom)
+
                 }
             }
             .onAppear {
@@ -129,7 +142,7 @@ struct HackerGameView2: View {
     }
 
     private func playBackgroundSound() {
-        let soundName = "sound1" 
+        let soundName = "sound1" // Replace with your sound asset name
         guard let soundFile = NSDataAsset(name: soundName) else {
             print("Oops! The sound isn't working")
             return
@@ -147,8 +160,15 @@ struct HackerGameView2: View {
         audioPlayer?.stop()
         audioPlayer = nil
     }
-}
 
+    // Function to reset the messages and state when transitioning to the next game
+    private func resetMessages() {
+        messages.removeAll()
+        UserDefaults.standard.removeObject(forKey: "savedMessages")
+        revealedHints.removeAll()
+        isUserInputDisabled = false
+    }
+}
 
 struct HackerGameView2_Previews: PreviewProvider {
     static var previews: some View {
