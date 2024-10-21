@@ -8,14 +8,14 @@
 import SwiftUI
 
 struct anagram: View {
-    @State private var anagramOne: String = "imino noell" // The scrambled anagram
-    @State private var userAnswer: String = ""  // The user's input
-    @State private var message: String = ""     // Message to display result
-    let correctAnswer: String = "one million"         // The correct answer for the anagram
-    @State private var anagramTwo: String = "bereft spermist" // The scrambled anagram
-    @State private var userAnswerTwo: String = ""  // The user's input
-    @State private var messageTwo: String = ""     // Message to display result
-    let correctAnswerTwo: String = "first september"         // The correct answer for the anagram
+    @State private var anagramOne: String = "imino noell"
+    @State private var userAnswer: String = ""
+    @State private var message: String = ""
+    let correctAnswer: String = "one million"
+    @State private var anagramTwo: String = "bereft spermist"
+    @State private var userAnswerTwo: String = ""
+    @State private var messageTwo: String = ""
+    let correctAnswerTwo: String = "first september"
     
     var body: some View {
         VStack(spacing: 20) {
@@ -43,7 +43,7 @@ struct anagram: View {
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .padding()
                 Button(action: {
-                                checkAnswer()  // Calling the function
+                                checkAnswer()
                             }) {
                                 Text("Submit")
                                     .foregroundColor(.white)
@@ -52,7 +52,7 @@ struct anagram: View {
                                     .cornerRadius(10)
                             }
                             
-                            Text(message) // Display feedback message
+                            Text(message)
                                 .font(.subheadline)
                                 .foregroundColor(.blue)
                         }
@@ -62,7 +62,7 @@ struct anagram: View {
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .padding()
             Button(action: {
-                            checkAnswerTwo()  // Calling the function
+                            checkAnswerTwo()
                         }) {
                             Text("Submit")
                                 .foregroundColor(.white)
@@ -71,7 +71,7 @@ struct anagram: View {
                                 .cornerRadius(10)
                         }
                         
-                        Text(messageTwo) // Display feedback message
+                        Text(messageTwo)
                             .font(.subheadline)
                             .foregroundColor(.blue)
                 
@@ -82,7 +82,7 @@ struct anagram: View {
         
         
     }
-    // Function to check the user's answer - must be declared outside the body
+
     func checkAnswer() {
         if userAnswer.lowercased() == correctAnswer.lowercased() {
             message = "Correct!"

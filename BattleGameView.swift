@@ -17,86 +17,128 @@ struct Character {
 }
 
 struct NextBattleView: View {
-    @State private var player = Character(name: "You", health: 100, attackPower: 20)
+    @State private var player = Character(name: "Player", health: 100, attackPower: 20)
     @State private var enemy = Character(name: "Tall Avyan", health: 150, attackPower: 25)
     @State private var gameMessage: String = "The battle continues!"
     @State private var gameOver: Bool = false
     @State private var playerTurn: Bool = true
     @State private var attackAnimation: Bool = false
+    @State private var victoryMessage: String = ""
 
     var body: some View {
-        ZStack {
-            Image("battle")
-                .resizable()
-                .scaledToFill()
-                .edgesIgnoringSafeArea(.all)
-                .opacity(0.8)
-            
-            VStack(spacing: 20) {
-                VStack {
-                    Text("\(player.name)")
-                        .font(.largeTitle)
-                    Text("Health: \(player.health)")
-                        .font(.title2)
-                        .foregroundColor(player.health <= 30 ? .red : .black)
-                }
-                .padding()
-                .background(Color.green.opacity(0.7))
-                .cornerRadius(10)
-                VStack {
-                    Text("\(enemy.name)")
-                        .font(.largeTitle)
-                    Text("Health: \(enemy.health)")
-                        .font(.title2)
-                        .foregroundColor(enemy.health <= 30 ? .red : .black)
-                }
-                .padding()
-                .background(Color.red.opacity(0.7))
-                .cornerRadius(10)
+        NavigationView {
+            ZStack {
+                Image("battle")
+                    .resizable()
+                    .scaledToFill()
+                    .edgesIgnoringSafeArea(.all)
+                    .opacity(0.8)
 
-                Text(gameMessage)
-                    .font(.headline)
-                    .padding()
-
-                if playerTurn && !gameOver {
-                    HStack(spacing: 20) {
-                        Button("Normal Attack") {
-                            playerAttack()
-                            playerTurn.toggle()
-                            aiTurn()
-                        }
+                VStack(spacing: 20) {
+                    Text("Tall Avyan: If you want to get the incoins back, you have to go through me first...")
+                        .font(.headline)
                         .padding()
-                        .background(Color.blue)
-                        .foregroundColor(.white)
+                        .frame(maxWidth: .infinity)
+                        .background(Color.black.opacity(0.7))
                         .cornerRadius(10)
-                        .scaleEffect(attackAnimation ? 1.1 : 1.0)
-                        .animation(.easeInOut(duration: 0.2), value: attackAnimation)
+                        .foregroundColor(.white)
+                        .multilineTextAlignment(.center)
+                    CharacterView(character: player, isPlayer: true)
 
-                        Button("Special Attack") {
-                            specialAttack()
-                            playerTurn.toggle()
-                            aiTurn()
-                        }
+                    CharacterView(character: enemy, isPlayer: false)
+
+                    Text(gameMessage)
+                        .font(.headline)
                         .padding()
-                        .background(Color.orange)
-                        .foregroundColor(.white)
+                        .frame(maxWidth: .infinity)
+                        .background(Color.black.opacity(0.5))
                         .cornerRadius(10)
+                        .foregroundColor(.white)
+
+                    if !victoryMessage.isEmpty {
+                        Text(victoryMessage)
+                            .font(.largeTitle)
+                            .foregroundColor(.yellow)
+                            .padding()
+                            .transition(.opacity)
+                    }
+
+                    if playerTurn && !gameOver {
+                        ActionButtons()
+                    }
+
+                    if gameOver {
+                        if victoryMessage.isEmpty {
+                            Button("Restart") {
+                                restartGame()
+                            }
+                            .padding()
+                            .background(Color.gray)
+                            .foregroundColor(.white)
+                            .cornerRadius(10)
+                        } else {
+                            NavigationLink(destination: CompleteGameView()) {
+                                Text("Next")
+                                    .padding()
+                                    .background(Color.green)
+                                    .foregroundColor(.white)
+                                    .cornerRadius(10)
+                            }
+                        }
                     }
                 }
+                .padding()
+                .foregroundColor(.white)
+            }
+        }
+    }
 
-                // restart button
-                if gameOver {
-                    Button("Restart") {
-                        restartGame()
-                    }
-                    .padding()
-                    .background(Color.gray)
-                    .foregroundColor(.white)
-                    .cornerRadius(10)
-                }
+   
+    @ViewBuilder
+    private func CharacterView(character: Character, isPlayer: Bool) -> some View {
+        VStack {
+            Text("\(character.name)")
+                .font(.largeTitle)
+            Text("Health: \(character.health)")
+                .font(.title2)
+                .foregroundColor(character.health <= 30 ? .red : .black)
+            Rectangle()
+                .fill(character.health > 0 ? Color.green : Color.red)
+                .frame(width: 200, height: 20)
+                .overlay(
+                    Text("\(character.health)")
+                        .foregroundColor(.white)
+                )
+        }
+        .padding()
+        .background(isPlayer ? Color.green.opacity(0.7) : Color.red.opacity(0.7))
+        .cornerRadius(10)
+    }
+
+    @ViewBuilder
+    private func ActionButtons() -> some View {
+        HStack(spacing: 20) {
+            Button("Attack 1") {
+                playerAttack()
+                playerTurn.toggle()
+                aiTurn()
             }
             .padding()
+            .background(Color.blue)
             .foregroundColor(.white)
+            .cornerRadius(10)
+            .scaleEffect(attackAnimation ? 1.1 : 1.0)
+            .animation(.easeInOut(duration: 0.2), value: attackAnimation)
+
+            Button("Attack 2") {
+                specialAttack()
+                playerTurn.toggle()
+                aiTurn()
+            }
+            .padding()
+            .background(Color.orange)
+            .foregroundColor(.white)
+            .cornerRadius(10)
         }
     }
 
@@ -107,10 +149,10 @@ struct NextBattleView: View {
         }
 
         enemy.health -= player.attackPower
-        gameMessage = "You attacked Tall Avyan!"
+        gameMessage = "Player used attack 1 on Tall Avyan!"
 
         if enemy.health <= 0 {
-            gameMessage = "Tall Avyan defeated! You win!"
+            victoryMessage = "Yayyy! Tall Avyan defeated! You win!"
             gameOver = true
         }
     }
@@ -123,10 +165,10 @@ struct NextBattleView: View {
 
         let specialDamage = player.attackPower * 2
         enemy.health -= specialDamage
-        gameMessage = "You used a special attack on Tall Avyan!"
+        gameMessage = "Player used attack 2 on Tall Avyan!"
 
         if enemy.health <= 0 {
-            gameMessage = "Tall Avyan has been defeated! You win!"
+            victoryMessage = "Yayyy! Tall Avyan defeated! You win!"
             gameOver = true
         }
     }
@@ -149,7 +191,7 @@ struct NextBattleView: View {
             }
 
             if player.health <= 0 {
-                gameMessage = "You have been defeated! Game over!"
+                gameMessage = "You are defeated! Game over!"
                 gameOver = true
             } else {
                 playerTurn = true
@@ -158,11 +200,12 @@ struct NextBattleView: View {
     }
 
     func restartGame() {
-        player = Character(name: "You", health: 100, attackPower: 20)
+        player = Character(name: "Player", health: 100, attackPower: 20)
         enemy = Character(name: "Tall Avyan", health: 150, attackPower: 25)
         gameMessage = "The battle continues!"
         gameOver = false
         playerTurn = true
+        victoryMessage = "" // Reset the victory message
     }
 }
 

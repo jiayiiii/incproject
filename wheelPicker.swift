@@ -10,16 +10,12 @@ struct wheelPicker: View {
     
     let locations = ["New York", "California", "Texas", "Florida", "Tennessee"]
     
-    // The correct answer
     let correctLocation = "Tennessee"
     
-    // User's current selection
     @State private var selectedLocation: String = ""
     
-    // Result message to show whether the user is correct or not
     @State private var resultMessage: String = ""
     
-    // information to show when the user gets it correct
     @State private var locationClue: String = ""
     
     var body: some View {
@@ -32,18 +28,16 @@ struct wheelPicker: View {
                 .multilineTextAlignment(.center)
                 .padding(.top, 30)
             
-            // Picker for selecting the location
             Picker("Select Location", selection: $selectedLocation) {
                 ForEach(locations, id: \.self) {
                     Text($0)
                 }
             }
-            .pickerStyle(WheelPickerStyle()) // Wheel style picker, you can change this to a menu if preferred
+            .pickerStyle(WheelPickerStyle())
             .padding()
             
-            // Button to submit the selected location
             Button(action: {
-                checkAnswer()  // Check the answer when button is clicked
+                checkAnswer()
             }) {
                 Text("Submit")
                     .foregroundColor(.white)
@@ -68,15 +62,14 @@ struct wheelPicker: View {
         .padding()
     }
     
-    // Function to check if the selected location is correct
     func checkAnswer() {
         if selectedLocation == correctLocation {
             resultMessage = "Correct!"
-            // Provide extra information when the answer is correct
+
             locationClue = "Seems like Tall Avyan and his lackeys escaped to Tennesse after their heist"
         } else {
             resultMessage = "Incorrect. Try again!"
-            locationClue = "" // Clear the info if the answer is wrong
+            locationClue = ""
         }
     }
 }
