@@ -155,7 +155,7 @@ struct NextBattleView: View {
         gameMessage = "Player used a special attack on Tall Avyan!"
 
         if enemy.health <= 0 {
-            gameMessage = "Tall Avyan defeated! You win!"
+            gameMessage = "Tall Avyan has been defeated! You win!"
             gameOver = true
         }
     }
