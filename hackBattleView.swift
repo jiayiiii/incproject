@@ -190,8 +190,6 @@ struct HackBattleView: View {
     }
 }
 
-
-
 #Preview {
     HackBattleView()
 }

@@ -12,6 +12,8 @@ struct Position: Equatable {
 }
 
 struct HackerGameView7: View {
+    let onComplete: () -> Void // Add the onComplete closure
+
     let maze = [
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
         [1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1],
@@ -26,11 +28,11 @@ struct HackerGameView7: View {
     
     @State private var playerPosition = Position(x: 1, y: 1)
     @State private var gameStarted = false
-    @State private var showWinAlert = false
+    @State private var navigateToNextView = false
     let goalPosition = Position(x: 2, y: 0) // Green dot position
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack {
                 Text("Goal:")
                     .bold()
@@ -71,9 +73,6 @@ struct HackerGameView7: View {
                                 }
                             }
                         }
-                        .modifier(KeyCommandModifier {
-                            handleKeyPress(event: $0)
-                        })
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
 
@@ -101,17 +100,9 @@ struct HackerGameView7: View {
                     .foregroundColor(.white)
                     .cornerRadius(10)
                 }
-
-                if showWinAlert {
-                    NavigationLink(destination: PhoneHackedView()) {
-                        Text("Find Tall Avyan")
-                            .padding()
-                            .font(.title)
-                            .background(Color.green)
-                            .foregroundColor(.white)
-                            .cornerRadius(10)
-                    }
-                }
+            }
+            .navigationDestination(isPresented: $navigateToNextView) {
+                PhoneHackedView()
             }
         }
     }
@@ -144,65 +135,12 @@ struct HackerGameView7: View {
 
     func checkForWin() {
         if playerPosition == goalPosition {
-            showWinAlert = true
+            navigateToNextView = true // Set to true to trigger navigation
+            onComplete() // Call onComplete when the player reaches the goal
         }
-    }
-
-    func handleKeyPress(event: UIKeyCommand) {
-        switch event.input {
-        case "w":
-            movePlayer(direction: .up)
-        case "a":
-            movePlayer(direction: .left)
-        case "s":
-            movePlayer(direction: .down)
-        case "d":
-            movePlayer(direction: .right)
-        default:
-            break
-        }
-    }
-}
-
-struct KeyCommandModifier: ViewModifier {
-    var onKeyPress: (UIKeyCommand) -> Void
-    
-    func body(content: Content) -> some View {
-        content
-            .background(KeyCommandView(onKeyPress: onKeyPress))
-    }
-}
-
-struct KeyCommandView: UIViewControllerRepresentable {
-    var onKeyPress: (UIKeyCommand) -> Void
-
-    func makeUIViewController(context: Context) -> KeyCommandViewController {
-        let viewController = KeyCommandViewController()
-        viewController.onKeyPress = onKeyPress
-        return viewController
-    }
-
-    func updateUIViewController(_ uiViewController: KeyCommandViewController, context: Context) {}
-}
-
-class KeyCommandViewController: UIViewController {
-    var onKeyPress: ((UIKeyCommand) -> Void)?
-
-    override var keyCommands: [UIKeyCommand]? {
-        return [
-            UIKeyCommand(input: "w", modifierFlags: [], action: #selector(handleKeyPress)),
-            UIKeyCommand(input: "a", modifierFlags: [], action: #selector(handleKeyPress)),
-            UIKeyCommand(input: "s", modifierFlags: [], action: #selector(handleKeyPress)),
-            UIKeyCommand(input: "d", modifierFlags: [], action: #selector(handleKeyPress))
-        ]
-    }
-
-    @objc func handleKeyPress(_ sender: UIKeyCommand) {
-        onKeyPress?(sender)
     }
 }
 
 #Preview {
-    HackerGameView7()
+    HackerGameView7(onComplete: {})
 }
-

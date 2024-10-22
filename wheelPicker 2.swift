@@ -7,7 +7,8 @@
 import SwiftUI
 
 struct WheelPicker: View {
-    
+    var onComplete: () -> Void
+
     let locations = ["New York", "California", "Texas", "Florida", "Tennessee"]
     let correctLocation = "Tennessee"
     
@@ -61,9 +62,9 @@ struct WheelPicker: View {
                     .foregroundColor(.blue)
             }
             
-           
+            // Show the NavigationLink only when the answer is correct
             if isCorrect {
-                NavigationLink(destination: HackerGameView6()) {
+                NavigationLink(destination: HackerGameView6(onComplete: onComplete)) {
                     Text("Next")
                         .foregroundColor(.white)
                         .padding()
@@ -86,6 +87,7 @@ struct WheelPicker: View {
             resultMessage = "Correct!"
             locationClue = "Seems like Tall Avyan and his lackeys escaped to Tennessee after their heist."
             isCorrect = true
+            onComplete() // Call onComplete when the answer is correct
         } else {
             resultMessage = "Incorrect. Try again!"
             locationClue = ""
@@ -94,20 +96,14 @@ struct WheelPicker: View {
     }
 }
 
+// Preview
 struct WheelPicker_Previews: PreviewProvider {
     static var previews: some View {
-        WheelPicker()
-    }
-}
-struct carPlate : View {
-    var body: some View {
-        VStack{
-            Text("Witnesses on 1st Sept have reported seeing this sussy car near Victoria Falls:")
-                .font(.headline)
-                .padding()
-            Image("car")
-                .resizable()
-                .frame(width: 450,height: 450)
-            }
+        WheelPicker {
+            // Dummy closure for preview
+            print("Task completed!")
+        }
+        .previewLayout(.sizeThatFits)
+        .padding()
     }
 }

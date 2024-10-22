@@ -73,9 +73,10 @@ struct PhoneHackedView: View {
                             .shadow(radius: 5)
                     }
                     .alert(isPresented: $showAlert) {
-                        Alert(title: Text("Oh No!!!"), message: Text("You have to hack through the phone to win!!!"), dismissButton: .default(Text("OK")))
+                        Alert(title: Text("Oh No!!!"),
+                              message: Text("You have to hack through the phone to win!!!"),
+                              dismissButton: .default(Text("OK")))
                     }
-                    
                 }
                 .onAppear {
                     isAnimating = true

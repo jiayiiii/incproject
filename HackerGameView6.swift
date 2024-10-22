@@ -5,6 +5,7 @@
 //  Created by Tan Xin Tong Joy on 20/10/24.
 //
 import SwiftUI
+
 struct HackerGameView6: View {
     @State private var playerMoney: Int = 500
     @State private var ticketPrice: Int = 200
@@ -13,6 +14,7 @@ struct HackerGameView6: View {
     @State private var isGameOver: Bool = false
     @State private var showAlert: Bool = false
     @State private var showContinueButton: Bool = false
+    var onComplete: () -> Void // Closure to call when the game is completed
 
     var body: some View {
         NavigationStack {
@@ -25,7 +27,7 @@ struct HackerGameView6: View {
                 
                 VStack {
                     VStack {
-                        Text("Buy an aeroplane ticket?")
+                        Text("Buy an airplane ticket?")
                             .font(.largeTitle)
                             .padding()
                         
@@ -34,6 +36,10 @@ struct HackerGameView6: View {
                             .padding()
 
                         Text("You have $\(playerMoney)")
+                            .font(.title2)
+                            .padding()
+                        
+                        Text("Tickets bought: \(ticketsBought)")
                             .font(.title2)
                             .padding()
                     }
@@ -57,19 +63,7 @@ struct HackerGameView6: View {
                     
                     HStack {
                         Button(action: {
-                            if playerMoney >= ticketPrice {
-                                playerMoney -= ticketPrice
-                                ticketsBought += 1
-                                gameMessage = "You bought the ticket! Click 'Continue' to proceed."
-                                isGameOver = false
-                                showAlert = false
-                                showContinueButton = true
-                            } else {
-                                gameMessage = "You don't have enough money! You failed the game lol."
-                                isGameOver = true
-                                showAlert = true
-                                showContinueButton = false
-                            }
+                            buyTicket()
                         }) {
                             Text("Yes")
                                 .font(.title)
@@ -77,6 +71,7 @@ struct HackerGameView6: View {
                                 .background(Color.green)
                                 .foregroundColor(.white)
                                 .cornerRadius(10)
+                                .accessibilityLabel("Buy ticket")
                         }
 
                         Button(action: {
@@ -91,12 +86,16 @@ struct HackerGameView6: View {
                                 .background(Color.red)
                                 .foregroundColor(.white)
                                 .cornerRadius(10)
+                                .accessibilityLabel("Decline ticket")
                         }
                     }
                     .padding()
                     
                     if showContinueButton {
-                        NavigationLink(destination: HackerGameView7()) {
+                        NavigationLink(destination: HackerGameView7(onComplete: {
+                            // Any action to perform when proceeding to the next view
+                            print("Proceeding to HackerGameView7")
+                        })) {
                             Text("Continue")
                                 .font(.title)
                                 .padding()
@@ -109,24 +108,43 @@ struct HackerGameView6: View {
                 }
             }
             .alert(isPresented: $showAlert) {
-                if ticketsBought >= 3 {
-                    return Alert(
-                        title: Text("Game Over"),
-                        message: Text("Why did you buy 3 or more tickets? You're in debt now lol. Good luck!"),
-                        dismissButton: .default(Text("Try again, maybe try the other option"))
-                    )
-                } else {
-                    return Alert(
-                        title: Text("Game Over"),
-                        message: Text("Lol, you failed the game!"),
-                        dismissButton: .default(Text("Try again, maybe try the other option"))
-                    )
-                }
+                Alert(
+                    title: Text("Game Over"),
+                    message: Text(ticketsBought >= 3 ? "Why did you buy 3 or more tickets? You're in debt now lol. Good luck!" : "Lol, you failed the game!"),
+                    dismissButton: .default(Text("Try again, maybe try the other option"))
+                )
             }
+        }
+    }
+
+    private func buyTicket() {
+        if playerMoney >= ticketPrice {
+            playerMoney -= ticketPrice
+            ticketsBought += 1
+            gameMessage = "You bought the ticket! Click 'Continue' to proceed."
+            isGameOver = false
+            showAlert = false
+            showContinueButton = ticketsBought < 3 // Show continue button only if less than 3 tickets bought
+            
+            // Call the onComplete closure if the player hasn't bought 3 tickets
+            if ticketsBought < 3 {
+                onComplete() // Notify completion
+            } else {
+                // Optionally handle the case where 3 tickets have been bought
+                gameMessage = "You've bought 3 tickets. You cannot buy more!"
+                isGameOver = true
+                showAlert = true
+                showContinueButton = false
+            }
+        } else {
+            gameMessage = "You don't have enough money! You failed the game lol."
+            isGameOver = true
+            showAlert = true
+            showContinueButton = false
         }
     }
 }
 
 #Preview {
-    HackerGameView6()
+    HackerGameView6(onComplete: {})
 }

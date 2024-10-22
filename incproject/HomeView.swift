@@ -4,113 +4,141 @@
 //
 //  Created by Sharlene Tan Qin Ying on 12/10/24.
 //
-
 import SwiftUI
 
 struct HomeView: View {
-    @State private var unlockedLevels: [Bool] = Array(repeating: true, count: 9)
-    @State private var selectedLevel: Int?
-    @State private var showDescription = false
-
-    private let levelDescriptions: [Int: String] = [
-        1: "Level 1: Who is Tall Avyan's accomplice?",
-        2: "Level 2: Where did the heist occur?",
-        3: "Level 3: BRINNGGG... someone's calling",
-        4: "Level 4: Anagram puzzles to reveal the hidden truth.",
-        5: "Level 5: Navigate through the dangerous alley.",
-        6: "Level 6: Wheel of fortune challenge awaits!",
-        7: "Level 7: Beat the clock in a high-stakes heist.",
-        8: "Level 8: Your phone got hacked",
-        9: "Level 9: The last battle..."
-    ]
+    @EnvironmentObject var gameState: GameState
 
     var body: some View {
-        NavigationStack {
+        NavigationView {
             ZStack {
-                // Background Gradient
-                LinearGradient(gradient: Gradient(colors: [.black, .gray]), startPoint: .top, endPoint: .bottom)
+                LinearGradient(gradient: Gradient(colors: [Color.blue.opacity(0.8), Color.black]),
+                               startPoint: .top,
+                               endPoint: .bottom)
                     .edgesIgnoringSafeArea(.all)
-                
-                VStack(spacing: 20) {
-                    Text("Game Levels")
-                        .font(.largeTitle)
-                        .bold()
-                        .foregroundColor(.red)
-                        .padding()
 
-                    ForEach(1...9, id: \.self) { level in
-                        levelButton(level: level)
+                VStack(spacing: 20) {
+                    Text("Welcome to the Game!")
+                        .font(.largeTitle)
+                        .fontWeight(.bold)
+                        .foregroundColor(.white)
+                        .padding()
+                        .background(Color.black.opacity(0.7))
+                        .cornerRadius(12)
+                        .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 5)
+                        .multilineTextAlignment(.center)
+
+                    Text("Defeat Tall Avyan and reclaim your incoins!")
+                        .font(.headline)
+                        .foregroundColor(.white)
+                        .padding()
+                        .background(Color.black.opacity(0.5))
+                        .cornerRadius(10)
+                        .shadow(color: .black.opacity(0.5), radius: 5, x: 0, y: 5)
+                        .multilineTextAlignment(.center)
+
+                    VStack(spacing: 10) {
+                        ForEach(1...10, id: \.self) { level in
+                            LevelView(levelNumber: level, isUnlocked: gameState.isLevelUnlocked(level: level)) {
+                                gameState.unlockLevel(level: level) // Unlock the level
+                            }
+                        }
                     }
+                    .padding()
 
                     Spacer()
                 }
                 .padding()
-                .overlay(
-                    Group {
-                        if showDescription, let level = selectedLevel {
-                            VStack {
-                                Text(levelDescriptions[level, default: "No description available."])
-                                    .font(.headline)
-                                    .padding()
-                                    .background(Color.black.opacity(0.9))
-                                    .foregroundColor(.white)
-                                    .cornerRadius(10)
-                                    .padding()
-                                    .transition(.scale) // Add scaling transition
-                                    .animation(.easeInOut, value: showDescription) // Animate the change
-
-                                Button("Close") {
-                                    showDescription = false
-                                }
-                                .padding()
-                                .background(Color.red)
-                                .foregroundColor(.white)
-                                .cornerRadius(10)
-                                .shadow(radius: 5)
-                            }
-                            .frame(maxWidth: .infinity, maxHeight: .infinity)
-                            .background(Color.black.opacity(0.7))
-                            .edgesIgnoringSafeArea(.all)
-                        }
-                    }
-                )
-            }
-        }
-    }
-
-    private func levelButton(level: Int) -> some View {
-        HStack {
-            Button(action: {
-                if unlockedLevels[level - 1] {
-                    // Navigate to the level view (not implemented here)
-                }
-            }) {
-                Text("Level \(level)")
-                    .padding()
-                    .background(Color.red)
-                    .foregroundColor(.white)
-                    .font(.headline)
-                    .cornerRadius(10)
-                    .shadow(radius: 5)
-                    .scaleEffect(1.05) // Slightly scale up on press
-                    .animation(.easeInOut, value: level) // Animate scale change
-            }
-
-            Button(action: {
-                selectedLevel = level
-                showDescription.toggle() // Show the description when the info button is clicked
-            }) {
-                Image(systemName: "info.circle")
-                    .foregroundColor(.white)
-                    .padding()
-                    .background(Color.black.opacity(0.7))
-                    .cornerRadius(5)
-                    .shadow(radius: 5)
             }
         }
     }
 }
 
-#Preview {
-    HomeView()
+struct LevelView: View {
+    let levelNumber: Int
+    var isUnlocked: Bool
+    var onUnlock: (() -> Void)? // Closure to handle unlocking
+
+    var body: some View {
+        HStack {
+            Text("Level \(levelNumber):")
+                .foregroundColor(.white)
+                .font(.headline)
+
+            if isUnlocked {
+                Text("Done")
+                    .foregroundColor(.green)
+                    .fontWeight(.bold)
+            } else {
+                Text("Unlock")
+                    .foregroundColor(.red)
+                    .fontWeight(.bold)
+            }
+            
+            Spacer()
+
+            if isUnlocked {
+                NavigationLink(destination: nextLevelView(level: levelNumber)) {
+                    Text("Play")
+                        .padding(5)
+                        .background(Color.green)
+                        .foregroundColor(.white)
+                        .cornerRadius(5)
+                }
+            } else {
+                Button(action: {
+                    // Call the unlock closure to unlock the level
+                    onUnlock?()
+                }) {
+                    Text("Unlock Level")
+                        .padding(5)
+                        .background(Color.red)
+                        .foregroundColor(.white)
+                        .cornerRadius(5)
+                }
+            }
+        }
+        .padding(.horizontal)
+        .background(Color.black.opacity(0.5))
+        .cornerRadius(10)
+        .padding(.vertical, 5)
+    }
+
+    @ViewBuilder
+    func nextLevelView(level: Int) -> some View {
+        // Replace these with your actual views for each level
+        switch level {
+        case 1:
+            HackerGameView(onComplete: { /* Add your completion logic here */ })
+        case 2:
+            HackerGameView2(onComplete: { /* Add your completion logic here */ })
+        case 3:
+            HackerGameView4(onComplete: { /* Add your completion logic here */ })
+        case 4:
+            Anagram(onComplete: { /* Add your completion logic here */ })
+        case 5:
+            HackerGameView5(onComplete: { /* Add your completion logic here */ })
+        case 6:
+            WheelPicker(onComplete: { /* Add your completion logic here */ })
+
+        case 7:
+            HackerGameView6(onComplete: { /* Add your completion logic here */ })
+
+        case 8:
+            HackerGameView7(onComplete: { /* Add your completion logic here */ })
+
+        //case:9
+         // wld fix ltr
+
+//thistoo
+        default:
+            Text("Coming Soon!")
+        }
+    }
+}
+
+struct HomeView_Previews: PreviewProvider {
+    static var previews: some View {
+        HomeView().environmentObject(GameState())
+    }
 }

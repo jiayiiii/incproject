@@ -36,6 +36,7 @@ struct FirstView: View {
                         .foregroundColor(.mainGreen)
                         .multilineTextAlignment(.center)
                         .transition(.opacity)
+
                     Divider()
                         .frame(height: 1.5)
                         .background(Color.red.opacity(0.8))
@@ -60,11 +61,12 @@ struct FirstView: View {
                             .padding(.top, 10)
                             .scaledToFit()
                     }
-                    
-                    
+
                     HStack(spacing: 15) {
                         NavigationLink {
-                            HackerGameView()
+                            HackerGameView(onComplete: {
+                                // Add any completion logic here if needed
+                            })
                         } label: {
                             Text("Next")
                                 .font(.system(size: 22, weight: .bold))

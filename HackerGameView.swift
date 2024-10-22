@@ -15,15 +15,17 @@ struct HackerGameView: View {
     @State private var showHintAlert = false
     @State private var quitMessageVisible = false
     @State private var audioPlayer: AVAudioPlayer!
-    @State private var timer: Timer? 
+    @State private var timer: Timer?
 
     let correctCodes = ["john pork", "johnpork"]
-
     let hints = [
         "The accomplice has a hybrid nature.",
         "Their favorite color is pink.",
         "The heist was near Victoria Falls."
     ]
+
+    // Add onComplete closure
+    var onComplete: () -> Void
 
     var body: some View {
         NavigationStack {
@@ -71,7 +73,8 @@ struct HackerGameView: View {
                             .cornerRadius(10)
                             .shadow(color: .black, radius: 5, x: 0, y: 5)
 
-                        NavigationLink(destination: HackerGameView2()) {
+                        // Updated NavigationLink to the next level
+                        NavigationLink(destination: HackerGameView2(onComplete: onComplete)) {
                             Text("Go to the Next Level")
                                 .padding()
                                 .background(Color.red.opacity(0.9))
@@ -95,6 +98,9 @@ struct HackerGameView: View {
                                 withAnimation {
                                     hintUnlocked = true
                                     incorrectCode = false
+
+                                    // Call the onComplete closure
+                                    onComplete()
 
                                     let soundName = "sound0"
                                     if let soundFile = NSDataAsset(name: soundName) {
@@ -174,5 +180,5 @@ struct HackerGameView: View {
 }
 
 #Preview {
-    HackerGameView()
+    HackerGameView(onComplete: { }) // Provide a dummy closure for the preview
 }

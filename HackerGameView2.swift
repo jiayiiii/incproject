@@ -8,6 +8,8 @@ import SwiftUI
 import AVFoundation
 
 struct HackerGameView2: View {
+    var onComplete: () -> Void // Add the onComplete closure
+
     @State private var messages: [String] = []
     @State private var playerMessage = ""
     @State private var johnPorkResponses = [
@@ -20,7 +22,6 @@ struct HackerGameView2: View {
     @State private var revealedHints: Set<Int> = []
     @State private var audioPlayer: AVAudioPlayer?
     @State private var isUserInputDisabled = false
-    @State private var isNextGame = false
     @State private var hintRevealed = false // Track if the hint is revealed
 
     var body: some View {
@@ -39,7 +40,7 @@ struct HackerGameView2: View {
                     Text("Find out where the heist occurred")
                         .font(.footnote)
                         .foregroundColor(.white)
-                    
+
                     ScrollView {
                         VStack(alignment: .leading, spacing: 15) {
                             ForEach(messages, id: \.self) { message in
@@ -80,8 +81,12 @@ struct HackerGameView2: View {
                         .disabled(isUserInputDisabled)
                     }
                     .padding()
+
                     if hintRevealed {
-                        NavigationLink(destination: HackerGameView4()) {
+                        Button(action: {
+                            // Call the onComplete closure when going to the next game
+                            onComplete()
+                        }) {
                             Text("Go to Next Game")
                                 .font(.headline)
                                 .foregroundColor(.white)
@@ -158,19 +163,10 @@ struct HackerGameView2: View {
         audioPlayer?.stop()
         audioPlayer = nil
     }
-
-    // Function to reset the messages and state when transitioning to the next game
-    private func resetMessages() {
-        messages.removeAll()
-        UserDefaults.standard.removeObject(forKey: "savedMessages")
-        revealedHints.removeAll()
-        isUserInputDisabled = false
-        hintRevealed = false // Reset hint revealed state
-    }
 }
 
 struct HackerGameView2_Previews: PreviewProvider {
     static var previews: some View {
-        HackerGameView2()
+        HackerGameView2(onComplete: {})
     }
 }
