@@ -4,7 +4,6 @@
 //
 //  Created by Sharlene Tan Qin Ying on 21/10/24.
 //
-
 import SwiftUI
 
 struct HackBattleView: View {

@@ -3,8 +3,6 @@
 //  incproject
 //
 //  Created by Tan Xin Tong Joy on 20/10/24.
-//
-//can someone make it so that 'threatbob' in assets is playing in the background🙏
 import SwiftUI
 
 struct Anagram: View {

@@ -1,9 +1,3 @@
-//
-//  ContentView.swift
-//  incproject
-//
-//  Created by youngliz lover on 9/9/24.
-//
 import SwiftUI
 
 struct ContentView: View {

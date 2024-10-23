@@ -195,4 +195,3 @@ struct HackerGameView7: View {
     #Preview {
         HackerGameView7(onComplete: {})
     }
-
