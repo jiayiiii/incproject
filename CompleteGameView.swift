@@ -28,7 +28,7 @@ struct CompleteGameView: View {
                     .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 5)
                     .multilineTextAlignment(.center)
 
-                Text("You have completed the game!")
+                Text("You have retreived the incoins!")
                     .font(.headline)
                     .padding()
                     .foregroundColor(.white)

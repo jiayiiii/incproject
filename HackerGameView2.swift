@@ -83,10 +83,7 @@ struct HackerGameView2: View {
                     .padding()
 
                     if hintRevealed {
-                        Button(action: {
-                            // Call the onComplete closure when going to the next game
-                            onComplete()
-                        }) {
+                        NavigationLink(destination: HackerGameView4(onComplete: onComplete)) {
                             Text("Go to Next Game")
                                 .font(.headline)
                                 .foregroundColor(.white)

@@ -23,7 +23,9 @@ struct BattleGameView: View {
     @State private var gameOver: Bool = false
     @State private var playerTurn: Bool = true
     @State private var attackAnimation: Bool = false
+    @State private var enemyAttackAnimation: Bool = false
     @State private var victoryMessage: String = ""
+    @State private var enemyIsAttacking: Bool = false  // New state variable
 
     var body: some View {
         NavigationView {
@@ -44,7 +46,9 @@ struct BattleGameView: View {
                         .multilineTextAlignment(.center)
 
                     CharacterView(character: player, isPlayer: true)
+                        .modifier(ShakeEffect(shake: attackAnimation ? 2 : 0))
                     CharacterView(character: enemy, isPlayer: false)
+                        .modifier(ShakeEffect(shake: enemyAttackAnimation ? 2 : 0))
 
                     Text(gameMessage)
                         .font(.headline)
@@ -60,9 +64,10 @@ struct BattleGameView: View {
                             .foregroundColor(.yellow)
                             .padding()
                             .transition(.opacity)
+                            .animation(.easeIn(duration: 0.5), value: victoryMessage)
                     }
 
-                    if playerTurn && !gameOver {
+                    if playerTurn && !gameOver && !enemyIsAttacking {  // Hide buttons during enemy attack
                         ActionButtons()
                     }
 
@@ -96,6 +101,7 @@ struct BattleGameView: View {
                 .font(.title2)
                 .foregroundColor(character.health <= 30 ? .red : .white)
             HealthBar(health: character.health, isAlive: character.health > 0)
+                .animation(.easeInOut(duration: 0.5), value: character.health)
         }
         .padding()
         .background(isPlayer ? Color.green.opacity(0.7) : Color.red.opacity(0.7))
@@ -106,7 +112,7 @@ struct BattleGameView: View {
     private func HealthBar(health: Int, isAlive: Bool) -> some View {
         Rectangle()
             .fill(isAlive ? Color.green : Color.red)
-            .frame(width: 200, height: 20)
+            .frame(width: 200 * CGFloat(health) / 100, height: 20)
             .overlay(
                 Text("\(health)")
                     .foregroundColor(.white)
@@ -117,16 +123,16 @@ struct BattleGameView: View {
     private func ActionButtons() -> some View {
         HStack(spacing: 20) {
             Button("Attack 1") {
-                playerAttack()
-                playerTurn.toggle()
-                aiTurn()
+                withAnimation {
+                    playerAttack()
+                }
             }
             .buttonStyle(GameButtonStyle(color: .blue))
 
             Button("Attack 2") {
-                specialAttack()
-                playerTurn.toggle()
-                aiTurn()
+                withAnimation {
+                    specialAttack()
+                }
             }
             .buttonStyle(GameButtonStyle(color: .orange))
         }
@@ -158,6 +164,8 @@ struct BattleGameView: View {
         if enemy.health <= 0 {
             victoryMessage = "Yayyy! Tall Avyan defeated! You win!"
             gameOver = true
+        } else {
+            aiTurn()
         }
     }
 
@@ -174,16 +182,19 @@ struct BattleGameView: View {
         if enemy.health <= 0 {
             victoryMessage = "Yayyy! Tall Avyan defeated! You win!"
             gameOver = true
+        } else {
+            aiTurn()
         }
     }
 
     func aiTurn() {
+        enemyIsAttacking = true  // Start enemy attack
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
             if gameOver { return }
 
-            attackAnimation = true
+            enemyAttackAnimation = true
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                attackAnimation = false
+                enemyAttackAnimation = false
             }
 
             if player.health > 30 {
@@ -200,6 +211,7 @@ struct BattleGameView: View {
             } else {
                 playerTurn = true
             }
+            enemyIsAttacking = false  // End enemy attack
         }
     }
 
@@ -213,8 +225,25 @@ struct BattleGameView: View {
     }
 }
 
+struct ShakeEffect: AnimatableModifier {
+    var shake: CGFloat
+
+    var animatableData: CGFloat {
+        get { shake }
+        set { shake = newValue }
+    }
+
+    func body(content: Content) -> some View {
+        content
+            .offset(x: shake * 5, y: 0)
+    }
+}
+
 struct BattleGameView_Previews: PreviewProvider {
     static var previews: some View {
         BattleGameView()
     }
+}
+#Preview {
+    HackerGameView7(onComplete: {})
 }
