@@ -30,7 +30,7 @@ struct HackerGameView7: View {
     @State private var playerPosition = Position(x: 1, y: 1)
         @State private var gameStarted = false
         @State private var navigateToNextView = false
-        let goalPosition = Position(x: 6, y: 21) // Green dot position
+        let goalPosition = Position(x: 6, y: 20) // Green dot position
 
         var body: some View {
             NavigationStack {
