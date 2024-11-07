@@ -7,7 +7,7 @@
 import SwiftUI
 
 struct HomeView: View {
-    @EnvironmentObject var gameState: GameState
+    @Binding var levelsUnlocked: [Int: Bool]
 
     var body: some View {
         NavigationView {
@@ -37,12 +37,18 @@ struct HomeView: View {
                         .shadow(color: .black.opacity(0.5), radius: 5, x: 0, y: 5)
                         .multilineTextAlignment(.center)
 
+                    // Manually created LevelView instances
                     VStack(spacing: 10) {
-                        ForEach(1...10, id: \.self) { level in
-                            LevelView(levelNumber: level, isUnlocked: gameState.isLevelUnlocked(level: level)) {
-                                gameState.unlockLevel(level: level) // Unlock the level
-                            }
-                        }
+                        LevelView(levelNumber: 1, isUnlocked: $levelsUnlocked[ 1, default: false])
+                        LevelView(levelNumber: 2, isUnlocked: $levelsUnlocked[2, default: false])
+                        LevelView(levelNumber: 3, isUnlocked: $levelsUnlocked[3, default: false])
+                        LevelView(levelNumber: 4, isUnlocked: $levelsUnlocked[4, default: false])
+                        LevelView(levelNumber: 5, isUnlocked: $levelsUnlocked[5, default: false])
+                        LevelView(levelNumber: 6, isUnlocked: $levelsUnlocked[6, default: false])
+                        LevelView(levelNumber: 7, isUnlocked: $levelsUnlocked[7, default: false])
+                        LevelView(levelNumber: 8, isUnlocked: $levelsUnlocked[8, default: false])
+                        LevelView(levelNumber: 9, isUnlocked: $levelsUnlocked[9, default: false])
+                        LevelView(levelNumber: 10, isUnlocked: $levelsUnlocked[10, default: false])
                     }
                     .padding()
 
@@ -56,8 +62,7 @@ struct HomeView: View {
 
 struct LevelView: View {
     let levelNumber: Int
-    var isUnlocked: Bool
-    var onUnlock: (() -> Void)? // Closure to handle unlocking
+    @Binding var isUnlocked: Bool
 
     var body: some View {
         HStack {
@@ -70,11 +75,11 @@ struct LevelView: View {
                     .foregroundColor(.green)
                     .fontWeight(.bold)
             } else {
-                Text("Unlock")
+                Text("Not Unlocked Yet")
                     .foregroundColor(.red)
                     .fontWeight(.bold)
             }
-            
+
             Spacer()
 
             if isUnlocked {
@@ -82,17 +87,6 @@ struct LevelView: View {
                     Text("Play")
                         .padding(5)
                         .background(Color.green)
-                        .foregroundColor(.white)
-                        .cornerRadius(5)
-                }
-            } else {
-                Button(action: {
-                    // Call the unlock closure to unlock the level
-                    onUnlock?()
-                }) {
-                    Text("Unlock Level")
-                        .padding(5)
-                        .background(Color.red)
                         .foregroundColor(.white)
                         .cornerRadius(5)
                 }
@@ -106,31 +100,23 @@ struct LevelView: View {
 
     @ViewBuilder
     func nextLevelView(level: Int) -> some View {
-        // Replace these with your actual views for each level
         switch level {
         case 1:
-            HackerGameView(onComplete: { /* Add your completion logic here */ })
+            Text("HackerGameView Level 1") // Placeholder for `HackerGameView`
         case 2:
-            HackerGameView2(onComplete: { /* Add your completion logic here */ })
+            Text("HackerGameView Level 2") // Placeholder for `HackerGameView2`
         case 3:
-            HackerGameView4(onComplete: { /* Add your completion logic here */ })
+            Text("HackerGameView Level 4") // Placeholder for `HackerGameView4`
         case 4:
-            Anagram(onComplete: { /* Add your completion logic here */ })
+            Text("Anagram Game")           // Placeholder for `Anagram`
         case 5:
-            HackerGameView5(onComplete: { /* Add your completion logic here */ })
+            Text("HackerGameView Level 5") // Placeholder for `HackerGameView5`
         case 6:
-            WheelPicker(onComplete: { /* Add your completion logic here */ })
-
+            Text("Wheel Picker Game")      // Placeholder for `WheelPicker`
         case 7:
-            HackerGameView6(onComplete: { /* Add your completion logic here */ })
-
+            Text("HackerGameView Level 6") // Placeholder for `HackerGameView6`
         case 8:
-            HackerGameView7(onComplete: { /* Add your completion logic here */ })
-
-        //case:9
-         // wld fix ltr
-
-//thistoo
+            Text("HackerGameView Level 7") // Placeholder for `HackerGameView7`
         default:
             Text("Coming Soon!")
         }
@@ -138,7 +124,20 @@ struct LevelView: View {
 }
 
 struct HomeView_Previews: PreviewProvider {
+    @State static var previewLevelsUnlocked = [
+        1: true,
+        2: false,
+        3: false,
+        4: false,
+        5: false,
+        6: false,
+        7: false,
+        8: false,
+        9: false,
+        10: false
+    ]
+
     static var previews: some View {
-        HomeView().environmentObject(GameState())
+        HomeView(levelsUnlocked: $previewLevelsUnlocked)
     }
 }
