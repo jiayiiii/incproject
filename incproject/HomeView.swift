@@ -6,6 +6,7 @@
 //
 import SwiftUI
 
+// Main HomeView
 struct HomeView: View {
     @Binding var levelsUnlocked: [Int: Bool]
 
@@ -37,18 +38,13 @@ struct HomeView: View {
                         .shadow(color: .black.opacity(0.5), radius: 5, x: 0, y: 5)
                         .multilineTextAlignment(.center)
 
-                    // Manually created LevelView instances
                     VStack(spacing: 10) {
-                        LevelView(levelNumber: 1, isUnlocked: $levelsUnlocked[ 1, default: false])
-                        LevelView(levelNumber: 2, isUnlocked: $levelsUnlocked[2, default: false])
-                        LevelView(levelNumber: 3, isUnlocked: $levelsUnlocked[3, default: false])
-                        LevelView(levelNumber: 4, isUnlocked: $levelsUnlocked[4, default: false])
-                        LevelView(levelNumber: 5, isUnlocked: $levelsUnlocked[5, default: false])
-                        LevelView(levelNumber: 6, isUnlocked: $levelsUnlocked[6, default: false])
-                        LevelView(levelNumber: 7, isUnlocked: $levelsUnlocked[7, default: false])
-                        LevelView(levelNumber: 8, isUnlocked: $levelsUnlocked[8, default: false])
-                        LevelView(levelNumber: 9, isUnlocked: $levelsUnlocked[9, default: false])
-                        LevelView(levelNumber: 10, isUnlocked: $levelsUnlocked[10, default: false])
+                        ForEach(1...10, id: \.self) { levelNumber in
+                            LevelView(levelNumber: levelNumber, isUnlocked: Binding(
+                                get: { levelsUnlocked[levelNumber, default: false] },
+                                set: { levelsUnlocked[levelNumber] = $0 }
+                            ))
+                        }
                     }
                     .padding()
 
@@ -60,6 +56,7 @@ struct HomeView: View {
     }
 }
 
+// LevelView with Navigation to specific views for each level
 struct LevelView: View {
     let levelNumber: Int
     @Binding var isUnlocked: Bool
@@ -98,25 +95,34 @@ struct LevelView: View {
         .padding(.vertical, 5)
     }
 
+    // Returns the specific view for each level
     @ViewBuilder
     func nextLevelView(level: Int) -> some View {
         switch level {
         case 1:
-            Text("HackerGameView Level 1") // Placeholder for `HackerGameView`
+            HackerGameView(onComplete: {})
         case 2:
-            Text("HackerGameView Level 2") // Placeholder for `HackerGameView2`
+            HackerGameView2(onComplete: {})
         case 3:
-            Text("HackerGameView Level 4") // Placeholder for `HackerGameView4`
+            HackerGameView4(onComplete: {})
         case 4:
-            Text("Anagram Game")           // Placeholder for `Anagram`
+            Anagram(onComplete: {})
         case 5:
-            Text("HackerGameView Level 5") // Placeholder for `HackerGameView5`
+            HackerGameView5(onComplete: {})
         case 6:
-            Text("Wheel Picker Game")      // Placeholder for `WheelPicker`
+            WheelPicker(onComplete: {})
         case 7:
-            Text("HackerGameView Level 6") // Placeholder for `HackerGameView6`
+            HackerGameView6(onComplete: {})
         case 8:
-            Text("HackerGameView Level 7") // Placeholder for `HackerGameView7`
+            HackerGameView7(onComplete: {})
+        case 9:
+            PhoneHackedView()
+        case 10:
+            HackBattleView()
+        case 11:
+            BattleGameView()
+        case 12:
+            CompleteGameView()
         default:
             Text("Coming Soon!")
         }
@@ -134,7 +140,8 @@ struct HomeView_Previews: PreviewProvider {
         7: false,
         8: false,
         9: false,
-        10: false
+        10: false,
+        11: false
     ]
 
     static var previews: some View {

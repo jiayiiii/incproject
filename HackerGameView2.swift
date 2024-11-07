@@ -123,6 +123,9 @@ struct HackerGameView2: View {
                         messages.append("John Pork Hint: \(johnPorkHint)")
                         isUserInputDisabled = true
                         hintRevealed = true // Set hint revealed to true
+
+                        // Call the onComplete function when all hints are revealed
+                        onComplete()
                     }
                 }
 
