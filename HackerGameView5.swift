@@ -38,6 +38,9 @@ struct CarPlate: View {
             Text("Car Plate View")
                 .font(.largeTitle)
                 .padding()
+            Image("car")
+                .resizable()
+                .frame(width: 300, height: 300)
 
             // Example completion button
             Button(action: {
