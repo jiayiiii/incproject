@@ -12,19 +12,22 @@ struct PhoneHackedView: View {
     @State private var hackedPercentage = 0
     @State private var randomPopups: [String] = []
     @State private var showFinalChallenge = false
-    @State private var typedMessage = "" // Holds the typed message so far
+    @State private var typedMessage = ""
     @State private var messageToType = "I have access to EVERYTHING on your phone. I challenge you to a battle."
-    @State private var showButtons = false // Control when to show buttons
+    @State private var showButtons = false
+    @State private var accentColor: Color = .white // Changing accent color for chaos
 
     let popupMessages = [
         "Access Denied", "Intruder Detected", "System Compromised", "Attempting Override...", "Error 404",
         "Critical System Failure", "Reboot Required", "Bypassing Security", "Data Corruption", "Hacker Detected"
     ]
+    
+    let chaoticColors: [Color] = [.yellow, .cyan, .pink, .purple, .blue, .orange] // Add chaotic colors
 
     var body: some View {
         NavigationStack {
             ZStack {
-                // Background with animated glitch effect
+                // Constant red and black background
                 LinearGradient(gradient: Gradient(colors: [Color.black, Color.red.opacity(0.8), Color.black]),
                                startPoint: .topLeading, endPoint: .bottomTrailing)
                     .edgesIgnoringSafeArea(.all)
@@ -32,59 +35,61 @@ struct PhoneHackedView: View {
                     .animation(.easeInOut(duration: 0.05).repeatForever(autoreverses: false), value: glitchOffset)
 
                 VStack(spacing: 20) {
-                    // Glitchy Warning Text
+                    // Glitchy, chaotic Warning Text with random color shifts
                     Text("WARNING: HACK DETECTED!")
                         .font(.largeTitle)
                         .bold()
-                        .foregroundColor(.white)
+                        .foregroundColor(accentColor) // Using random accent color
                         .padding()
                         .overlay(
                             Text("WARNING: HACK DETECTED!")
                                 .font(.largeTitle)
                                 .bold()
-                                .foregroundColor(.red.opacity(0.8))
+                                .foregroundColor(accentColor.opacity(0.8))
                                 .offset(x: glitchAmount, y: -glitchAmount)
                         )
                         .overlay(
                             Text("WARNING: HACK DETECTED!")
                                 .font(.largeTitle)
                                 .bold()
-                                .foregroundColor(.blue.opacity(0.7))
+                                .foregroundColor(accentColor.opacity(0.5))
                                 .offset(x: -glitchAmount, y: glitchAmount)
                         )
-                        .animation(.easeInOut(duration: 0.1).repeatForever(autoreverses: false), value: glitchAmount)
+                        .animation(.easeInOut(duration: 0.1).repeatForever(autoreverses: true), value: glitchAmount)
 
-                    // Hacked Percentage with increased size
+                    // Hacked Percentage, fluctuating chaotically
                     Text("\(hackedPercentage)%")
                         .font(.system(size: 80, weight: .bold))
                         .foregroundColor(.red)
                         .padding()
-                        .frame(height: UIScreen.main.bounds.height * 0.2) // Takes about 1/5 of the screen height
-                        .animation(.easeInOut(duration: 0.5).repeatForever(autoreverses: false), value: hackedPercentage)
+                        .frame(height: UIScreen.main.bounds.height * 0.2)
+                        .rotationEffect(.degrees(Double.random(in: -10...10)))
+                        .animation(.easeInOut(duration: 0.3).repeatForever(autoreverses: true), value: hackedPercentage)
 
                     // Typing Effect Text (appears after hack hits 100%)
                     if hackedPercentage == 100 {
                         Text(typedMessage)
                             .font(.system(size: 24, weight: .medium))
-                            .foregroundColor(.yellow)
+                            .foregroundColor(accentColor)
                             .padding()
                             .frame(maxWidth: .infinity, alignment: .center)
                             .multilineTextAlignment(.center)
                             .animation(.easeIn(duration: 0.05), value: typedMessage)
                     }
 
-                    // Randomly appearing pop-up messages with varied sizes and positions
+                    // Pop-up messages flying around chaotically
                     if hackedPercentage < 100 {
                         ForEach(randomPopups, id: \.self) { message in
                             Text(message)
-                                .font(.system(size: CGFloat.random(in: 16...36), weight: .bold)) // Random font size
-                                .foregroundColor(.white)
+                                .font(.system(size: CGFloat.random(in: 16...36), weight: .bold))
+                                .foregroundColor(accentColor)
                                 .padding(5)
                                 .background(Color.red.opacity(0.8))
                                 .cornerRadius(5)
+                                .rotationEffect(.degrees(Double.random(in: -30...30)))
                                 .position(
-                                    x: CGFloat.random(in: 50...300),
-                                    y: CGFloat.random(in: 100...600)
+                                    x: CGFloat.random(in: 0...UIScreen.main.bounds.width),
+                                    y: CGFloat.random(in: 0...UIScreen.main.bounds.height)
                                 )
                                 .transition(.scale)
                         }
@@ -92,7 +97,7 @@ struct PhoneHackedView: View {
 
                     Spacer()
 
-                    // Final Challenge Buttons (appears after typing finishes)
+                    // Final Challenge Buttons
                     if showButtons {
                         VStack {
                             NavigationLink(destination: BattleGameView()) {
@@ -130,45 +135,49 @@ struct PhoneHackedView: View {
                     glitchAmount = 10
                 }
 
-                // Timer for updating hacked percentage (slower)
-                Timer.scheduledTimer(withTimeInterval: 0.25, repeats: true) { timer in
+                // Timer for hacked percentage
+                Timer.scheduledTimer(withTimeInterval: 0.15, repeats: true) { timer in
                     if hackedPercentage < 100 {
-                        hackedPercentage += Int.random(in: 1...2) // Smaller increment for slower increase
+                        hackedPercentage += Int.random(in: 1...5)
                         if hackedPercentage > 100 {
                             hackedPercentage = 100
                         }
                     } else {
-                        // Start typing message when hack reaches 100%
                         startTypingMessage()
                         timer.invalidate()
                     }
                 }
 
-                // Timer for random popups (faster, more frequent)
-                Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { timer in // Faster popup frequency
+                // Timer for popups
+                Timer.scheduledTimer(withTimeInterval: 0.3, repeats: true) { timer in
                     if hackedPercentage < 100 {
                         randomPopups.append(popupMessages.randomElement()!)
-                        if randomPopups.count > 6 { // Show more popups
+                        if randomPopups.count > 10 {
                             randomPopups.removeFirst()
                         }
                     } else {
                         timer.invalidate()
                     }
                 }
+
+                // Timer for chaotic color changes
+                Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { timer in
+                    withAnimation {
+                        accentColor = chaoticColors.randomElement()!
+                    }
+                }
             }
         }
     }
 
-    // Function to start typing the message once hack reaches 100%
     private func startTypingMessage() {
         var characterIndex = 0
         let messageCount = messageToType.count
-        Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { timer in
+        Timer.scheduledTimer(withTimeInterval: 0.07, repeats: true) { timer in
             if characterIndex < messageCount {
                 typedMessage.append(messageToType[messageToType.index(messageToType.startIndex, offsetBy: characterIndex)])
                 characterIndex += 1
             } else {
-                // Once the message is typed, show the buttons
                 showButtons = true
                 timer.invalidate()
             }
