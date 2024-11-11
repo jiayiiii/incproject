@@ -5,11 +5,27 @@
 //  Created by Tan Xin Tong Joy on 20/10/24.
 //
 import SwiftUI
+import AVFoundation
+
+class SoundManager1: ObservableObject {
+    static let instance = SoundManager1()
+    var player: AVAudioPlayer?
+
+    func playSound() {
+        guard let url = Bundle.main.url(forResource: "ring", withExtension: "mp3") else { return }
+        do {
+            player = try AVAudioPlayer(contentsOf: url)
+            player?.play()
+        } catch let error {
+            print("Error playing sound: \(error.localizedDescription)")
+        }
+    }
+}
 
 struct HackerGameView4: View {
     var onComplete: () -> Void
-
     @State private var showAnagram = false
+    @State private var soundManager1 = SoundManager1()
 
     var body: some View {
         NavigationStack {
@@ -61,6 +77,9 @@ struct HackerGameView4: View {
                 }
                 .position(x: 250, y: 850)
             }
+            .onAppear {
+                soundManager1.playSound()
+            }
             .navigationDestination(isPresented: $showAnagram) {
                 Anagram(onComplete: {
                     onComplete()
@@ -72,7 +91,7 @@ struct HackerGameView4: View {
     func showAlert() {
         guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else { return }
         if let window = windowScene.windows.first {
-            let alert = UIAlertController(title: "Decline failed", message: "Error 404", preferredStyle: .alert)
+            let alert = UIAlertController(title: "Decline failed", message: "Error 404, try the other button", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .default))
             window.rootViewController?.present(alert, animated: true, completion: {
                 let animation = CAKeyframeAnimation(keyPath: "transform.translation.x")
@@ -85,6 +104,11 @@ struct HackerGameView4: View {
     }
 }
 
-#Preview {
-    HackerGameView4(onComplete: {})
+struct HackerGameView4_Previews: PreviewProvider {
+    static var previews: some View {
+        HackerGameView4(onComplete: {
+
+        })
+        .previewDevice("iPhone 16") // Adjusted device for preview
+    }
 }

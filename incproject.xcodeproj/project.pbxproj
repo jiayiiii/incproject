@@ -23,6 +23,7 @@
 		ED6ACE412CC5CE6900E3FE60 /* BattleGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED6ACE402CC5CE6900E3FE60 /* BattleGameView.swift */; };
 		ED6ACE432CC5D41700E3FE60 /* CompleteGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED6ACE422CC5D40C00E3FE60 /* CompleteGameView.swift */; };
 		EDA843442CE24CBD008AF31E /* yay.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EDA843432CE24CBD008AF31E /* yay.mp3 */; };
+		EDA843472CE24F25008AF31E /* ring.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EDA843462CE24F25008AF31E /* ring.mp3 */; };
 		EDB0FA8A2CC9289800DAF28A /* GameState.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDB0FA892CC9289800DAF28A /* GameState.swift */; };
 		EDC8CECA2CC545AF0076C720 /* wheelPicker 2.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC8CEC92CC545AF0076C720 /* wheelPicker 2.swift */; };
 		EDC8CECE2CC549300076C720 /* HackerGameView6.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC8CECD2CC549300076C720 /* HackerGameView6.swift */; };
@@ -47,6 +48,7 @@
 		ED6ACE402CC5CE6900E3FE60 /* BattleGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BattleGameView.swift; sourceTree = "<group>"; };
 		ED6ACE422CC5D40C00E3FE60 /* CompleteGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteGameView.swift; sourceTree = "<group>"; };
 		EDA843432CE24CBD008AF31E /* yay.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = yay.mp3; sourceTree = "<group>"; };
+		EDA843462CE24F25008AF31E /* ring.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ring.mp3; sourceTree = "<group>"; };
 		EDB0FA892CC9289800DAF28A /* GameState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameState.swift; sourceTree = "<group>"; };
 		EDC8CEC92CC545AF0076C720 /* wheelPicker 2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "wheelPicker 2.swift"; sourceTree = "<group>"; };
 		EDC8CECD2CC549300076C720 /* HackerGameView6.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HackerGameView6.swift; sourceTree = "<group>"; };
@@ -70,6 +72,7 @@
 				A1DF27512CB64270006A570D /* HackerGameView.swift */,
 				EDE53B672CB6AE4300DF8343 /* HackerGameView2.swift */,
 				ED2B94322CC4C6E900CCB57F /* HackerGameView3.swift */,
+				EDA843452CE24F18008AF31E /* sound */,
 				ED2B942E2CC4C0E400CCB57F /* anagram 4.swift */,
 				ED5E05202CC50D3E00F74DA3 /* HackerGameView5.swift */,
 				EDC8CEC92CC545AF0076C720 /* wheelPicker 2.swift */,
@@ -121,6 +124,14 @@
 				EDA843432CE24CBD008AF31E /* yay.mp3 */,
 			);
 			path = Sounds;
+			sourceTree = "<group>";
+		};
+		EDA843452CE24F18008AF31E /* sound */ = {
+			isa = PBXGroup;
+			children = (
+				EDA843462CE24F25008AF31E /* ring.mp3 */,
+			);
+			path = sound;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -183,6 +194,7 @@
 			files = (
 				EDA843442CE24CBD008AF31E /* yay.mp3 in Resources */,
 				675555522C8EF608007352BF /* Preview Assets.xcassets in Resources */,
+				EDA843472CE24F25008AF31E /* ring.mp3 in Resources */,
 				6755554F2C8EF608007352BF /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
