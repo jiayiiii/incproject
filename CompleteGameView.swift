@@ -5,8 +5,27 @@
 //  Created by Tan Xin Tong Joy on 21/10/24.
 //
 import SwiftUI
+import AVKit
 
+// Sound Manager
+class SoundManager: ObservableObject {
+    static let instance = SoundManager()
+    var player: AVAudioPlayer?
+    
+    func playSound() {
+        guard let url = Bundle.main.url(forResource: "yay", withExtension: "mp3") else { return }
+        do {
+            player = try AVAudioPlayer(contentsOf: url)
+            player?.play()
+        } catch let error {
+            print("Error playing sound: \(error.localizedDescription)")
+        }
+    }
+}
+
+// Main CompleteGameView
 struct CompleteGameView: View {
+    @State var soundManager = SoundManager()
     @State private var isCelebrating = false
     @State private var celebrationOffset: CGFloat = -200
     @State private var isAnimatingText = false
@@ -14,14 +33,14 @@ struct CompleteGameView: View {
 
     var body: some View {
         ZStack {
-            // Background with a vibrant gradient
+            // Background Gradient
             LinearGradient(gradient: Gradient(colors: [Color.pink, Color.purple]),
                            startPoint: .topLeading,
                            endPoint: .bottomTrailing)
                 .edgesIgnoringSafeArea(.all)
 
             VStack {
-                // Title
+                // Title with Animation
                 Text("🎉 YOU DID IT! 🎉")
                     .font(.system(size: 40, weight: .bold))
                     .foregroundColor(.yellow)
@@ -49,18 +68,19 @@ struct CompleteGameView: View {
                     .multilineTextAlignment(.center)
 
                 // Creator Info
-                Text("By: Sharlene Tan Qin Ying, Yip Jia Yi, Tan Xin Tong Joy and Nadra")
+                Text("By: Sharlene Tan Qin Ying, Yip Jia Yi, Tan Xin Tong Joy, and Nadra")
                     .foregroundColor(.white)
                     .multilineTextAlignment(.center)
                     .padding(.top)
 
-                // Celebrate button
+                // Combined Celebrate and Play Sound Button
                 Button(action: {
                     withAnimation {
                         isCelebrating.toggle()
                         if isCelebrating {
                             celebrationOffset = 0
                             confettiSpeed = 1.0  // Speed up confetti effect for more excitement
+                            soundManager.playSound() // Play sound when celebrating
                         } else {
                             celebrationOffset = -200
                             confettiSpeed = 0.5  // Slow down after celebration ends
@@ -69,8 +89,8 @@ struct CompleteGameView: View {
                 }) {
                     Text("YAYYAYAY! Let's Celebrate 🎉")
                         .padding()
-                        .background(Color.green)
-                        .foregroundColor(.white)
+                        .background(Color.white)
+                        .foregroundColor(.black)
                         .cornerRadius(10)
                         .shadow(color: .black.opacity(0.5), radius: 5, x: 0, y: 5)
                         .font(.headline)
@@ -104,6 +124,7 @@ struct CompleteGameView: View {
     }
 }
 
+// Confetti Effect View
 struct ConfettiView: View {
     @State private var particles: [Particle] = []
     private let particleCount = 100
@@ -146,6 +167,7 @@ struct ConfettiView: View {
     }
 }
 
+// Particle Model
 struct Particle: Identifiable {
     let id = UUID()
     var position: CGPoint
