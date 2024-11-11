@@ -7,185 +7,185 @@
 import SwiftUI
 
 struct HackBattleView: View {
-    @State private var playerScore = 0
-    @State private var avyanScore = 0
-    @State private var showHints = false
-    @State private var showRules = false
-    @State private var hints: [String] = [
-        "Stay calm and think logically.",
-        "Use patterns to crack the code.",
-        "Don't rush; take your time!",
-        "Look for clues in the environment."
-    ]
-    @State private var selectedHint: String?
-    @State private var gameEnded = false // Track if the game has ended
-    @State private var gameResult: String? // Track the game result
+    @State private var playerHealth = 100
+    @State private var opponentHealth = 100
+    @State private var isPlayerTurn = true
+    @State private var question = "What is the command to print 'Hello, World!' in Swift?"
+    @State private var options = ["print('Hello, World!')", "echo 'Hello, World!'", "System.out.println('Hello, World!')", "Console.WriteLine('Hello, World!')"]
+    @State private var selectedAnswer: String? = nil
+    @State private var questionDifficulty = 1 // 1 for easy, 2 for medium, 3 for hard
+    @State private var showAttackResult = false
+    @State private var attackMessage = ""
 
     var body: some View {
-        NavigationStack {
-            ZStack {
-                // Background with a dark gradient
-                LinearGradient(gradient: Gradient(colors: [Color.black, Color.blue.opacity(0.8)]), startPoint: .top, endPoint: .bottom)
-                    .edgesIgnoringSafeArea(.all)
+        ZStack {
+            LinearGradient(gradient: Gradient(colors: [.black, .gray]), startPoint: .top, endPoint: .bottom)
+                .edgesIgnoringSafeArea(.all)
 
-                VStack(spacing: 20) {
-                    Text("HACK BATTLE: TALL AVYAN vs. YOU!")
-                        .font(.largeTitle)
-                        .bold()
-                        .multilineTextAlignment(.center)
-                        .foregroundColor(.white)
-                        .padding()
-                        .shadow(color: .black, radius: 10, x: 0, y: 0)
+            VStack(spacing: 30) {
+                Text("Cybersecurity Challenge")
+                    .font(.largeTitle)
+                    .bold()
+                    .foregroundColor(.white)
 
-                    HStack {
-                        VStack {
-                            Text("Your Score")
-                                .font(.headline)
-                                .foregroundColor(.green)
-                            Text("\(playerScore)")
-                                .font(.largeTitle)
-                                .foregroundColor(.white)
-                        }
-
-                        Spacer()
-
-                        VStack {
-                            Text("Tall Avyan's Score")
-                                .font(.headline)
-                                .foregroundColor(.red)
-                            Text("\(avyanScore)")
-                                .font(.largeTitle)
-                                .foregroundColor(.white)
-                        }
-                    }
-                    .padding()
-
-                    Button(action: {
-                        // Simulate a hack attempt
-                        let success = Bool.random()
-                        if success {
-                            playerScore += 1
-                        } else {
-                            avyanScore += 1
-                        }
-                        
-                        // Check for game over
-                        checkGameOver()
-                    }) {
-                        Text("Attempt to Hack!")
-                            .font(.headline)
-                            .foregroundColor(.black)
-                            .padding()
-                            .background(Color.green)
-                            .cornerRadius(10)
-                            .shadow(radius: 10)
-                    }
-                    .padding()
-
-                    Button(action: {
-                        showHints.toggle()
-                    }) {
-                        Text("Get a Hint")
-                            .font(.headline)
+                HStack {
+                    VStack {
+                        Text("You")
+                            .font(.title)
+                            .foregroundColor(.green)
+                        ProgressBar(health: playerHealth, color: .green)
+                        Text("\(playerHealth) HP")
                             .foregroundColor(.white)
-                            .padding()
-                            .background(Color.blue)
-                            .cornerRadius(10)
-                            .shadow(radius: 10)
                     }
-
-                    if showHints {
-                        ForEach(hints.indices, id: \.self) { index in
-                            Button(action: {
-                                selectedHint = hints[index]
-                            }) {
-                                Text("Hint \(index + 1)")
-                                    .font(.subheadline)
-                                    .foregroundColor(.white)
-                                    .padding(5)
-                                    .background(Color.gray.opacity(0.8))
-                                    .cornerRadius(5)
-                            }
-                        }
-                    }
-
-                    if let hint = selectedHint {
-                        Text(hint)
-                            .font(.subheadline)
-                            .foregroundColor(.yellow)
-                            .padding()
-                            .background(Color.black.opacity(0.7))
-                            .cornerRadius(10)
-                            .padding(.top, 10)
-                    }
-
-                    Button(action: {
-                        showRules.toggle()
-                    }) {
-                        Text("Show Rules")
-                            .font(.headline)
-                            .foregroundColor(.white)
-                            .padding()
-                            .background(Color.orange)
-                            .cornerRadius(10)
-                            .shadow(radius: 10)
-                    }
-
-                    if showRules {
-                        VStack(alignment: .leading, spacing: 5) {
-                            Text("Game Rules:")
-                                .font(.headline)
-                                .foregroundColor(.white)
-                                .padding(.top)
-                            Text("1. Each player takes turns attempting to hack.")
-                                .foregroundColor(.white)
-                            Text("2. A successful hack increases your score.")
-                                .foregroundColor(.white)
-                            Text("3. The player with the highest score at the end wins!")
-                                .foregroundColor(.white)
-                            Text("4. Use hints wisely to gain an advantage.")
-                                .foregroundColor(.white)
-                        }
-                        .padding()
-                        .background(Color.black.opacity(0.7))
-                        .cornerRadius(10)
-                        .padding(.top, 10)
-                    }
-
                     Spacer()
-
-                    // Show button to go to CompleteGameView only if the player won
-                    if gameEnded && (playerScore >= 5) {
-                        NavigationLink(destination: CompleteGameView()) {
-                            Text("Go to Results")
-                                .font(.headline)
-                                .padding()
-                                .background(Color.red)
-                                .foregroundColor(.white)
-                                .cornerRadius(10)
-                        }
-                        .padding()
+                    VStack {
+                        Text("Tall Avyan")
+                            .font(.title)
+                            .foregroundColor(.red)
+                        ProgressBar(health: opponentHealth, color: .red)
+                        Text("\(opponentHealth) HP")
+                            .foregroundColor(.white)
                     }
                 }
-                .padding()
+                .padding(.horizontal, 40)
+
+                if isPlayerTurn {
+                    Text("Your Turn: Attack or Defend!")
+                        .font(.headline)
+                        .foregroundColor(.yellow)
+
+                    QuestionView(question: question, options: options, selectedAnswer: $selectedAnswer) {
+                        checkAnswer()
+                    }
+
+                    HStack {
+                        Button(action: {
+                            questionDifficulty = 1
+                            loadQuestion(difficulty: questionDifficulty)
+                        }) {
+                            Text("Easy Attack")
+                                .padding()
+                                .background(Color.blue)
+                                .cornerRadius(10)
+                        }
+                        Button(action: {
+                            questionDifficulty = 2
+                            loadQuestion(difficulty: questionDifficulty)
+                        }) {
+                            Text("Medium Attack")
+                                .padding()
+                                .background(Color.orange)
+                                .cornerRadius(10)
+                        }
+                        Button(action: {
+                            questionDifficulty = 3
+                            loadQuestion(difficulty: questionDifficulty)
+                        }) {
+                            Text("Hard Attack")
+                                .padding()
+                                .background(Color.red)
+                                .cornerRadius(10)
+                        }
+                    }
+                }
+
+                if showAttackResult {
+                    Text(attackMessage)
+                        .foregroundColor(.white)
+                        .transition(.scale)
+                }
+            }
+            .padding()
+        }
+        .animation(.easeInOut, value: isPlayerTurn)
+    }
+
+    // Load question based on difficulty level
+    func loadQuestion(difficulty: Int) {
+        question = difficulty == 1 ? "What is Swift's keyword for declaring variables?" : difficulty == 2 ? "How do you declare a constant in Swift?" : "What does 'optional' mean in Swift?"
+        options = difficulty == 1 ? ["let", "var", "func", "if"] : difficulty == 2 ? ["const", "let", "def", "int"] : ["nullable variable", "type that can be nil", "automatic null check", "none of the above"]
+    }
+
+    // Check the answer, calculate damage or defense
+    func checkAnswer() {
+        if let answer = selectedAnswer {
+            if answer == correctAnswer() {
+                attackMessage = "Correct! \(damageAmount()) damage dealt to Tall Avyan!"
+                opponentHealth -= damageAmount()
+                withAnimation {
+                    isPlayerTurn = false
+                }
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                    performOpponentTurn()
+                }
+            } else {
+                attackMessage = "Incorrect! You missed the attack!"
+            }
+            selectedAnswer = nil
+            showAttackResult.toggle()
+        }
+    }
+
+    // Opponent's turn
+    func performOpponentTurn() {
+        attackMessage = "Tall Avyan attacks!"
+        playerHealth -= damageAmount()
+        isPlayerTurn = true
+        showAttackResult.toggle()
+    }
+
+    // Returns correct answer based on question difficulty
+    func correctAnswer() -> String {
+        return questionDifficulty == 1 ? "var" : questionDifficulty == 2 ? "let" : "type that can be nil"
+    }
+
+    // Damage calculation
+    func damageAmount() -> Int {
+        return questionDifficulty * 10
+    }
+}
+
+struct ProgressBar: View {
+    var health: Int
+    var color: Color
+
+    var body: some View {
+        GeometryReader { geometry in
+            Rectangle()
+                .fill(color)
+                .frame(width: geometry.size.width * CGFloat(health) / 100, height: geometry.size.height)
+                .animation(.easeInOut, value: health)
+                .cornerRadius(8)
+        }
+        .frame(height: 10)
+    }
+}
+
+struct QuestionView: View {
+    var question: String
+    var options: [String]
+    @Binding var selectedAnswer: String?
+    var onAnswerSelected: () -> Void
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 15) {
+            Text(question)
+                .font(.headline)
+                .foregroundColor(.white)
+
+            ForEach(options, id: \.self) { option in
+                Button(action: {
+                    selectedAnswer = option
+                    onAnswerSelected()
+                }) {
+                    Text(option)
+                        .padding()
+                        .background(Color.gray.opacity(selectedAnswer == option ? 0.8 : 0.3))
+                        .cornerRadius(10)
+                        .foregroundColor(.white)
+                }
             }
         }
-    }
-
-    private func checkGameOver() {
-        // Determine if the game has ended based on the scores
-        if playerScore >= 5 { // Set win condition
-            gameResult = "You won! 🎉"
-            gameEnded = true
-        } else if avyanScore >= 5 { // Set lose condition
-            gameResult = "You lost! Try again."
-            resetGame() // Restart the game
-        }
-    }
-
-    private func resetGame() {
-        playerScore = 0
-        avyanScore = 0
     }
 }
 
