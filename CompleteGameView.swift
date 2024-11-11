@@ -8,28 +8,38 @@ import SwiftUI
 
 struct CompleteGameView: View {
     @State private var isCelebrating = false
-    @State private var celebrationOffset: CGFloat = -200 
+    @State private var celebrationOffset: CGFloat = -200
+    @State private var isAnimatingText = false
+    @State private var confettiSpeed = 0.5
 
     var body: some View {
         ZStack {
-            LinearGradient(gradient: Gradient(colors: [Color.red, Color.black]),
-                           startPoint: .top,
-                           endPoint: .bottom)
+            // Background with a vibrant gradient
+            LinearGradient(gradient: Gradient(colors: [Color.pink, Color.purple]),
+                           startPoint: .topLeading,
+                           endPoint: .bottomTrailing)
                 .edgesIgnoringSafeArea(.all)
 
             VStack {
-                Text("Congratulations!")
-                    .font(.largeTitle)
-                    .foregroundColor(.white)
+                // Title
+                Text("🎉 YOU DID IT! 🎉")
+                    .font(.system(size: 40, weight: .bold))
+                    .foregroundColor(.yellow)
                     .frame(maxWidth: .infinity)
                     .padding()
                     .background(Color.black.opacity(0.7))
                     .cornerRadius(12)
                     .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 5)
                     .multilineTextAlignment(.center)
+                    .scaleEffect(isAnimatingText ? 1.2 : 1.0)
+                    .animation(.easeInOut(duration: 1).repeatForever(autoreverses: true), value: isAnimatingText)
+                    .onAppear {
+                        isAnimatingText = true
+                    }
 
-                Text("You have retreived the incoins!")
-                    .font(.headline)
+                // Subtitle message
+                Text("You have retrieved the Incoins! 💰💎")
+                    .font(.title)
                     .padding()
                     .foregroundColor(.white)
                     .frame(maxWidth: .infinity)
@@ -38,34 +48,40 @@ struct CompleteGameView: View {
                     .shadow(color: .black.opacity(0.5), radius: 10, x: 0, y: 5)
                     .multilineTextAlignment(.center)
 
+                // Creator Info
                 Text("By: Sharlene Tan Qin Ying, Yip Jia Yi, Tan Xin Tong Joy and Nadra")
                     .foregroundColor(.white)
                     .multilineTextAlignment(.center)
                     .padding(.top)
 
+                // Celebrate button
                 Button(action: {
                     withAnimation {
                         isCelebrating.toggle()
                         if isCelebrating {
                             celebrationOffset = 0
+                            confettiSpeed = 1.0  // Speed up confetti effect for more excitement
                         } else {
                             celebrationOffset = -200
+                            confettiSpeed = 0.5  // Slow down after celebration ends
                         }
                     }
                 }) {
-                    Text("Celebrate")
+                    Text("YAYYAYAY! Let's Celebrate 🎉")
                         .padding()
                         .background(Color.green)
                         .foregroundColor(.white)
                         .cornerRadius(10)
                         .shadow(color: .black.opacity(0.5), radius: 5, x: 0, y: 5)
+                        .font(.headline)
                 }
                 .padding(.top)
             }
             .padding()
 
+            // Confetti effect
             if isCelebrating {
-                ConfettiView()
+                ConfettiView(speed: confettiSpeed)
                     .transition(.opacity)
                     .zIndex(1)
                     .onAppear {
@@ -74,7 +90,7 @@ struct CompleteGameView: View {
             }
         }
         .overlay(
-            Text("🎉 Celebration! 🎉")
+            Text("🎉 YAY YOU WON! 🎉")
                 .font(.largeTitle)
                 .foregroundColor(.yellow)
                 .padding()
@@ -91,6 +107,7 @@ struct CompleteGameView: View {
 struct ConfettiView: View {
     @State private var particles: [Particle] = []
     private let particleCount = 100
+    var speed: Double // Dynamically change speed of confetti
 
     var body: some View {
         GeometryReader { geometry in
@@ -106,8 +123,8 @@ struct ConfettiView: View {
             .onAppear {
                 createParticles(in: geometry.size)
             }
+            .animation(.easeInOut(duration: speed), value: particles.count)
         }
-        .animation(.easeInOut(duration: 1), value: particles.count)
     }
 
     private func createParticles(in size: CGSize) {

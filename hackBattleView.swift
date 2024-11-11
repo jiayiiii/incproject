@@ -40,6 +40,12 @@ struct HackBattleView: View {
             options: ["try", "catch", "throw", "guard"],
             correctAnswer: "try",
             difficulty: 3
+        ),
+        Question(
+            text: "How do you make a rectangle in Swift?",
+            options: ["CGRect(x: 0, y: 0, width: 100, height: 50)", "Rectangle()", "rectangle()", "rect(width: 100, height: 50)"],
+            correctAnswer: "Rectangle()",
+            difficulty: 2
         )
     ]
     
@@ -50,8 +56,6 @@ struct HackBattleView: View {
     }
     
     var body: some View {
-        
-        
         NavigationStack {
             ZStack {
                 Color.black.ignoresSafeArea()
@@ -129,14 +133,26 @@ struct HackBattleView: View {
                             .padding()
                             .background(gameOverMessage.contains("won") ? Color.green : Color.red)
                             .cornerRadius(10)
+                        
+                        if gameOverMessage.contains("won") {
+                            // NavigationLink that allows you to go to the CompleteGameView
                             NavigationLink(destination: CompleteGameView()) {
-                                Text("What's next?")
+                                Text("Proceed to Complete Game")
+                                    .padding()
+                                    .background(Color.blue)
+                                    .foregroundColor(.white)
+                                    .cornerRadius(10)
+                                    .font(.title2)
                             }
-                            .padding()
-                            .background(Color.blue)
-                            .foregroundColor(.white)
-                            .cornerRadius(10)
-                            .font(.title2)
+                        } else {
+                            Button(action: retryGame) {
+                                Text("Retry")
+                                    .padding()
+                                    .background(Color.blue)
+                                    .foregroundColor(.white)
+                                    .cornerRadius(10)
+                                    .font(.title2)
+                            }
                         }
                     }
                     
@@ -150,17 +166,6 @@ struct HackBattleView: View {
             .onAppear {
                 nextQuestion()
             }
-        }
-    func nextQuestion() {
-        currentQuestionIndex = Int.random(in: 0..<questions.count)
-    }
-    
-    func checkForGameOver() {
-        if opponentHealth <= 0 {
-            gameOverMessage = "You won! Tall Avyan has been defeated!"
-        
-        } else if playerHealth <= 0 {
-            gameOverMessage = "Game Over! Tall Avyan has won!"
         }
     }
     
@@ -201,15 +206,22 @@ struct HackBattleView: View {
     func checkForGameOver() {
         if opponentHealth <= 0 {
             gameOverMessage = "You won! Tall Avyan has been defeated!"
-        
         } else if playerHealth <= 0 {
             gameOverMessage = "Game Over! Tall Avyan has won!"
         }
     }
     
-    
-    
-
+    func retryGame() {
+        // Reset health and the game state for a retry
+        playerHealth = 100
+        opponentHealth = 100
+        isPlayerTurn = true
+        selectedAnswer = nil
+        resultMessage = ""
+        gameOverMessage = ""
+        nextQuestion()
+    }
+}
 
 #Preview {
     HackBattleView()
