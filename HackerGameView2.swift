@@ -8,7 +8,7 @@ import SwiftUI
 import AVFoundation
 
 struct HackerGameView2: View {
-    var onComplete: () -> Void // Add the onComplete closure
+    var onComplete: () -> Void
 
     @State private var messages: [String] = []
     @State private var playerMessage = ""
@@ -22,7 +22,7 @@ struct HackerGameView2: View {
     @State private var revealedHints: Set<Int> = []
     @State private var audioPlayer: AVAudioPlayer?
     @State private var isUserInputDisabled = false
-    @State private var hintRevealed = false // Track if the hint is revealed
+    @State private var hintRevealed = false
 
     var body: some View {
         NavigationStack {
@@ -118,13 +118,10 @@ struct HackerGameView2: View {
                     messages.append("John Pork: \(response)")
                     revealedHints.insert(responseIndex)
 
-                    // Check if all hints have been revealed
                     if revealedHints.count == johnPorkResponses.count {
                         messages.append("John Pork Hint: \(johnPorkHint)")
                         isUserInputDisabled = true
-                        hintRevealed = true // Set hint revealed to true
-
-                        // Call the onComplete function when all hints are revealed
+                        hintRevealed = true
                         onComplete()
                     }
                 }
@@ -145,7 +142,7 @@ struct HackerGameView2: View {
     }
 
     private func playBackgroundSound() {
-        let soundName = "sound1" // Replace with your sound asset name
+        let soundName = "sound1"
         guard let soundFile = NSDataAsset(name: soundName) else {
             print("Oops! The sound isn't working")
             return

@@ -32,7 +32,6 @@ struct HackerGameView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                // Background Gradient
                 LinearGradient(
                     gradient: Gradient(colors: [Color.black, Color.gray.opacity(0.8)]),
                     startPoint: .top, endPoint: .bottom
@@ -40,7 +39,6 @@ struct HackerGameView: View {
                 .edgesIgnoringSafeArea(.all)
                 
                 VStack(spacing: 20) {
-                    // Typing effect for the intro title
                     Text(typedIntro)
                         .font(.custom("Menlo", size: 34))
                         .bold()
@@ -52,18 +50,18 @@ struct HackerGameView: View {
                             typeIntroText()
                         }
 
-                    // Instructional text
+
                     Text("To find the accomplice, enter the correct code   Clue:01nk01nk")
                         .font(.custom("Courier", size: 18))
                         .foregroundColor(.white.opacity(0.7))
                         .italic()
                         .multilineTextAlignment(.center)
                         .padding()
-                        .transition(.opacity) // Fade-in effect
+                        .transition(.opacity)
                         .animation(.easeIn(duration: 1.2), value: typedIntro)
 
                     if hintUnlocked {
-                        // Hint Unlocked Message
+
                         Text("CORRECT. The accomplice was John Pork.\nHINT: The heist took place near Victoria Falls.")
                             .font(.custom("Courier", size: 20))
                             .foregroundColor(.green)
@@ -74,7 +72,7 @@ struct HackerGameView: View {
                                     .fill(Color.black.opacity(0.8))
                                     .shadow(color: .green, radius: 4)
                             )
-                            .transition(.opacity.combined(with: .scale(scale: 1.1))) // Fade-in with scale
+                            .transition(.opacity.combined(with: .scale(scale: 1.1)))
                             .padding(.bottom, 20)
 
                         Image("john_pork.png")
@@ -83,7 +81,7 @@ struct HackerGameView: View {
                             .cornerRadius(10)
                             .shadow(color: .black, radius: 5, x: 0, y: 5)
 
-                        // Next Level Button
+               
                         NavigationLink(destination: HackerGameView2(onComplete: onComplete)) {
                             Text("Go to the Next Level")
                                 .padding()
@@ -100,7 +98,7 @@ struct HackerGameView: View {
                                 .padding(.top, 20)
                         }
                     } else {
-                        // Text field for code input
+           
                         TextField("Enter the code", text: $codeInput)
                             .textFieldStyle(PlainTextFieldStyle())
                             .foregroundColor(.white)
@@ -110,9 +108,8 @@ struct HackerGameView: View {
                             .padding(.horizontal, 40)
                             .shadow(color: .gray, radius: 4)
                             .offset(x: incorrectCode ? -10 : 0)
-                            .animation(incorrectCode ? .default.repeatCount(5, autoreverses: true) : .default, value: incorrectCode) // Shake effect for incorrect code
-
-                        // Submit Code Button with Pulsing Effect
+                            .animation(incorrectCode ? .default.repeatCount(5, autoreverses: true) : .default, value: incorrectCode)
+                        
                         Button(action: {
                             handleCodeInput()
                         }) {
@@ -131,16 +128,13 @@ struct HackerGameView: View {
                                 }
                         }
 
-                        // Incorrect code message
                         if incorrectCode {
                             Text("Incorrect code. Try again.")
                                 .foregroundColor(.red)
                                 .transition(.opacity)
-                                .animation(.easeInOut(duration: 0.3).repeatForever(autoreverses: true), value: incorrectCode) // Flashing effect
+                                .animation(.easeInOut(duration: 0.3).repeatForever(autoreverses: true), value: incorrectCode)
                         }
                     }
-
-                    // Quit Message
                     if quitMessageVisible {
                         Text("You can't quit!")
                             .font(.headline)
@@ -176,7 +170,6 @@ struct HackerGameView: View {
         }
     }
 
-    // Function to handle typing animation for intro text
     private func typeIntroText() {
         let fullText = "THE MYSTERIOUS HACKER"
         typedIntro = ""
@@ -191,7 +184,7 @@ struct HackerGameView: View {
         }
     }
 
-    // Function to handle code input
+
     private func handleCodeInput() {
         if correctCodes.contains(codeInput.lowercased()) {
             withAnimation {
@@ -210,7 +203,7 @@ struct HackerGameView: View {
         }
     }
 
-    // Function to play sound effect
+
     private func playSoundEffect(named soundName: String) {
         if let soundFile = NSDataAsset(name: soundName) {
             do {

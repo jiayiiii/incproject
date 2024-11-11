@@ -9,12 +9,12 @@ import SwiftUI
 
 @main
 struct incprojectApp: App {
-    @StateObject private var gameState = GameState() // Create GameState object
+    @StateObject private var gameState = GameState() 
 
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .environmentObject(gameState) // Pass GameState to ContentView
+                .environmentObject(gameState)
         }
     }
 }

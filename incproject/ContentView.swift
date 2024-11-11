@@ -1,9 +1,9 @@
 import SwiftUI
 
 struct ContentView: View {
-    // Main state for tracking unlocked levels
+
     @State private var levelsUnlocked: [Int: Bool] = [
-        1: true,  // Starting level unlocked
+        1: true,
         2: false,
         3: false,
         4: false,
@@ -64,7 +64,6 @@ struct ContentView: View {
                 Text("Home")
             }
 
-            // Pass levelsUnlocked as a binding to HomeView
             HomeView(levelsUnlocked: $levelsUnlocked)
                 .tabItem {
                     Image(systemName: "star.fill")

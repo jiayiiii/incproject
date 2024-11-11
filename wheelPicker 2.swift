@@ -61,8 +61,6 @@ struct WheelPicker: View {
                     .padding()
                     .foregroundColor(.blue)
             }
-            
-            // Show the NavigationLink only when the answer is correct
             if isCorrect {
                 NavigationLink(destination: HackerGameView6(onComplete: onComplete)) {
                     Text("Next")
@@ -87,7 +85,7 @@ struct WheelPicker: View {
             resultMessage = "Correct!"
             locationClue = "Seems like Tall Avyan and his lackeys escaped to Tennessee after their heist."
             isCorrect = true
-            onComplete() // Call onComplete when the answer is correct
+            onComplete()
         } else {
             resultMessage = "Incorrect. Try again!"
             locationClue = ""
@@ -96,11 +94,11 @@ struct WheelPicker: View {
     }
 }
 
-// Preview
+
 struct WheelPicker_Previews: PreviewProvider {
     static var previews: some View {
         WheelPicker {
-            // Dummy closure for preview
+
             print("Task completed!")
         }
         .previewLayout(.sizeThatFits)

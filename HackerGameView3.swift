@@ -7,14 +7,14 @@
 import SwiftUI
 
 struct HackerGameView4: View {
-    var onComplete: () -> Void // Add the onComplete closure
+    var onComplete: () -> Void
 
     @State private var showAnagram = false
 
     var body: some View {
         NavigationStack {
             ZStack {
-                Image("freakbob") // Make sure to have the image named "freakbob"
+                Image("freakbob")
                     .resizable()
                     .scaledToFill()
                     .frame(width: 440, height: 700)
@@ -62,9 +62,7 @@ struct HackerGameView4: View {
                 .position(x: 250, y: 850)
             }
             .navigationDestination(isPresented: $showAnagram) {
-                // Call onComplete when navigating to the Anagram view
                 Anagram(onComplete: {
-                    // Call the onComplete closure of HackerGameView4
                     onComplete()
                 })
             }

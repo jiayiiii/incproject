@@ -57,7 +57,6 @@ struct Anagram: View {
                         Text("Decode what he is trying to say:")
                             .foregroundColor(.white)
 
-                        // First Anagram with animated glow effect
                         anagramView(
                             anagram: anagramOne,
                             answer: $userAnswer,
@@ -65,7 +64,6 @@ struct Anagram: View {
                             checkAction: checkAnswer
                         )
 
-                        // Second Anagram with animated glow effect
                         anagramView(
                             anagram: anagramTwo,
                             answer: $userAnswerTwo,
@@ -73,7 +71,6 @@ struct Anagram: View {
                             checkAction: checkAnswerTwo
                         )
 
-                        // Next Level Button with scale effect
                         if bothCorrect {
                             Button(action: {
                                 navigateToInfo = true
@@ -143,7 +140,7 @@ struct Anagram: View {
                 .padding()
                 .background(Color.gray.opacity(0.8))
                 .cornerRadius(10)
-                .shadow(color: .red.opacity(incorrectAttempt ? 0.8 : 0), radius: 5, x: incorrectAttempt ? 5 : 0, y: 0) // Subtle shake effect on incorrect
+                .shadow(color: .red.opacity(incorrectAttempt ? 0.8 : 0), radius: 5, x: incorrectAttempt ? 5 : 0, y: 0) 
                 .animation(.easeInOut, value: incorrectAttempt)
 
             Button(action: checkAction) {

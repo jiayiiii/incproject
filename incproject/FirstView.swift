@@ -65,7 +65,6 @@ struct FirstView: View {
                     HStack(spacing: 15) {
                         NavigationLink {
                             HackerGameView(onComplete: {
-                                // Add any completion logic here if needed
                             })
                         } label: {
                             Text("Next")

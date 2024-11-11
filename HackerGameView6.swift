@@ -14,7 +14,7 @@ struct HackerGameView6: View {
     @State private var isGameOver: Bool = false
     @State private var showAlert: Bool = false
     @State private var showContinueButton: Bool = false
-    var onComplete: () -> Void // Closure to call when the game is completed
+    var onComplete: () -> Void 
 
     var body: some View {
         NavigationStack {
@@ -93,7 +93,7 @@ struct HackerGameView6: View {
                     
                     if showContinueButton {
                         NavigationLink(destination: HackerGameView7(onComplete: {
-                            // Any action to perform when proceeding to the next view
+
                             print("Proceeding to HackerGameView7")
                         })) {
                             Text("Continue")
@@ -124,13 +124,12 @@ struct HackerGameView6: View {
             gameMessage = "You bought the ticket! Click 'Continue' to proceed."
             isGameOver = false
             showAlert = false
-            showContinueButton = ticketsBought < 3 // Show continue button only if less than 3 tickets bought
+            showContinueButton = ticketsBought < 3
             
-            // Call the onComplete closure if the player hasn't bought 3 tickets
             if ticketsBought < 3 {
-                onComplete() // Notify completion
+                onComplete()
             } else {
-                // Optionally handle the case where 3 tickets have been bought
+
                 gameMessage = "You've bought 3 tickets. You cannot buy more!"
                 isGameOver = true
                 showAlert = true

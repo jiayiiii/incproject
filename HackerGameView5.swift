@@ -12,13 +12,13 @@ struct HackerGameView5: View {
     var body: some View {
         NavigationStack {
             TabView {
-                CarPlate(onComplete: onComplete) // Pass the onComplete closure to CarPlate
+                CarPlate(onComplete: onComplete)
                     .tabItem {
                         Image(systemName: "archivebox.fill")
                         Text("Image")
                     }
                 
-                WheelPicker(onComplete: onComplete) // Placeholder custom WheelPicker
+                WheelPicker(onComplete: onComplete)
                     .tabItem {
                         Image(systemName: "pencil.and.list.clipboard")
                         Text("Picker")
@@ -46,7 +46,6 @@ struct CarPlate: View {
                 .shadow(color: .red, radius: 10, x: 5, y: 5)
 
             ZStack {
-                // Container for zoomable and draggable image
                 Image("car")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
@@ -62,7 +61,6 @@ struct CarPlate: View {
                     .cornerRadius(15)
                     .shadow(color: .black.opacity(0.5), radius: 10, x: 5, y: 5)
 
-                // Zoom Controls
                 VStack {
                     Spacer()
                     HStack {
@@ -70,7 +68,7 @@ struct CarPlate: View {
                         VStack(spacing: 20) {
                             Button(action: {
                                 withAnimation {
-                                    imageScale = min(imageScale + 0.2, 3.0) // Limit maximum zoom
+                                    imageScale = min(imageScale + 0.2, 3.0)
                                 }
                             }) {
                                 Image(systemName: "plus.magnifyingglass")
@@ -83,7 +81,7 @@ struct CarPlate: View {
 
                             Button(action: {
                                 withAnimation {
-                                    imageScale = max(imageScale - 0.2, 1.0) // Limit minimum zoom
+                                    imageScale = max(imageScale - 0.2, 1.0)
                                 }
                             }) {
                                 Image(systemName: "minus.magnifyingglass")
@@ -98,8 +96,6 @@ struct CarPlate: View {
                     }
                 }
             }
-
-            // Completion button with animation
             Button(action: {
                 onComplete()
             }) {
@@ -117,7 +113,7 @@ struct CarPlate: View {
     }
 }
 
-// Example placeholder for WheelPicker view
+
 struct wheelPicker: View {
     var onComplete: () -> Void
 
@@ -126,8 +122,6 @@ struct wheelPicker: View {
             Text("Wheel Picker View")
                 .font(.largeTitle)
                 .padding()
-
-            // Custom wheel picker UI goes here
 
             Button(action: {
                 onComplete()

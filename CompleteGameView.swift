@@ -8,7 +8,7 @@ import SwiftUI
 
 struct CompleteGameView: View {
     @State private var isCelebrating = false
-    @State private var celebrationOffset: CGFloat = -200 // Start off-screen
+    @State private var celebrationOffset: CGFloat = -200 
 
     var body: some View {
         ZStack {

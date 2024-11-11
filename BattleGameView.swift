@@ -188,7 +188,7 @@ struct BattleGameView: View {
     }
 
     func aiTurn() {
-        enemyIsAttacking = true  // Start enemy attack
+        enemyIsAttacking = true  
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
             if gameOver { return }
 
@@ -211,7 +211,7 @@ struct BattleGameView: View {
             } else {
                 playerTurn = true
             }
-            enemyIsAttacking = false  // End enemy attack
+            enemyIsAttacking = false
         }
     }
 

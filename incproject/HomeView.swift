@@ -56,7 +56,7 @@ struct HomeView: View {
     }
 }
 
-// LevelView with Navigation to specific views for each level
+
 struct LevelView: View {
     let levelNumber: Int
     @Binding var isUnlocked: Bool
@@ -95,7 +95,7 @@ struct LevelView: View {
         .padding(.vertical, 5)
     }
 
-    // Returns the specific view for each level
+
     @ViewBuilder
     func nextLevelView(level: Int) -> some View {
         switch level {
